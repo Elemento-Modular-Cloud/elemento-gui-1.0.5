@@ -32,9 +32,9 @@ Storage client          ```/api/v1.0/client/volume```
 
 - [x]   GET  /accessibile
 - [ ]   POST /info
-- [ ]   POST /cancreate
-- [c]   POST /create
-- [ ]   POST /destroy
+- [x]   POST /cancreate
+- [x]   POST /create
+- [x]   POST /destroy
 
 Network client          ```/api/v1.0/client/network```
 
@@ -43,7 +43,7 @@ Network client          ```/api/v1.0/client/network```
 - [ ]   POST /create
 - [ ]   POST /delete
 - [ ]   POST /info
-- [c]   POST /list
+- [x]   POST /list
 
 
 # Screens
@@ -84,3 +84,8 @@ GET http://172.31.24.227:37777/api/v1.0/client/network/ net::ERR_FAILED
 
 - missing parameters from documentation about this endpoint: /api/v1.0/client/volume/create
 there are some missing params: name, private, sharable, etc as per the "old" Elemento web app
+
+
+
+
+# Errors

@@ -25,7 +25,7 @@ class Login extends Component {
     const res = await Api.post('/login', { username, password })
 
     if (res.ok && res.data.authenticated) {
-      await this.setGlobal({ loggedIn: true }, persistState)
+      await this.setGlobal({ loggedIn: true, username, password }, persistState)
       this.props.postLogin()
     } else {
       window.alert('Error during login process')

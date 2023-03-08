@@ -7,7 +7,8 @@ import { Config } from '../Global'
 
 const DEFAULT_STATE = {
   loggedIn: false,
-  row: null
+  username: '',
+  password: ''
 }
 const DEFAULT_CONFIG = {}
 

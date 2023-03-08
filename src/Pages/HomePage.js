@@ -8,6 +8,21 @@ class HomePage extends Component {
     this.props.history.push('/calendar')
   }
 
+  componentDidMount () {
+    this.checkLoggedIn()
+  }
+
+  async checkLoggedIn () {
+    try {
+      const { username, password } = this.global
+      Api.createClient(Config.API_URL_AUTHENT)
+      const res = await Api.get('/login', { username, password })
+      console.log(res.ok ? 'Logged In' : 'Logged out')
+    } catch (error) {
+      window.alert('Could not connect to remote services')
+    }
+  }
+
   async logout () {
     Api.createClient(Config.API_URL_AUTHENT)
     const res = await Api.post('/logout', {})

@@ -6,34 +6,43 @@ class Network extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      networks: []
+      networks: [],
+      ports: [],
+      speed: ''
     }
   }
 
   async componentDidMount () {
+    await this.getNetworkList()
+  }
+
+  async getNetworkList () {
     Api.createClient(Config.API_URL_NETWORK)
-    const res = await Api.post('/list')
+    const res = await Api.post('/list', {})
 
     if (res.ok) {
       this.setState({ networks: res.data })
     }
   }
 
-  async armLicense (licenseKey) {
-    Api.createClient(Config.API_URL_AUTHENT)
-    const res = await Api.post('/license/arm', {
-      license_key: licenseKey
+  async createNewNetwork () {
+    const { ports, speed } = this.state
+
+    Api.createClient(Config.API_URL_NETWORK)
+    const res = await Api.post('/create', {
+      ports, speed
     })
 
     if (res.ok) {
-      window.alert('Licese armed successfully')
+      window.alert('Network added successfully')
+      await this.getNetworkList()
     } else {
-      window.alert('Could not arm the selected license')
+      window.alert('Could not add the network')
     }
   }
 
   render () {
-    const { networks } = this.state
+    const { networks, ports, speed } = this.state
     const { page, body } = styles
 
     return (
@@ -72,6 +81,28 @@ class Network extends Component {
               }
             </tbody>
           </table>
+
+          <h2>New network</h2>
+          Port: {ports}
+          <select onChange={e => this.setState({ ports: [e.target.value] })}>
+            <option value='80'>80</option>
+            <option value='8080'>8080</option>
+            <option value='3030'>3030</option>
+            <option value='443'>443</option>
+          </select>
+          <br />
+          Speed: {speed}
+          <select onChange={e => this.setState({ speed: e.target.value })}>
+            <option value='10 Mbit/s'>10 Mbit/s</option>
+            <option value='1 Gbit/s'>1 Gbit/s</option>
+            <option value='2.5 Gbit/s'>2.5 Gbit/s</option>
+            <option value='5 Gbit/s'>5 Gbit/s</option>
+            <option value='10 Gbit/s'>10 Gbit/s</option>
+            <option value='25 Gbit/s'>25 Gbit/s</option>
+            <option value='100 Gbit/s'>100 Gbit/s</option>
+          </select>
+          <br />
+          <button onClick={async () => await this.createNewNetwork()}>Create</button>
         </div>
       </div>
     )
