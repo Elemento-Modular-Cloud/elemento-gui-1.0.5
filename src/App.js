@@ -1,7 +1,11 @@
 import React, { Component } from 'reactn'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { restoreState } from './Services'
-import { HomePage, Licences, Login, Network, Storage } from './Pages'
+import {
+  HomePage, Licences, Login, Network,
+  Storage, VirtualMachine, NewVirtualMachine,
+  BasicSetup, AdvancedSetup
+} from './Pages'
 
 export default class App extends Component {
   constructor (props) {
@@ -21,9 +25,13 @@ export default class App extends Component {
       <BrowserRouter>
         <Routes>
           <Route path='/' exact element={<HomePage />} />
-          <Route path='licences' element={<Licences />} />
-          <Route path='network' element={<Network />} />
-          <Route path='storage' element={<Storage />} />
+          <Route path='/licences' element={<Licences />} />
+          <Route path='/network' element={<Network />} />
+          <Route path='/storage' element={<Storage />} />
+          <Route path='/vm' element={<VirtualMachine />} />
+          <Route path='/newvm' element={<NewVirtualMachine />} />
+          <Route path='/newvm/basic' element={<BasicSetup />} />
+          <Route path='/newvm/advanced' element={<AdvancedSetup />} />
         </Routes>
       </BrowserRouter>
     )

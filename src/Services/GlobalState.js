@@ -8,7 +8,8 @@ import { Config } from '../Global'
 const DEFAULT_STATE = {
   loggedIn: false,
   username: '',
-  password: ''
+  password: '',
+  advancedSetup: {}
 }
 const DEFAULT_CONFIG = {}
 

@@ -49,6 +49,7 @@ class HomePage extends Component {
             <li><a href='/licences'>Licences</a></li>
             <li><a href='/network'>Network</a></li>
             <li><a href='/storage'>Storage</a></li>
+            <li><a href='/vm'>Virtual Machines</a></li>
           </ul>
         </div>
       </div>

@@ -20,11 +20,11 @@ Matcher client           ```/api/v1.0/client/vm```
 
 ---
 
-- [ ]   POST /canallocate
-- [ ]   POST /register
-- [ ]   POST /unregister
-- [ ]   POST /status
-- [ ]   POST /templates
+- [x]   POST /canallocate
+- [x]   POST /register
+- [x]   POST /unregister
+- [x]   POST /status
+- [x]   POST /templates
 
 Storage client          ```/api/v1.0/client/volume```
 
@@ -54,7 +54,8 @@ Network client          ```/api/v1.0/client/network```
 - [ ]   Intro and tutorial
 - [ ]   User data with logout
 - [ ]   Create storage
-- [ ]   Create VM
+- [ ]   Create VM Basic
+- [ ]   Create VM Advanced
 - [ ]   Create network
 - [ ]   Manage storage
 - [ ]   Manage VM
@@ -85,7 +86,14 @@ GET http://172.31.24.227:37777/api/v1.0/client/network/ net::ERR_FAILED
 - missing parameters from documentation about this endpoint: /api/v1.0/client/volume/create
 there are some missing params: name, private, sharable, etc as per the "old" Elemento web app
 
+________________________
 
+- /api/v1.0/client/vm/status GET not POST
+- missing info: {
+    vm_name: name
+  },
+  from register new vm doc
+- missing netdevs from register new vm payload
 
 
 # Errors

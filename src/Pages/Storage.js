@@ -25,8 +25,6 @@ class Storage extends Component {
     Api.createClient(Config.API_URL_STORAGE)
     const res = await Api.get('/accessible')
 
-    console.log(res.data)
-
     if (res.ok) {
       const personalStorages = res.data.filter(storage => storage.own)
       const publicStorages = res.data.filter(storage => !storage.own)
