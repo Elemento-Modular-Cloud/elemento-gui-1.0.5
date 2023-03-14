@@ -1,5 +1,5 @@
 import React, { Component } from 'reactn'
-import { Cpu, Name } from './Pages'
+import { Cpu, Memory, Name } from './Pages'
 import { persistState } from '../../Services'
 
 const NAME_PAGE = 1
@@ -17,6 +17,10 @@ class AdvancedSetup extends Component {
         overprovision: 0,
         archsList: [],
         flags: []
+      },
+      memory: {
+        size: 0,
+        ecc: false
       }
     }
   }
@@ -31,19 +35,16 @@ class AdvancedSetup extends Component {
   }
 
   next () {
-    const { page, name, cpu } = this.state
+    const { page, name, cpu, memory } = this.state
 
     let next = true
 
     if (page === NAME_PAGE) {
       if (!/^[a-zA-Z0-9_-]*$/.test(name)) {
-        console.log(name)
         window.alert('wrong vm name')
         next = false
       }
     } else if (page === CPU_PAGE) {
-      console.log(cpu)
-
       const { cores, overprovision, archsList } = cpu
       if (cores <= 0 || cores > 8) {
         window.alert('Please, select at least 1 core')
@@ -56,7 +57,7 @@ class AdvancedSetup extends Component {
         next = false
       }
     } else if (page === MEMORY_PAGE) {
-      console.log('memory')
+      console.log(memory)
       next = false
     }
 
@@ -75,6 +76,7 @@ class AdvancedSetup extends Component {
         <div style={body}>
           {page === 1 && <Name setName={name => this.setState({ name })} />}
           {page === 2 && <Cpu setCpu={cpu => this.setState({ cpu })} />}
+          {page === 3 && <Memory setMemory={memory => this.setState({ memory })} />}
         </div>
         <div>
           <button onClick={() => this.previous()}>Previous</button>

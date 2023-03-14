@@ -1,16 +1,20 @@
 import React, { Component } from 'reactn'
 import { CustomAutocomplete, CustomSlider } from '../../../Components'
-import { getArchs, getCPUInstructionExt } from '../../../Global/Model'
+import { getArchs, getCPUInstructionExt, getCores, getOverprovision } from '../../../Global/Model'
 import { persistState } from '../../../Services'
 
 const archs = getArchs()
+const coresMarks = getCores()
+const overprovisionMarks = getOverprovision()
 
 class Cpu extends Component {
   constructor (props) {
     super(props)
     this.state = {
       cores: 0,
+      coresIndex: 0,
       overprovision: 0,
+      overprovisionIndex: 0,
       archsList: [],
       flags: []
     }
@@ -24,7 +28,9 @@ class Cpu extends Component {
     const flags = advancedSetup.flags || []
     this.setState({
       cores,
+      coresIndex: coresMarks.filter(x => x.scaledValue === cores)[0].value,
       overprovision,
+      overprovisionIndex: overprovisionMarks.filter(x => (x.value + 1) === overprovision)[0].value,
       archsList,
       flags
     })
@@ -50,7 +56,11 @@ class Cpu extends Component {
   }
 
   render () {
-    const { cores, overprovision, archsList, flags } = this.state
+    const {
+      cores, coresIndex,
+      overprovision, overprovisionIndex,
+      archsList, flags
+    } = this.state
 
     const checked = (option) => {
       const { flags } = this.state
@@ -61,16 +71,14 @@ class Cpu extends Component {
       <div>
         CPU Cores: {cores}
         <CustomSlider
-          value={cores}
-          // value={coresList}
+          value={coresIndex}
           step={1}
-          marks
+          marks={coresMarks}
           min={0}
-          max={8}
-          scale={n => 2 ** n}
-          onChange={(e, cores) => {
-            this.setState({ cores })
-            this.updateState(cores, overprovision, archsList, flags)
+          max={7}
+          onChange={(e, i) => {
+            this.setState({ coresIndex: i, cores: coresMarks[i].scaledValue })
+            this.updateState(coresMarks[i].scaledValue, overprovision, archsList, flags)
           }}
         />
         <br />
@@ -78,15 +86,18 @@ class Cpu extends Component {
         Max Overprovision: {overprovision}
         <CustomSlider
           defaultValue={0}
-          value={overprovision}
+          value={overprovisionIndex}
           step={1}
-          marks
+          marks={overprovisionMarks}
           min={0}
-          max={10}
+          max={7}
           scale={(x) => 1 ** x}
-          onChange={(e, overprovision) => {
-            this.setState({ overprovision })
-            this.updateState(cores, overprovision, archsList, flags)
+          onChange={(e, i) => {
+            this.setState({
+              overprovisionIndex: i,
+              overprovision: overprovisionMarks[i].value + 1
+            })
+            this.updateState(cores, overprovisionMarks[i].value + 1, archsList, flags)
           }}
         />
         <br />
