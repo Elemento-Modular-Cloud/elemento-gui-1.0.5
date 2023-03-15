@@ -94,6 +94,7 @@ ________________________
   },
   from register new vm doc
 - missing netdevs from register new vm payload
+- allow SMT for advanced mode
 
 
 # Errors

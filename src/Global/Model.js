@@ -84,55 +84,68 @@ export function getMemories () {
   return [
     {
       value: 0,
-      label: '250MB'
+      label: '250MB',
+      amount: 256
     },
     {
       value: 1,
-      label: '500MB'
+      label: '500MB',
+      amount: 512
     },
     {
       value: 2,
-      label: '1GB'
+      label: '1GB',
+      amount: 1024
     },
     {
       value: 3,
-      label: '2GB'
+      label: '2GB',
+      amount: 2048
     },
     {
       value: 4,
-      label: '4GB'
+      label: '4GB',
+      amount: 4096
     },
     {
       value: 5,
-      label: '8GB'
+      label: '8GB',
+      amount: 8192
     },
     {
       value: 6,
-      label: '16GB'
+      label: '16GB',
+      amount: 16384
     },
     {
       value: 7,
-      label: '32GB'
+      label: '32GB',
+      amount: 32768
     },
     {
       value: 8,
-      label: '64GB'
+      label: '64GB',
+      amount: 65536
     },
     {
       value: 9,
-      label: '128GB'
+      label: '128GB',
+      amount: 131072
     },
     {
       value: 10,
-      label: '256GB'
+      label: '256GB',
+      amount: 262144
     },
     {
       value: 11,
-      label: '512GB'
+      label: '512GB',
+      amount: 524288
     },
     {
       value: 12,
-      label: '1TB'
+      label: '1TB',
+      amount: 1048576
     }
   ]
 }

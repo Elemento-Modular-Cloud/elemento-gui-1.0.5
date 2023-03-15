@@ -11,9 +11,9 @@ class Cpu extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      cores: 0,
+      cores: 1,
       coresIndex: 0,
-      overprovision: 0,
+      overprovision: 1,
       overprovisionIndex: 0,
       archsList: [],
       flags: []
@@ -22,18 +22,26 @@ class Cpu extends Component {
 
   async componentDidMount () {
     const { advancedSetup } = this.global
-    const cores = advancedSetup.cores || 0
-    const overprovision = advancedSetup.overprovision || 0
+    const cores = advancedSetup.cores || 1
+    const overprovision = advancedSetup.overprovision || 1
     const archsList = advancedSetup.archsList || []
     const flags = advancedSetup.flags || []
+
+    const coresIndexes = coresMarks.filter(x => x.scaledValue === cores)
+    const coresIndex = coresIndexes.length > 0 ? coresIndexes[0].value : 0
+    const overprovisionIndexes = overprovisionMarks.filter(x => (x.value + 1) === overprovision)
+    const overprovisionIndex = overprovisionIndexes.length > 0 ? overprovisionIndexes[0].value : 0
+
     this.setState({
       cores,
-      coresIndex: coresMarks.filter(x => x.scaledValue === cores)[0].value,
+      coresIndex,
       overprovision,
-      overprovisionIndex: overprovisionMarks.filter(x => (x.value + 1) === overprovision)[0].value,
+      overprovisionIndex,
       archsList,
       flags
     })
+
+    await this.updateState(cores, overprovision, archsList, flags)
   }
 
   async updateState (cores, overprovision, archsList, flags) {

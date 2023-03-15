@@ -46,6 +46,8 @@ class VirtualMachine extends Component {
     return (
       <div style={page}>
         <div style={body}>
+          <a href='/'>Back</a>
+
           <h1>Virtual Machines</h1>
 
           <a href='/newvm'>New Virtual Machine</a>
@@ -62,9 +64,9 @@ class VirtualMachine extends Component {
                 {/* <td>Flags</td> */}
                 <td>RAM size</td>
                 <td>RAM ECC</td>
-                {/* <td>Volumes</td>
-                <td>PCI devices</td>
-                <td>NET devices</td> */}
+                <td>Volumes</td>
+                {/* <td>PCI devices</td> */}
+                {/* <td>NET devices</td> */}
                 <td>OS Family</td>
                 <td>OS Falvour</td>
                 <td>Name</td>
@@ -89,7 +91,7 @@ class VirtualMachine extends Component {
                       {/* <td>{JSON.stringify(detail.flags)}</td> */}
                       <td>{detail.ramsize}</td>
                       <td>{detail.reqECC ? 'Yes' : 'No'}</td>
-                      {/* <td>{JSON.stringify(detail.volumes)}</td> */}
+                      <td>{detail.volumes.map(volume => volume.name).join(',')}</td>
                       {/* <td>{JSON.stringify(detail.pcidevs)}</td> */}
                       {/* <td>{JSON.stringify(detail.netdevs)}</td> */}
                       <td>{detail.os_family}</td>

@@ -49,7 +49,7 @@ class BasicSetup extends Component {
     }
   }
 
-  async canAllocateVirutalMachine () {
+  async registerVirutalMachine () {
     const {
       name,
       template,
@@ -221,7 +221,7 @@ class BasicSetup extends Component {
               <br />
               <br />
 
-              <button onClick={() => this.canAllocateVirutalMachine()}>Create Virtual Machine</button>
+              <button onClick={() => this.registerVirutalMachine()}>Create Virtual Machine</button>
             </div>
         }
       </div>

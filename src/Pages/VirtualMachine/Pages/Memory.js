@@ -56,7 +56,7 @@ class Cpu extends Component {
           onChange={(e, size) => {
             if (typeof size === 'number') {
               this.setState({ value: size, size: marks[size].label })
-              this.updateState(size, ecc)
+              this.updateState(marks[size].label, ecc)
             }
           }}
         />
