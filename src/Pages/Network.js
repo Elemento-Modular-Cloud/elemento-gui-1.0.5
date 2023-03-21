@@ -85,6 +85,7 @@ class Network extends Component {
           <h2>New network</h2>
           Port: {ports}
           <select onChange={e => this.setState({ ports: [e.target.value] })}>
+            <option>...</option>
             <option value='80'>80</option>
             <option value='8080'>8080</option>
             <option value='3030'>3030</option>
@@ -93,6 +94,7 @@ class Network extends Component {
           <br />
           Speed: {speed}
           <select onChange={e => this.setState({ speed: e.target.value })}>
+            <option>...</option>
             <option value='10 Mbit/s'>10 Mbit/s</option>
             <option value='1 Gbit/s'>1 Gbit/s</option>
             <option value='2.5 Gbit/s'>2.5 Gbit/s</option>

@@ -77,7 +77,7 @@ class Licences extends Component {
                       <td>{license.expire_date}</td>
                       <td>{license.expire}</td>
                       <td>
-                        <button onClick={async () => await this.armLicense(license.license_key)}>Arm</button>
+                        <button disabled={license.is_armed} onClick={async () => await this.armLicense(license.license_key)}>Arm</button>
                       </td>
                       <td>
                         <button onClick={async () => await this.deleteLicense(license.license_key)}>Delete</button>

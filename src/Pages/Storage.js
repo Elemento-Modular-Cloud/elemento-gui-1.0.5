@@ -169,6 +169,7 @@ class Storage extends Component {
                 <td>Own</td>
                 <td>Servers N.</td>
                 <td>Servers</td>
+                <td>Destroy</td>
               </tr>
             </thead>
             <tbody>
