@@ -204,3 +204,6 @@ export function getCPUInstructionExt () {
     'XOP'
   ]
 }
+
+export const models = require('../Data/models.json')
+export const vendors = require('../Data/vendors.json')

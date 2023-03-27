@@ -17,7 +17,7 @@ class AdvancedSetup extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      page: 1,
+      page: 6,
       name: '',
       cpu: {
         cores: 0,
@@ -45,7 +45,7 @@ class AdvancedSetup extends Component {
   }
 
   next () {
-    const { page, name, cpu, memory, os, volumeIds } = this.state
+    const { page, name, cpu, memory, os, volumeIds, pci } = this.state
 
     let next = true
 
@@ -82,6 +82,8 @@ class AdvancedSetup extends Component {
     } else if (page === STORAGE_PAGE) {
       console.log(volumeIds)
       // next = false
+    } else if (page === PCI_PAGE) {
+      console.log(pci.pci)
     }
 
     next && this.setState({ page: (page + 1) <= 8 ? (page + 1) : 8 })
@@ -106,6 +108,9 @@ class AdvancedSetup extends Component {
       },
       volumeIds: {
         volumeIds: volumes
+      },
+      pci: {
+        pci
       }
     } = this.state
 
@@ -126,7 +131,7 @@ class AdvancedSetup extends Component {
         os_family: os,
         os_flavour: 'pop'
       },
-      pci: []
+      pci
     })
 
     if (res.ok) {
@@ -177,7 +182,7 @@ class AdvancedSetup extends Component {
           {page === MEMORY_PAGE && <Memory setMemory={memory => this.setState({ memory })} />}
           {page === OS_PAGE && <Os setOs={os => this.setState({ os })} />}
           {page === STORAGE_PAGE && <Storage setVolumeIds={volumeIds => this.setState({ volumeIds })} />}
-          {page === PCI_PAGE && <Pci />}
+          {page === PCI_PAGE && <Pci setPci={pci => this.setState({ pci })} />}
           {page === NETWORK_PAGE && <Network />}
           {page === RESUME_PAGE && <Resume register={async () => await this.register()} />}
         </div>
