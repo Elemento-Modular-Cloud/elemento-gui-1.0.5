@@ -40,7 +40,7 @@ Network client          ```/api/v1.0/client/network```
 
 ---
 
-- [ ]   POST /create
+- [x]   POST /create
 - [ ]   POST /delete
 - [ ]   POST /info
 - [x]   POST /list
@@ -70,29 +70,8 @@ Network client          ```/api/v1.0/client/network```
 - it will be safer to authenticate the user through the login process sending the password encrypted with a simple hash function to prevent man-in-the-middle attach;
 this is very important if we plan to put this web app on a remote web server and let users access it through internet
 
-- file:///<...>/build/html/eac.html#licensing cambiare da POST a GET
-doc refers to POST but it's actually a GET request
-
-- creatorID does not respect underscore notation same as other properties
-
-- Access to XMLHttpRequest at 'http://172.31.24.227:37777/api/v1.0/client/network/' from origin 'http://localhost:3000' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: It does not have HTTP ok status.
-
-GET http://172.31.24.227:37777/api/v1.0/client/network/ net::ERR_FAILED
-
-- POST http://172.31.24.227:37777/api/v1.0/client/network/list 500 (INTERNAL SERVER ERROR)
-
-- what are the default size amount for storage allocation?
-
-- missing parameters from documentation about this endpoint: /api/v1.0/client/volume/create
-there are some missing params: name, private, sharable, etc as per the "old" Elemento web app
-
 ________________________
 
-- /api/v1.0/client/vm/status GET not POST
-- missing info: {
-    vm_name: name
-  },
-  from register new vm doc
 - missing netdevs from register new vm payload
 - allow SMT for advanced mode
 

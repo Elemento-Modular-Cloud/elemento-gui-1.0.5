@@ -53,6 +53,14 @@ Api.post = async (url, data) => {
   }
 }
 
+Api.put = async (url, data) => {
+  try {
+    return await client.put(url, data)
+  } catch (err) {
+    return { ok: false, error: err }
+  }
+}
+
 Api.postData = async (url, data) => {
   try {
     return await client.post(url, data)

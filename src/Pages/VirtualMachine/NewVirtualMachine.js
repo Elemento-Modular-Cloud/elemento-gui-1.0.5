@@ -1,7 +1,5 @@
 import React, { Component } from 'reactn'
-import { Api, persistState } from '../../Services'
-import { Config } from '../../Global'
-import { useNavigate } from 'react-router-dom'
+import { persistState } from '../../Services'
 import { Button } from '../../Components'
 
 class VirtualMachine extends Component {

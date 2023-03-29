@@ -37,7 +37,7 @@ class Login extends Component {
     const { name, surname, email, passwordr } = this.state
 
     Api.createClient(Config.API_URL_AUTHENT)
-    const res = await Api.post('/account/register', {
+    const res = await Api.put('/account/register', {
       acc_data: {
         user_name: name,
         user_surname: surname,
@@ -46,12 +46,12 @@ class Login extends Component {
       }
     })
 
-    if (res.ok && res.data.authenticated) {
-      window.alert('Logged in successfully')
+    if (res.ok) {
+      window.alert('You\'ve been registered successfully!')
       await this.setGlobal({ loggedIn: true }, persistState)
       this.props.postLogin()
     } else {
-      window.alert('Error during login process')
+      window.alert('Error during register process')
     }
   }
 
@@ -69,7 +69,7 @@ class Login extends Component {
           <input type='password' value={password} onChange={e => this.setState({ password: e.target.value })} />
           <br />
           <br />
-          <button onClick={() => this.login()} disabled={disableLogin}>Login</button>
+          <button onClick={async () => await this.login()} disabled={disableLogin}>Login</button>
           <br />
           <br />
           <br />
@@ -87,7 +87,7 @@ class Login extends Component {
           <input type='password' value={passwordr} onChange={e => this.setState({ passwordr: e.target.value })} />
           <br />
           <br />
-          <button onClick={() => this.register()}>Register</button>
+          <button onClick={async () => await this.register()}>Register</button>
         </div>
         <div style={footer}>
           <p align='center'>2023 Elemento Cloud | Via Virginio Allione, 2, 12100 Cuneo CN, Italy  | P. IVA 03959360045</p>

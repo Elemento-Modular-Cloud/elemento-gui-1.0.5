@@ -168,7 +168,7 @@ class BasicSetup extends Component {
                     <br />
                     <h2>PCI</h2>
                     {
-                      template.pci.map((pci, i) => {
+                      template.pci && template.pci.length > 0 && template.pci.map((pci, i) => {
                         return (
                           <div key={i}>
                             <p>Vendor: {pci.vendor}</p>
