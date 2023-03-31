@@ -17,7 +17,7 @@ class AdvancedSetup extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      page: 6,
+      page: 1,
       name: '',
       cpu: {
         cores: 0,

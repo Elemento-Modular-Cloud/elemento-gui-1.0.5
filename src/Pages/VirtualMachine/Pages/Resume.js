@@ -38,6 +38,7 @@ class Resume extends Component {
               <br />
               <p>Volumes: {JSON.stringify(x.volumeIds)}</p>
               <br />
+              <p>PCI: {JSON.stringify(x.pci)}</p>
             </div>
         }
 
