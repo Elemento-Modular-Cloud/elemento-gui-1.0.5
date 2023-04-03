@@ -20,6 +20,7 @@ class Pci extends Component {
     const pci = advancedSetup.pci || []
 
     this.setState({ pci })
+    await this.updateState([])
   }
 
   async addPci () {

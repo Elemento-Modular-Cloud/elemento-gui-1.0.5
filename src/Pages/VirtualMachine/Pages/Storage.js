@@ -9,32 +9,60 @@ class Storage extends Component {
       storages: [],
       storage: null,
       volumeIds: [],
-      addedStorages: []
+      storagesIds: [],
+      storageSelected: null,
+      storagesSelected: []
     }
   }
 
   async componentDidMount () {
-    await this.getAccessibleStorages()
+    const storages = await this.getAccessibleStorages()
+
+    const { advancedSetup: { volumeIds } } = this.global
+    const storagesSelected = []
+    volumeIds.forEach(volume => {
+      storagesSelected.push(storages.filter(storage => storage.volumeID === volume.vid)[0])
+    })
+
+    this.setState({
+      storagesIds: volumeIds,
+      storagesSelected
+    })
   }
 
   async getAccessibleStorages () {
     Api.createClient(Config.API_URL_STORAGE)
     const res = await Api.get('/accessible')
+    const storages = res.data
 
     if (res.ok) {
-      this.setState({ storages: res.data })
+      this.setState({ storages })
+      return storages
     } else {
       window.alert('Could not retrieve accessible storages')
+      return []
     }
   }
 
-  async updateState (volumeID) {
+  async updateState () {
     const { advancedSetup } = this.global
-    const { storages, addedStorages } = this.state
+    const { storages, storagesIds, storageSelected, storagesSelected } = this.state
 
-    const storage = storages.filter(storage => storage.volumeID === volumeID)[0]
-    const volumeIds = [...addedStorages, { vid: volumeID }]
-    this.setState({ storage, volumeIds })
+    const exists = storagesSelected.filter(storage => storage.volumeID === storageSelected).length > 0
+    if (exists) {
+      window.alert('This volume has already been added')
+      return
+    }
+
+    const storage = storages.filter(storage => storage.volumeID === storageSelected)[0]
+    const volumeIds = [...storagesIds, { vid: storageSelected }]
+    const updatedStoragesSelected = [...storagesSelected, storage]
+
+    this.setState({
+      storage,
+      volumeIds,
+      storagesSelected: updatedStoragesSelected
+    })
 
     this.props.setVolumeIds({ volumeIds })
     await this.setGlobal({
@@ -45,14 +73,8 @@ class Storage extends Component {
     }, persistState)
   }
 
-  addStorage () {
-    const { addedStorages, storageSelected } = this.state
-    const newAddedStorages = [...addedStorages, { vid: storageSelected }]
-    this.setState({ addedStorages: newAddedStorages })
-  }
-
   render () {
-    const { storages, storage, addedStorages } = this.state
+    const { storages, storagesSelected } = this.state
 
     return (
       <div>
@@ -60,7 +82,6 @@ class Storage extends Component {
 
         <select
           onChange={async e => {
-            await this.updateState(e.target.value)
             this.setState({ storageSelected: e.target.value })
           }}
         >
@@ -73,98 +94,52 @@ class Storage extends Component {
         </select>
         <br />
         <br />
-        <button onClick={() => this.addStorage()}>Add this volume</button>
+        <button onClick={async () => await this.updateState()}>Add this volume</button>
         <br />
         <br />
-
-        {
-          storage &&
-            <div>
-              <table>
-                <thead>
-                  <tr>
-                    <td>Bootable</td>
-                    <td>Name</td>
-                    <td>Private</td>
-                    <td>Read Only</td>
-                    <td>Shareable</td>
-                    <td>Size</td>
-                    <td>Volume ID</td>
-                    <td>Server URL</td>
-                    <td>Server</td>
-                    <td>Own</td>
-                    <td>Servers N.</td>
-                    <td>Servers</td>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>{storage.bootable ? 'Yes' : 'No'}</td>
-                    <td>{storage.name}</td>
-                    <td>{storage.private ? 'Yes' : 'No'}</td>
-                    <td>{storage.readonly ? 'Yes' : 'No'}</td>
-                    <td>{storage.shareable ? 'Yes' : 'No'}</td>
-                    <td>{storage.size}</td>
-                    <td>{storage.volumeID}</td>
-                    <td>{storage.serverurl}</td>
-                    <td>{storage.server}</td>
-                    <td>{storage.own ? 'Yes' : 'No'}</td>
-                    <td>{storage.nservers}</td>
-                    <td>{storage.servers}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-        }
-        <br />
-        <br />
-        {
-          storage &&
-            <div>
-              <table>
-                <thead>
-                  <tr>
-                    <td>Bootable</td>
-                    <td>Name</td>
-                    <td>Private</td>
-                    <td>Read Only</td>
-                    <td>Shareable</td>
-                    <td>Size</td>
-                    <td>Volume ID</td>
-                    <td>Server URL</td>
-                    <td>Server</td>
-                    <td>Own</td>
-                    <td>Servers N.</td>
-                    <td>Servers</td>
-                  </tr>
-                </thead>
-                <tbody>
-                  {
-                    storage && storage.length > 0 && storage.forEach((storage, i) => {
-                      if (addedStorages.filter(item => item.vid === storage.volumeID).length > 0) {
-                        return (
-                          <tr key={i}>
-                            <td>{storage.bootable ? 'Yes' : 'No'}</td>
-                            <td>{storage.name}</td>
-                            <td>{storage.private ? 'Yes' : 'No'}</td>
-                            <td>{storage.readonly ? 'Yes' : 'No'}</td>
-                            <td>{storage.shareable ? 'Yes' : 'No'}</td>
-                            <td>{storage.size}</td>
-                            <td>{storage.volumeID}</td>
-                            <td>{storage.serverurl}</td>
-                            <td>{storage.server}</td>
-                            <td>{storage.own ? 'Yes' : 'No'}</td>
-                            <td>{storage.nservers}</td>
-                            <td>{storage.servers}</td>
-                          </tr>
-                        )
-                      }
-                    })
-                  }
-                </tbody>
-              </table>
-            </div>
-        }
+        <div>
+          <h2>Added volumes</h2>
+          <table>
+            <thead>
+              <tr>
+                <td>Bootable</td>
+                <td>Name</td>
+                <td>Private</td>
+                <td>Read Only</td>
+                <td>Shareable</td>
+                <td>Size</td>
+                <td>Volume ID</td>
+                <td>Server URL</td>
+                <td>Server</td>
+                <td>Own</td>
+                <td>Servers N.</td>
+                <td>Servers</td>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                storagesSelected && storagesSelected.length > 0 && storagesSelected.map((storage, i) => {
+                  return (
+                    <tr key={i}>
+                      <td>{storage.bootable ? 'Yes' : 'No'}</td>
+                      <td>{storage.name}</td>
+                      <td>{storage.private ? 'Yes' : 'No'}</td>
+                      <td>{storage.readonly ? 'Yes' : 'No'}</td>
+                      <td>{storage.shareable ? 'Yes' : 'No'}</td>
+                      <td>{storage.size}</td>
+                      <td>{storage.volumeID}</td>
+                      <td>{storage.serverurl}</td>
+                      <td>{storage.server}</td>
+                      <td>{storage.own ? 'Yes' : 'No'}</td>
+                      <td>{storage.nservers}</td>
+                      <td>{storage.servers}</td>
+                    </tr>
+                  )
+                })
+              }
+            </tbody>
+          </table>
+        </div>
       </div>
     )
   }
