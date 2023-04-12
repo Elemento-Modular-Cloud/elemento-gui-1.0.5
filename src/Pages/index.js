@@ -3,6 +3,7 @@ import Login from './Login'
 import Licences from './Licences'
 import Network from './Network'
 import Storage from './Storage'
+import Setup from './Setup'
 import {
   VirtualMachine, NewVirtualMachine,
   BasicSetup, AdvancedSetup
@@ -14,6 +15,7 @@ export {
   Licences,
   Network,
   Storage,
+  Setup,
   VirtualMachine,
   NewVirtualMachine,
   BasicSetup,

@@ -21,38 +21,6 @@ function createWindow () {
   } catch (error) {
     window.alert(error)
   }
-
-  // Spawn a new Python process and execute the script
-  try {
-    const pythonProcess = spawn('python3', [path.join(__dirname, 'python', 'script.py')])
-    pythonProcess.stdout.on('data', (data) => {
-      console.log(`stdout: ${data}`)
-    })
-    pythonProcess.stderr.on('data', (data) => {
-      console.error(`stderr: ${data}`)
-    })
-    pythonProcess.on('close', (code) => {
-      console.log(`child process exited with code ${code}`)
-    })
-  } catch (error) {
-    window.alert(error)
-  }
-
-  // Spawn a new process and execute docker-compose up
-  try {
-    const dockerComposeProcess = spawn('docker-compose', ['-f', path.join(__dirname, 'docker', 'docker-compose.yml'), 'up', '-d'])
-    dockerComposeProcess.stdout.on('data', (data) => {
-      console.log(`stdout: ${data}`)
-    })
-    dockerComposeProcess.stderr.on('data', (data) => {
-      console.error(`stderr: ${data}`)
-    })
-    dockerComposeProcess.on('close', (code) => {
-      console.log(`child process exited with code ${code}`)
-    })
-  } catch (error) {
-    window.alert(error)
-  }
 }
 
 app.on('ready', createWindow)

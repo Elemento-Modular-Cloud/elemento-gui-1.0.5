@@ -4,6 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
+    "apisauce": "^3.0.0",
+    "cors": "^2.8.5",
     "express": "^4.18.2"
   }
 }

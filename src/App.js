@@ -4,20 +4,22 @@ import { restoreState } from './Services'
 import {
   HomePage, Licences, Login, Network,
   Storage, VirtualMachine, NewVirtualMachine,
-  BasicSetup, AdvancedSetup
+  BasicSetup, AdvancedSetup, Setup
 } from './Pages'
 
 export default class App extends Component {
   constructor (props) {
     super(props)
     this.state = {
+      setup: false,
       loggedIn: false
     }
   }
 
   async componentDidMount () {
     await restoreState()
-    this.setState({ loggedIn: this.global.loggedIn })
+    const { loggedIn, setup } = this.global
+    this.setState({ loggedIn, setup })
   }
 
   renderApp () {
@@ -38,11 +40,15 @@ export default class App extends Component {
   }
 
   render () {
-    const { loggedIn } = this.state
+    const { setup, loggedIn } = this.state
     return (
-      loggedIn
-        ? this.renderApp()
-        : <Login postLogin={() => this.setState({ loggedIn: true })} />
+      !setup
+        ? <Setup postSetup={() => this.setState({ setup: true })} />
+        : (
+            loggedIn
+              ? this.renderApp()
+              : <Login postLogin={() => this.setState({ loggedIn: true })} />
+          )
     )
   }
 }
