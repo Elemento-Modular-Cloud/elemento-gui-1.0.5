@@ -1,5 +1,5 @@
 import HomePage from './HomePage'
-import Login from './Login'
+import Login from './Login/Login'
 import Licences from './Licences'
 import Network from './Network'
 import Storage from './Storage'

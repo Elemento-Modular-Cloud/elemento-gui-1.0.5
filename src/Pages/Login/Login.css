@@ -1,0 +1,80 @@
+.loginpage {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.logincard {
+  background-color: white;
+  border-radius: 20px;
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.loginbox {
+  display: flex;
+  flex-direction: column;
+}
+.loginbox > span {
+  font-size: 18px;
+  margin-top: 10px;
+  color: #898C8A;
+}
+.loginbox > input {
+  width: 250px;
+  height: 40px;
+  margin-top: 10px;
+}
+.loginbutton {
+  width: 200px;
+  height: 45px;
+  margin-top: 20px;
+  background-color: #F28E00;
+  color: white;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.loginregister {
+  text-decoration-line: underline;
+  color: #F28E00;
+  font-size: 14px;
+}
+
+
+.registercard {
+  background-color: white;
+  border-radius: 20px;
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.registerbox {
+  display: flex;
+  flex-direction: column;
+}
+.registerbox > span {
+  font-size: 18px;
+  margin-top: 10px;
+  color: #898C8A;
+}
+.registerbox > input {
+  width: 250px;
+  height: 40px;
+  margin-top: 10px;
+}
+.registerbutton {
+  width: 200px;
+  height: 45px;
+  margin-top: 20px;
+  background-color: #F28E00;
+  color: white;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
