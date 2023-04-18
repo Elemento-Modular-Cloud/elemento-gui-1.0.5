@@ -1,10 +1,35 @@
-import React from 'react'
+import React from 'reactn'
 import { useNavigate } from 'react-router-dom'
+import './css/Button.css'
+import arrow from '../Assets/arrow.svg'
 
-const Button = ({ name, page }) => {
+const Button = ({ page, name, text }) => {
   const navigate = useNavigate()
   return (
-    <button onClick={() => navigate(page)}>{name}</button>
+    <div className='btncard'>
+      <div
+        className='btnicon'
+        style={{
+          backgroundImage: `url(${arrow})`,
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center',
+          backgroundSize: 'contain'
+        }}
+      />
+      <span className='btnspan'>{name}</span>
+      <br />
+      <span className='btntext'>{text}</span>
+      <div
+        className='btnarrow'
+        onClick={() => navigate(page)}
+        style={{
+          backgroundImage: `url(${arrow})`,
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center',
+          backgroundSize: 'contain'
+        }}
+      />
+    </div>
   )
 }
 

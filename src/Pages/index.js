@@ -1,4 +1,4 @@
-import HomePage from './HomePage'
+import Home from './Home/Home'
 import Login from './Login/Login'
 import Licences from './Licences'
 import Network from './Network'
@@ -10,7 +10,7 @@ import {
 } from './VirtualMachine'
 
 export {
-  HomePage,
+  Home,
   Login,
   Licences,
   Network,

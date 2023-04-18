@@ -2,7 +2,7 @@ import React, { Component } from 'reactn'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { restoreState } from './Services'
 import {
-  HomePage, Licences, Login, Network,
+  Home, Licences, Login, Network,
   Storage, VirtualMachine, NewVirtualMachine,
   BasicSetup, AdvancedSetup, Setup
 } from './Pages'
@@ -26,7 +26,7 @@ export default class App extends Component {
     return (
       <BrowserRouter>
         <Routes>
-          <Route path='/' exact element={<HomePage />} />
+          <Route path='/' exact element={<Home />} />
           <Route path='/licences' element={<Licences />} />
           <Route path='/network' element={<Network />} />
           <Route path='/storage' element={<Storage />} />

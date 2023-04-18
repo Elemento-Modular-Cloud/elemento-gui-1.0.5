@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 42 42">
+  <g id="ARROW_BIG_BLACK" data-name="ARROW BIG BLACK" transform="translate(42 42) rotate(180)">
+    <g id="Raggruppa_1771" data-name="Raggruppa 1771" transform="translate(-0.5 -0.5)">
+      <g id="Ellisse_46" data-name="Ellisse 46" transform="translate(42.5 0.5) rotate(90)" fill="none" stroke="#000" stroke-width="1">
+        <circle cx="21" cy="21" r="21" stroke="none"/>
+        <circle cx="21" cy="21" r="20.5" fill="none"/>
+      </g>
+      <g id="Raggruppa_1744" data-name="Raggruppa 1744" transform="translate(29.494 15.651) rotate(90)">
+        <line id="Linea_49" data-name="Linea 49" y1="15.987" transform="translate(5.849)" fill="none" stroke="#000" stroke-width="1"/>
+        <path id="Tracciato_477" data-name="Tracciato 477" d="M0,5.235,5.848,0,11.7,5.235" fill="none" stroke="#000" stroke-width="1"/>
+      </g>
+    </g>
+  </g>
+</svg>
