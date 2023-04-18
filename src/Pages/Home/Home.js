@@ -5,6 +5,10 @@ import { Background, Button } from '../../Components'
 import onde from '../../Assets/onde.svg'
 import logobigwhite from '../../Assets/logobigwhite.svg'
 import './Home.css'
+import pc from '../../Assets/main/pc.svg'
+import license from '../../Assets/main/license.svg'
+import storage from '../../Assets/main/storage.svg'
+import network from '../../Assets/main/network.svg'
 
 class Home extends Component {
   async navigate () {
@@ -60,10 +64,10 @@ class Home extends Component {
           </div>
           <div className='homebody'>
             <div className='homebuttons'>
-              <Button page='/vm' name='Virtual Machines' text='Lorem Ipsum is simply dummy text of the printing and typesetting industry.' />
-              <Button page='/Storage' name='Storage' text='Lorem Ipsum is simply dummy text of the printing and typesetting industry.' />
-              <Button page='/network' name='Network' text='Lorem Ipsum is simply dummy text of the printing and typesetting industry.' />
-              <Button page='/licences' name='Licences' text='Lorem Ipsum is simply dummy text of the printing and typesetting industry.' />
+              <Button icon={pc} page='/vm' name='Virtual Machines' text='Lorem Ipsum is simply dummy text of the printing and typesetting industry.' />
+              <Button icon={storage} page='/Storage' name='Storage' text='Lorem Ipsum is simply dummy text of the printing and typesetting industry.' />
+              <Button icon={network} page='/network' name='Network' text='Lorem Ipsum is simply dummy text of the printing and typesetting industry.' />
+              <Button icon={license} page='/licences' name='Licences' text='Lorem Ipsum is simply dummy text of the printing and typesetting industry.' />
             </div>
 
             <div className='homefooter'>

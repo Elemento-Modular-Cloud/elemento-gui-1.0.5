@@ -16,7 +16,9 @@ class Setup extends Component {
   }
 
   async componentDidMount () {
-    await this.checkServicesInstalled()
+    // await this.checkServicesInstalled()
+    await this.setGlobal({ setup: true }, persistState)
+    await this.props.postSetup()
   }
 
   wait (milliseconds) {

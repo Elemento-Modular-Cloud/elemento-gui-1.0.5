@@ -10,16 +10,16 @@
   position: relative;
 }
 .btnspan {
-  font-size: 18px;
+  font-size: 22px;
   font-weight: bold;
 }
 .btntext {
-  font-size: 10px;
+  font-size: 14px;
   line-height: normal;
 }
 .btnicon {
-  width: 30px;
-  height: 30px;
+  width: 35px;
+  height: 35px;
   margin-top: 30px;
   margin-bottom: 20px;
 }

@@ -1,22 +1,29 @@
 import React, { Component } from 'react'
-import { Api } from '../Services'
-import { Config } from '../Global'
+import { Api } from '../../Services'
+import { Config } from '../../Global'
+import { Sidebar } from '../../Components'
+import './Licences.css'
 
 class Licences extends Component {
   constructor (props) {
     super(props)
     this.state = {
+      loading: true,
       licenses: []
     }
   }
 
   async componentDidMount () {
+    this.setState({ loading: true })
+
     Api.createClient(Config.API_URL_AUTHENT)
     const res = await Api.get('/license/list')
 
     if (res.ok) {
       this.setState({ licenses: res.data.licenses })
     }
+
+    this.setState({ loading: false })
   }
 
   async armLicense (licenseKey) {
@@ -46,36 +53,47 @@ class Licences extends Component {
   }
 
   render () {
-    const { licenses } = this.state
-    const { page, body } = styles
+    const { loading, licenses } = this.state
 
     return (
-      <div style={page}>
-        <div style={body}>
-          <a href='/'>Back</a>
-          <h1>Licences</h1>
-          <table>
-            <thead>
+      <div className='licpage'>
+        <Sidebar selected='licences' />
+        <div className='licbody'>
+          <hr />
+
+          <div className='licheader'>
+            <span>Licences</span>
+            <a href='/'>Back</a>
+          </div>
+
+          {loading && <div className='lds-roller'><div /><div /><div /><div /><div /><div /><div /><div /></div>}
+
+          <table className='lictable' style={{ display: loading ? 'none' : 'block' }}>
+            <thead className='lictablehead'>
               <tr>
                 <td>License Key</td>
                 <td>Duration</td>
-                <td>Is Armed</td>
+                <td>Activated</td>
                 <td>Expire Date</td>
                 <td>Expire</td>
                 <td>Arm License</td>
                 <td>Delete License</td>
               </tr>
             </thead>
-            <tbody>
+            <tbody className='lictablebody'>
               {
                 licenses && licenses.length > 0 && licenses.map((license, i) => {
                   return (
                     <tr key={i}>
                       <td>{license.license_key}</td>
                       <td>{license.duration}</td>
-                      <td>{license.is_armed}</td>
+                      <td>
+                        <div className='licarmed' style={{ backgroundColor: license.is_armed ? 'rgba(80 , 160, 80)' : 'rgba(200, 68, 75)' }}>
+                          <span>{license.is_armed ? 'ACTIVATED' : 'NOT ARMED'}</span>
+                        </div>
+                      </td>
                       <td>{license.expire_date}</td>
-                      <td>{license.expire}</td>
+                      <td>{new Date(license.expire * 1000).toDateString()}</td>
                       <td>
                         <button disabled={license.is_armed} onClick={async () => await this.armLicense(license.license_key)}>Arm</button>
                       </td>
@@ -91,15 +109,6 @@ class Licences extends Component {
         </div>
       </div>
     )
-  }
-}
-
-const styles = {
-  page: {
-
-  },
-  body: {
-
   }
 }
 

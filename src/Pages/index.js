@@ -1,6 +1,6 @@
 import Home from './Home/Home'
 import Login from './Login/Login'
-import Licences from './Licences'
+import Licences from './Licences/Licences'
 import Network from './Network'
 import Storage from './Storage'
 import Setup from './Setup'
