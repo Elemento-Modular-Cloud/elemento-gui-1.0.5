@@ -5,6 +5,7 @@ import { Config, Utils } from '../../Global'
 import { Sidebar } from '../../Components'
 import './Storage.css'
 import { ReactComponent as Arrow } from '../../Assets/utils/arrow.svg'
+import swal from 'sweetalert'
 
 Modal.defaultStyles.overlay.backgroundColor = '#f28e00bb'
 
@@ -22,7 +23,8 @@ class Storage extends Component {
       readonlyStorage: false,
       loading: false,
       selector: 'personal',
-      showModal: false
+      showModal: false,
+      loadingNewStorage: false
     }
   }
 
@@ -45,6 +47,7 @@ class Storage extends Component {
   }
 
   async createStorage () {
+    this.setState({ loadingNewStorage: true })
     const {
       name,
       size,
@@ -74,14 +77,24 @@ class Storage extends Component {
         readonly: readonlyStorage
       })
       if (ret.ok) {
-        window.alert('The new storage has been created')
+        swal('Success!', 'The new storage has been created', 'success', {
+          buttons: false,
+          timer: 3000
+        })
         await this.getAccessibleStorages()
       } else {
-        window.alert('Could not create the new storage')
+        swal('Error', 'Could not create the new storage', 'error', {
+          buttons: false,
+          timer: 3000
+        })
       }
     } else {
-      window.alert('Could not create a new storage as per configuration parameters')
+      swal('Error', 'Could not create a new storage as per configuration parameters', 'error', {
+        buttons: false,
+        timer: 3000
+      })
     }
+    this.setState({ showModal: false, loadingNewStorage: false })
   }
 
   async destroyStorage (volumeID) {
@@ -89,10 +102,16 @@ class Storage extends Component {
       volume_id: volumeID
     })
     if (ret.ok) {
-      window.alert('The selected storage has been destroyed')
+      swal('Success!', 'The selected storage has been destroyed', 'success', {
+        buttons: false,
+        timer: 3000
+      })
       await this.getAccessibleStorages()
     } else {
-      window.alert('Could not destroy the selected storage')
+      swal('Error', 'Could not destroy the selected storage', 'error', {
+        buttons: false,
+        timer: 3000
+      })
     }
   }
 
@@ -108,7 +127,8 @@ class Storage extends Component {
       bootableStorage,
       readonlyStorage,
       selector,
-      showModal
+      showModal,
+      loadingNewStorage
     } = this.state
 
     return (
@@ -266,15 +286,15 @@ class Storage extends Component {
               <span>Size</span>
 
               <div className='stosizes'>
-                <button className='stosizebtn' value={size} onClick={e => this.setState({ size: 125 })}>125GB</button>
-                <button className='stosizebtn' value={size} onClick={e => this.setState({ size: 250 })}>250GB</button>
-                <button className='stosizebtn' value={size} onClick={e => this.setState({ size: 500 })}>500GB</button>
+                <button className={size === 125 ? 'stosizebtnselected' : 'stosizebtn'} value={size} onClick={e => this.setState({ size: 125 })}>125GB</button>
+                <button className={size === 250 ? 'stosizebtnselected' : 'stosizebtn'} value={size} onClick={e => this.setState({ size: 250 })}>250GB</button>
+                <button className={size === 500 ? 'stosizebtnselected' : 'stosizebtn'} value={size} onClick={e => this.setState({ size: 500 })}>500GB</button>
                 <br />
-                <button className='stosizebtn' value={size} onClick={e => this.setState({ size: 1000 })}>1TB</button>
-                <button className='stosizebtn' value={size} onClick={e => this.setState({ size: 2000 })}>2TB</button>
-                <button className='stosizebtn' value={size} onClick={e => this.setState({ size: 4000 })}>4TB</button>
+                <button className={size === 1000 ? 'stosizebtnselected' : 'stosizebtn'} value={size} onClick={e => this.setState({ size: 1000 })}>1TB</button>
+                <button className={size === 2000 ? 'stosizebtnselected' : 'stosizebtn'} value={size} onClick={e => this.setState({ size: 2000 })}>2TB</button>
+                <button className={size === 4000 ? 'stosizebtnselected' : 'stosizebtn'} value={size} onClick={e => this.setState({ size: 4000 })}>4TB</button>
                 <br />
-                <button className='stosizebtn' value={size} onClick={e => this.setState({ size: 8000 })}>8TB</button>
+                <button className={size === 8000 ? 'stosizebtnselected' : 'stosizebtn'} value={size} onClick={e => this.setState({ size: 8000 })}>8TB</button>
               </div>
             </div>
 
@@ -298,12 +318,16 @@ class Storage extends Component {
               <input type='checkbox' value={readonlyStorage} onChange={e => this.setState({ readonlyStorage: e.target.checked })} />
             </div>
 
-            <div
-              className='stobutton'
-              onClick={async () => await this.createStorage()}
-            >
-              <span>Create Storage</span>
-            </div>
+            {
+              !loadingNewStorage &&
+                <div
+                  className='stobutton'
+                  onClick={async () => await this.createStorage()}
+                >
+                  <span>Create Storage</span>
+                </div>
+            }
+            {loadingNewStorage && <div className='lds-roller'><div /><div /><div /><div /><div /><div /><div /><div /></div>}
           </Modal>
         </div>
       </div>

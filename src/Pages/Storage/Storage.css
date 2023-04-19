@@ -130,6 +130,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: grab;
 }
 .stobutton > span {
   color: 'white';
@@ -157,6 +158,18 @@
   background-color: white;
   color: #f28e00;
   border: solid 1px #f28e00;
+  border-radius: 20px;
+  padding: 5px;
+  margin: 10px;
+  box-shadow: 3px 3px #88888844;
+}
+.stosizebtnselected {
+  border: none;
+  width: 80px;
+  height: 40px;
+  background-color: #f28e00;
+  color: white;
+  border: solid 1px white;
   border-radius: 20px;
   padding: 5px;
   margin: 10px;
