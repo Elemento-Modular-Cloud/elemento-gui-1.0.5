@@ -3,6 +3,7 @@ import { Api } from '../../Services'
 import { Config } from '../../Global'
 import { Sidebar } from '../../Components'
 import './Licences.css'
+import swal from 'sweetalert'
 
 class Licences extends Component {
   constructor (props) {
@@ -32,9 +33,15 @@ class Licences extends Component {
     })
 
     if (res.ok) {
-      window.alert('Licese armed successfully')
+      swal('Success!', 'Licese armed successfully', 'success', {
+        buttons: false,
+        timer: 3000
+      })
     } else {
-      window.alert('Could not arm the selected license')
+      swal('Error', 'Could not arm the selected license', 'error', {
+        buttons: false,
+        timer: 3000
+      })
     }
   }
 
@@ -45,9 +52,15 @@ class Licences extends Component {
     })
 
     if (res.ok) {
-      window.alert('Licese deleted successfully')
+      swal('Success!', 'Licese deleted successfully', 'success', {
+        buttons: false,
+        timer: 3000
+      })
     } else {
-      window.alert('Could not delete the selected license')
+      swal('Error', 'Could not delete the selected license', 'error', {
+        buttons: false,
+        timer: 3000
+      })
     }
   }
 

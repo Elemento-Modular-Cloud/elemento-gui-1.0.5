@@ -9,6 +9,7 @@ import { ReactComponent as Pc } from '../../Assets/main/pc.svg'
 import { ReactComponent as License } from '../../Assets/main/license.svg'
 import { ReactComponent as Storage } from '../../Assets/main/storage.svg'
 import { ReactComponent as Network } from '../../Assets/main/network.svg'
+import swal from 'sweetalert'
 
 class Home extends Component {
   async navigate () {
@@ -27,7 +28,10 @@ class Home extends Component {
       const res = await Api.get('/login', { username, password })
       console.log(res.ok ? 'Logged In' : 'Logged out')
     } catch (error) {
-      window.alert('Could not connect to remote services')
+      swal('Error', 'Could not connect to remote services', 'error', {
+        buttons: false,
+        timer: 3000
+      })
     }
   }
 
@@ -40,7 +44,10 @@ class Home extends Component {
       await clearState()
       window.location.reload()
     } else {
-      window.alert('Could not logout from services')
+      swal('Error', 'Could not logout from services', 'error', {
+        buttons: false,
+        timer: 3000
+      })
     }
   }
 

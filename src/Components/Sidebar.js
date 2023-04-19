@@ -1,5 +1,7 @@
-import React, { getGlobal } from 'reactn'
+import React, { getGlobal, setGlobal } from 'reactn'
 import { useNavigate } from 'react-router-dom'
+import { Api, persistState, clearState } from '../Services'
+import { Config } from '../Global'
 import './css/Sidebar.css'
 import { ReactComponent as LogoInlineWhite } from '../Assets/logoinlinewhite.svg'
 import { ReactComponent as User } from '../Assets/utils/user.svg'
@@ -8,10 +10,27 @@ import { ReactComponent as License } from '../Assets/main/license.svg'
 import { ReactComponent as Storage } from '../Assets/main/storage.svg'
 import { ReactComponent as Network } from '../Assets/main/network.svg'
 import { ReactComponent as Logout } from '../Assets/utils/logout.svg'
+import swal from 'sweetalert'
 
 const Sidebar = ({ selected }) => {
   const { username } = getGlobal()
   const navigate = useNavigate()
+
+  const logout = async () => {
+    Api.createClient(Config.API_URL_AUTHENT)
+    const res = await Api.post('/logout', {})
+
+    if (res.ok) {
+      await setGlobal({ loggedIn: false }, persistState)
+      await clearState()
+      window.location.reload()
+    } else {
+      swal('Error', 'Could not logout from services', 'error', {
+        buttons: false,
+        timer: 3000
+      })
+    }
+  }
 
   return (
     <div className='sidebar'>
@@ -41,7 +60,7 @@ const Sidebar = ({ selected }) => {
         <span>Licenses</span>
       </div>
 
-      <div className='sidefooter'>
+      <div className='sidefooter' onClick={async () => await logout()}>
         <hr />
         <div className='sidefooterlogout'>
           <Logout />

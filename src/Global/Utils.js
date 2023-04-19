@@ -1,7 +1,7 @@
 function formatBytes (bytes, decimals = 2) {
   if (!+bytes) return '0 Bytes'
 
-  const k = 1024
+  const k = 1000
   const dm = decimals < 0 ? 0 : decimals
   const sizes = ['Bytes', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB']
 

@@ -5,6 +5,7 @@ import { Background } from '../../Components'
 import onde from '../../Assets/onde.svg'
 import logoinline from '../../Assets/logoinline.svg'
 import './Login.css'
+import swal from 'sweetalert'
 
 class Login extends Component {
   constructor (props) {
@@ -32,7 +33,10 @@ class Login extends Component {
       await this.setGlobal({ loggedIn: true, username, password }, persistState)
       this.props.postLogin()
     } else {
-      window.alert('Error during login process')
+      swal('Error', 'Error during login process', 'error', {
+        buttons: false,
+        timer: 3000
+      })
     }
     this.setState({ disableLogin: false })
   }
@@ -51,11 +55,17 @@ class Login extends Component {
     })
 
     if (res.ok) {
-      window.alert('You\'ve been registered successfully!')
+      swal('Success!', 'You\'ve been registered successfully!', 'success', {
+        buttons: false,
+        timer: 3000
+      })
       await this.setGlobal({ loggedIn: true }, persistState)
       this.props.postLogin()
     } else {
-      window.alert('Error during register process')
+      swal('Error', 'Error during register process', 'error', {
+        buttons: false,
+        timer: 3000
+      })
     }
   }
 
@@ -88,12 +98,16 @@ class Login extends Component {
                   <span>Password*</span>
                   <input type='password' value={password} onChange={e => this.setState({ password: e.target.value })} />
                 </div>
-                <div
-                  className='loginbutton'
-                  onClick={async () => await this.login()} disabled={disableLogin}
-                >
-                  <span>LOGIN</span>
-                </div>
+                {
+                  !disableLogin &&
+                    <div
+                      className='loginbutton'
+                      onClick={async () => await this.login()} disabled={disableLogin}
+                    >
+                      <span>LOGIN</span>
+                    </div>
+                }
+                {disableLogin && <div className='lds-roller'><div /><div /><div /><div /><div /><div /><div /><div /></div>}
                 <p className='loginregister' onClick={() => this.setState({ register: !register })}>CREATE AN ACCOUNT</p>
               </div>
           }
@@ -123,12 +137,15 @@ class Login extends Component {
                   <input type='password' value={passwordr} onChange={e => this.setState({ passwordr: e.target.value })} />
                 </div>
 
-                <div
-                  className='registerbutton'
-                  onClick={async () => await this.register()}
-                >
-                  <span>REGISTER</span>
-                </div>
+                {!disableLogin &&
+                  <div
+                    className='registerbutton'
+                    onClick={async () => await this.register()}
+                  >
+                    <span>REGISTER</span>
+                  </div>}
+                {disableLogin && <div className='lds-roller'><div /><div /><div /><div /><div /><div /><div /><div /></div>}
+
                 <p className='loginregister' onClick={() => this.setState({ register: !register })}>LOGIN</p>
               </div>
             }

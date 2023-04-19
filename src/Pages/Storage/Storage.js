@@ -200,7 +200,7 @@ class Storage extends Component {
                                   <td>{storage.private ? 'Yes' : 'No'}</td>
                                   <td>{storage.readonly ? 'Yes' : 'No'}</td>
                                   <td>{storage.shareable ? 'Yes' : 'No'}</td>
-                                  <td>{storage.size}</td>
+                                  <td>{Utils.formatBytes(storage.size)}</td>
                                   <td>{storage.volumeID}</td>
                                   <td>{storage.serverurl}</td>
                                   <td>{storage.server}</td>
