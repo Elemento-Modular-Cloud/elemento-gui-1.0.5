@@ -1,11 +1,13 @@
 import VirtualMachine from './VirtualMachine'
-import NewVirtualMachine from './NewVirtualMachine'
+import VirtualMachineList from './VirtualMachineList'
+import VirtualMachineNew from './VirtualMachineNew'
 import BasicSetup from './BasicSetup'
 import AdvancedSetup from './AdvancedSetup'
 
 export {
   VirtualMachine,
-  NewVirtualMachine,
+  VirtualMachineList,
+  VirtualMachineNew,
   BasicSetup,
   AdvancedSetup
 }

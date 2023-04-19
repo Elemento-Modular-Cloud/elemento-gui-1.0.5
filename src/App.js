@@ -3,8 +3,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { restoreState } from './Services'
 import {
   Home, Licences, Login, Network,
-  Storage, VirtualMachine, NewVirtualMachine,
-  BasicSetup, AdvancedSetup, Setup
+  Storage, BasicSetup, AdvancedSetup, Setup,
+  VirtualMachine, VirtualMachineList, VirtualMachineNew
 } from './Pages'
 
 export default class App extends Component {
@@ -31,7 +31,8 @@ export default class App extends Component {
           <Route path='/network' element={<Network />} />
           <Route path='/storage' element={<Storage />} />
           <Route path='/vm' element={<VirtualMachine />} />
-          <Route path='/newvm' element={<NewVirtualMachine />} />
+          <Route path='/vmlist' element={<VirtualMachineList />} />
+          <Route path='/newvm' element={<VirtualMachineNew />} />
           <Route path='/newvm/basic' element={<BasicSetup />} />
           <Route path='/newvm/advanced' element={<AdvancedSetup />} />
         </Routes>
