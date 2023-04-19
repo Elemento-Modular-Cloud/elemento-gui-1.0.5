@@ -33,8 +33,10 @@
   margin: 10px;
   padding: 10px;
   border-radius: 10px;
+  cursor: grab;
 }
 .sideitemboxselected {
+  cursor: grab;
   color: white;
   display: flex;
   flex-direction: row;
