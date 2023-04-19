@@ -17,6 +17,7 @@ class Setup extends Component {
 
   async componentDidMount () {
     // await this.checkServicesInstalled()
+    console.log('setup')
     await this.setGlobal({ setup: true }, persistState)
     await this.props.postSetup()
   }

@@ -9,6 +9,23 @@
   padding: 10px;
   position: relative;
 }
+
+.btncard:hover {
+  background-color: #f28e00;
+}
+.btncard:hover > svg g {
+  stroke: #ffffff;
+}
+.btncard:hover > svg line {
+  stroke: #ffffff;
+}
+.btncard:hover > svg path {
+  stroke: #ffffff;
+}
+.btncard:hover > span {
+  color: #ffffff;
+}
+
 .btnspan {
   font-size: 22px;
   font-weight: bold;
@@ -29,6 +46,7 @@
   rotate: 180deg;
   position: absolute;
   bottom: 20px;
+  left: 20px;
 }
 
 @media only screen and (max-width: 450px) {

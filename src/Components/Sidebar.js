@@ -1,4 +1,5 @@
 import React, { getGlobal } from 'reactn'
+import { useNavigate } from 'react-router-dom'
 import './css/Sidebar.css'
 import { ReactComponent as LogoInlineWhite } from '../Assets/logoinlinewhite.svg'
 import { ReactComponent as User } from '../Assets/utils/user.svg'
@@ -8,11 +9,9 @@ import { ReactComponent as Storage } from '../Assets/main/storage.svg'
 import { ReactComponent as Network } from '../Assets/main/network.svg'
 import { ReactComponent as Logout } from '../Assets/utils/logout.svg'
 
-const WHITE = '#ffffff'
-const GRAY = 'rgba(200, 200, 200, 0.5)'
-
 const Sidebar = ({ selected }) => {
   const { username } = getGlobal()
+  const navigate = useNavigate()
 
   return (
     <div className='sidebar'>
@@ -25,21 +24,21 @@ const Sidebar = ({ selected }) => {
         <span>{username}</span>
       </div>
 
-      <div className='sideitembox'>
+      <div className={selected === 'vms' ? 'sideitemboxselected' : 'sideitembox'} onClick={() => navigate('/vm')}>
         <Pc />
-        <span style={{ color: selected === 'vms' ? WHITE : GRAY }}>Virtual Machines</span>
+        <span>Virtual Machines</span>
       </div>
-      <div className='sideitembox'>
+      <div className={selected === 'storage' ? 'sideitemboxselected' : 'sideitembox'} onClick={() => navigate('/storage')}>
         <Storage />
-        <span style={{ color: selected === 'storage' ? WHITE : GRAY }}>Storage</span>
+        <span>Storage</span>
       </div>
-      <div className='sideitembox'>
+      <div className={selected === 'network' ? 'sideitemboxselected' : 'sideitembox'} onClick={() => navigate('/network')}>
         <Network />
-        <span style={{ color: selected === 'network' ? WHITE : GRAY }}>Network</span>
+        <span>Network</span>
       </div>
-      <div className='sideitembox'>
+      <div className={selected === 'licences' ? 'sideitemboxselected' : 'sideitembox'} onClick={() => navigate('/licences')}>
         <License />
-        <span style={{ color: selected === 'licences' ? WHITE : GRAY }}>Licenses</span>
+        <span>Licenses</span>
       </div>
 
       <div className='sidefooter'>

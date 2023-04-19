@@ -2,7 +2,7 @@ import Home from './Home/Home'
 import Login from './Login/Login'
 import Licences from './Licences/Licences'
 import Network from './Network'
-import Storage from './Storage'
+import Storage from './Storage/Storage'
 import Setup from './Setup'
 import {
   VirtualMachine, NewVirtualMachine,

@@ -1,0 +1,179 @@
+.stopage {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+  color: #898C8A;
+}
+.stobody {
+  width: 78%;
+  padding: 50px;
+  margin-top: 30px;
+}
+.stotables {
+  width: 100%;
+  height: 75%;
+  overflow: scroll;
+}
+.stoheader {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+.stoheader > span {
+  color: #898C8A;
+  font-size: 35px;
+}
+.stoheader > a {
+  font-size: 20px;
+  color: #f28e00;
+}
+.stoarmed {
+  color: white;
+  padding: 5px;
+  border-radius: 20px;
+}
+.stotablebody {
+  font-size: 14px;
+}
+.stotablehead {
+  font-weight: bold;
+}
+.stotable {
+  color: #797979;
+  white-space: nowrap;
+}
+.stoselector {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  margin-bottom: 30px;
+  cursor: grab;
+}
+.stoselector span {
+  width: 250px;;
+}
+.stobtnnew {
+  width: 250px;
+}
+.stobtncontainer {
+  cursor: grab;
+  width: 250px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  background-color: #f28e00;
+  padding: 10px;
+  border-radius: 50px;
+  color: white;
+  border: solid 1px white;
+}
+.stobtncontainer:hover {
+  background-color: white;
+  color: #f28e00;
+  border: solid 1px #f28e00;
+}
+.stobtncontainer > svg {
+  rotate: 180deg;
+  width: 30px;
+}
+.stobtncontainer:hover > svg g {
+  stroke: #f28e00;
+}
+.stobtncontainer:hover > svg line {
+  stroke: #f28e00;
+}
+.stobtncontainer:hover > svg path {
+  stroke: #f28e00;
+}
+.stobtncontainer > svg g {
+  stroke: #ffffff;
+}
+.stobtncontainer > svg line {
+  stroke: #ffffff;
+}
+.stobtncontainer > svg path {
+  stroke: #ffffff;
+}
+.stobtncontainer > span {
+  font-weight: bold;
+}
+
+.stomodal {
+  padding: 50px;
+  border-radius: 20px;
+  color: #898C8A;
+}
+
+.stomodalinput > input {
+  width: 250px;
+  height: 40px;
+  margin-top: 10px;
+}
+.stomodalinput {
+  display: flex;
+  flex-direction: column;
+}
+.stobutton {
+  width: 200px;
+  height: 45px;
+  margin-top: 20px;
+  background-color: #F28E00;
+  color: white;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.stobutton > span {
+  color: 'white';
+}
+.stooptions > input {
+  width: 30px;
+  height: 30px;
+  margin-top: 10px;
+}
+.stooptions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.stosize {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+}
+.stosizebtn {
+  border: none;
+  width: 80px;
+  height: 40px;
+  background-color: white;
+  color: #f28e00;
+  border: solid 1px #f28e00;
+  border-radius: 20px;
+  padding: 5px;
+  margin: 10px;
+  box-shadow: 3px 3px #88888844;
+}
+
+@media screen and (max-width: 800px) {
+  .stopage {
+    width: 78%;
+    font-size: 14px;
+  }
+  .stoselector span {
+    font-size: 22px;
+    margin-top: 20px;
+  }
+  .stotables {
+    height: 55%;
+  }
+}
+
