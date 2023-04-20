@@ -1,0 +1,101 @@
+.vmlpage {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+  color: #898C8A;
+}
+.vmlbody {
+  width: 78%;
+  padding: 50px;
+  margin-top: 30px;
+}
+.vmlheader {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+.vmlheader > span {
+  color: #898C8A;
+  font-size: 35px;
+}
+.vmlheader > a {
+  font-size: 20px;
+  color: #f28e00;
+}
+.vmltables {
+  width: 100%;
+  height: 75%;
+  overflow: scroll;
+}
+.vmltablebody {
+  font-size: 14px;
+}
+.vmltablehead {
+  font-weight: bold;
+}
+.vmltable {
+  color: #797979;
+  white-space: nowrap;
+}
+.vmlbtncontainer {
+  cursor: grab;
+  width: 330px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  background-color: #f28e00;
+  padding: 10px;
+  border-radius: 50px;
+  color: white;
+  border: solid 1px white;
+  margin-bottom: 30px;
+}
+.vmlbtncontainer:hover {
+  background-color: white;
+  color: #f28e00;
+  border: solid 1px #f28e00;
+}
+.vmlbtncontainer > svg {
+  rotate: 180deg;
+  width: 30px;
+}
+.vmlbtncontainer:hover > svg g {
+  stroke: #f28e00;
+}
+.vmlbtncontainer:hover > svg line {
+  stroke: #f28e00;
+}
+.vmlbtncontainer:hover > svg path {
+  stroke: #f28e00;
+}
+.vmlbtncontainer > svg g {
+  stroke: #ffffff;
+}
+.vmlbtncontainer > svg line {
+  stroke: #ffffff;
+}
+.vmlbtncontainer > svg path {
+  stroke: #ffffff;
+}
+.vmlbtncontainer > span {
+  font-weight: bold;
+}
+
+@media screen and (max-width: 800px) {
+  .vmlpage {
+    width: 78%;
+    font-size: 14px;
+  }
+  .vmlselector span {
+    font-size: 22px;
+    margin-top: 20px;
+  }
+  .vmltables {
+    height: 70%;
+  }
+}

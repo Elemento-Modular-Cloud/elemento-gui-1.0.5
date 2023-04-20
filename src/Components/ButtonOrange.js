@@ -14,7 +14,10 @@ const Button = ({ Icon, page, name, text }) => {
       <span className='btnspanorange'>{name}</span>
       <br />
       <span className='btntextorange'>{text}</span>
-      <Arrow className='btnarroworange' onClick={() => navigate(page)} />
+      <div className='btnarrowdiv'>
+        <Arrow className='btnarroworange' onClick={() => navigate(page)} />
+        <span>Click to setup</span>
+      </div>
     </div>
   )
 }

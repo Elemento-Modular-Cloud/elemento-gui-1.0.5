@@ -1,7 +1,7 @@
-.btncardorange {
-  width: 500px;
-  height: 350px;
-  background-color: #f28e00;
+.btncardblack {
+  width: 220px;
+  height: 200px;
+  background-color: #000000;
   color: white;
   border-radius: 20px;
   margin: 10px;
@@ -16,44 +16,30 @@
   -moz-box-shadow: 10px 10px 40px 3px rgba(95, 95, 95, 0.75);
   box-shadow: 10px 10px 40px 3px rgba(95, 95, 95, 0.75);
 }
-#svgicon {
-  width: 80px;
-  height: 80px;
-}
-#svgsett {
-  width: 230px;
-  height: 230px;
-  position: absolute;
-  right: -50px;
-  top: -50px;
-}
-.btncardorange:hover {
-  background-color: #f28e00;
-}
-.btncardorange > svg g {
+.btnarrowdiv > svg g {
   stroke: #ffffff;
 }
-.btncardorange > svg line {
+.btnarrowdiv > svg line {
   stroke: #ffffff;
 }
-.btncardorange > svg path {
+.btnarrowdiv > svg path {
   stroke: #ffffff;
 }
-.btncardorange > span {
+.btnarrowdiv > span {
   color: #ffffff;
 }
 
-.btnspanorange {
+.btnspanblack {
   font-size: 22px;
   font-weight: bold;
 }
-.btntextorange {
+.btntextblack {
   display: block;
   width: 250px;
   font-size: 14px;
   line-height: normal;
 }
-.btniconorange {
+.btniconblack {
   width: 35px;
   height: 35px;
   margin-top: 30px;
@@ -67,13 +53,12 @@
   display: flex;
   align-items: center;
 }
-.btnarroworange {
+.btnarrowblack {
   width: 30px;
   height: 30px;
   rotate: 180deg;
   margin-right: 20px;
 }
-
 
 @media only screen and (max-width: 450px) {
 }
@@ -82,7 +67,7 @@
 }
 
 @media screen and (max-width: 800px) {
-  .btncardorange {
+  .btncardblack {
     max-width: 360px;
   }
 }
@@ -92,7 +77,7 @@
 }
 
 @media screen and (min-width: 1200px) {
-  .btncardorange {
+  .btncardblack {
     min-width: 50px;
     min-height: 250px;
   }

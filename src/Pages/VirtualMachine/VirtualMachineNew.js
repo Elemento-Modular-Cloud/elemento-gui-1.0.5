@@ -1,6 +1,6 @@
 import React, { Component } from 'reactn'
 import { persistState } from '../../Services'
-import { Button, ButtonOrange, Sidebar } from '../../Components'
+import { Button, ButtonBlack, ButtonOrange, Sidebar } from '../../Components'
 import { ReactComponent as AdminPanel } from '../../Assets/utils/adminpanel.svg'
 import { ReactComponent as Playlist } from '../../Assets/utils/playlist.svg'
 
@@ -43,7 +43,7 @@ class VirtualMachineNew extends Component {
           <div className='vmbuttons'>
             <ButtonOrange Icon={Playlist} isOrange page='/newvm/basic' name='BASIC' text='Lorem Ipsum is simply dummy text of the printing and typesetting industry.' />
             <div style={{ marginLeft: 80 }} />
-            {/* <ButtonBlack Icon={AdminPanel} page='/newvm/advanced' name='ADVANCED' text='Lorem Ipsum is simply dummy text of the printing and typesetting industry.' /> */}
+            <ButtonBlack Icon={AdminPanel} page='/newvm/advanced' name='ADVANCED' text='Lorem Ipsum is simply dummy text of the printing and typesetting industry.' />
           </div>
         </div>
       </div>
