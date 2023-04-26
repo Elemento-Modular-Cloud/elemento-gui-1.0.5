@@ -1,6 +1,12 @@
 import React, { Component } from 'react'
 import { Api } from '../../Services'
 import { Config } from '../../Global'
+import './css/BasicSetup.css'
+import { Sidebar } from '../../Components'
+import { ReactComponent as Windows } from '../../Assets/os/windows.svg'
+import { ReactComponent as Linux } from '../../Assets/os/linux.svg'
+import { ReactComponent as Apple } from '../../Assets/os/apple.svg'
+import swal from 'sweetalert'
 
 class BasicSetup extends Component {
   constructor (props) {
@@ -34,7 +40,10 @@ class BasicSetup extends Component {
     if (res.ok) {
       this.setState({ templates: res.data })
     } else {
-      window.alert('Could not load templates')
+      swal('Error', 'Could not load templates', 'error', {
+        buttons: false,
+        timer: 3000
+      })
     }
   }
 
@@ -45,7 +54,10 @@ class BasicSetup extends Component {
     if (res.ok) {
       this.setState({ storages: res.data })
     } else {
-      window.alert('Could not retrieve accessible storages')
+      swal('Error', 'Could not retrieve accessible storages', 'error', {
+        buttons: false,
+        timer: 3000
+      })
     }
   }
 
@@ -82,8 +94,6 @@ class BasicSetup extends Component {
     })
 
     if (res.ok) {
-      window.alert('Can allocate successfully')
-
       const ret = await Api.post('/register', {
         info: {
           vm_name: name
@@ -104,13 +114,22 @@ class BasicSetup extends Component {
       })
 
       if (ret.ok) {
-        window.alert('Virtual machine registered successfully!')
-        window.location.href = '/vm'
+        swal('Success', 'Virtual machine registered successfully!', 'success', {
+          buttons: false,
+          timer: 3000
+        })
+        window.location.href = '/vmlist'
       } else {
-        window.alert('Could not register the new virtual machine')
+        swal('Error', 'Could not register the new virtual machine', 'error', {
+          buttons: false,
+          timer: 3000
+        })
       }
     } else {
-      window.alert('Could not allocate the new virtual machine')
+      swal('Error', 'Could not allocate the new virtual machine', 'error', {
+        buttons: false,
+        timer: 3000
+      })
     }
   }
 
@@ -118,124 +137,164 @@ class BasicSetup extends Component {
     const {
       templates, template, storages, storageServer,
       bootable, writable, shareable, visibility, ownership,
-      volumeIds
+      volumeIds, storage
     } = this.state
-    const { card, columns } = styles
 
     return (
-      <div>
-        <a href='/newvm'>Back</a>
-        <h1>Basic Setup</h1>
-        <br />
+      <div className='baspage'>
+        <Sidebar selected='vms' />
+        <div className='basbody'>
+          <hr />
 
-        Virtual machine name:
-        <input type='text' onChange={e => this.setState({ name: e.target.value })} />
-        <br />
+          <div className='basheader'>
+            <span>Create new Virtual Machine</span>
+            <a href='/'>Back</a>
+          </div>
 
-        Select a template:
-        <select onChange={e => this.setState({ template: templates[e.target.value] })}>
-          <option>...</option>
-          {
-            templates && templates.length > 0 && templates.map((template, i) =>
-              <option key={i} value={i}>{template.info.name}</option>
-            )
-          }
-        </select>
+          <span className='bassubtitle'>BASIC SETUP</span>
 
-        {
-          template &&
-            <div>
-              <div style={card}>
-                <h2>Template</h2>
-                <br />
-                <p>Name: {template.info.name}</p>
-                <p>Description: {template.info.description}</p>
-                <br />
-                <div style={columns}>
-                  <div>
-                    <h2>CPU</h2>
-                    <p>CPU slots: {template.cpu.slots}</p>
-                    <p>Overprovision: {template.cpu.overprovision}</p>
-                    <p>Allow SMT: {template.cpu.allowSMT}</p>
-                    <p>Archs: {template.cpu.archs}</p>
-                    <p>Flags: {template.cpu.flags}</p>
-                    <br />
-                  </div>
-                  <div style={{ marginLeft: 20 }}>
-                    <h2>RAM</h2>
-                    <p>RAM: {template.ram.ramsize}</p>
-                    <p>ECC: {template.ram.reqECC ? 'Yes' : 'No'}</p>
-                    <br />
-                    <h2>PCI</h2>
+          <div className='bascontent'>
+            <div className='bascenter'>
+              <div className='basrow'>
+                <div className='basmachine'>
+                  <span>Virtual machine name:</span>
+                  <input type='text' onChange={e => this.setState({ name: e.target.value })} />
+                </div>
+
+                <div className='basmachine'>
+                  <span>Select a template:</span>
+                  <select onChange={e => this.setState({ template: templates[e.target.value] })}>
+                    <option>...</option>
                     {
-                      template.pci && template.pci.length > 0 && template.pci.map((pci, i) => {
-                        return (
-                          <div key={i}>
-                            <p>Vendor: {pci.vendor}</p>
-                            <p>Model: {pci.model}</p>
-                            <p>Quantity: {pci.quantity}</p>
-                          </div>
-                        )
+                      templates && templates.length > 0 && templates.map((template, i) =>
+                        <option key={i} value={i}>{template.info.name}</option>
+                      )
+                    }
+                  </select>
+                </div>
+              </div>
+
+              <div className='basradio'>
+                <span className='bascaption'>OS Selection*</span>
+                <div className='basradioitem'>
+                  <input type='radio' id='linux' name='os' value='linux' onChange={() => this.setState({ osFamily: 'linux' })} />
+                  <Linux />
+                </div>
+                <div className='basradioitem'>
+                  <input type='radio' id='windows' name='os' value='windows' onChange={() => this.setState({ osFamily: 'windows' })} />
+                  <Windows />
+                </div>
+                <div className='basradioitem'>
+                  <input type='radio' id='mac' name='os' value='mac' onChange={() => this.setState({ osFamily: 'mac' })} />
+                  <Apple />
+                </div>
+              </div>
+
+              <div className='basstorage'>
+                <span className='bascaption'>Storage Selection</span>
+                <select
+                  onChange={e => {
+                    if (e.target.value === '...') {
+                      this.setState({ storage: null })
+                    } else {
+                      this.setState({
+                        storage: storages[e.target.value],
+                        storageServer: storages[e.target.value].server,
+                        bootable: storages[e.target.value].server,
+                        writable: !storages[e.target.value].readonly,
+                        shareable: storages[e.target.value].shareable,
+                        visibility: storages[e.target.value].private,
+                        ownership: storages[e.target.value].own,
+                        volumeIds: [...volumeIds, { vid: storages[e.target.value].volumeID }]
                       })
                     }
+                  }}
+                >
+                  <option>...</option>
+                  {
+                    storages && storages.length > 0 && storages.map((storage, i) =>
+                      <option key={i} value={i}>{storage.name}</option>
+                    )
+                  }
+                </select>
+                <div className='basstorageinfo' style={{ display: storage ? 'block' : 'none' }}>
+                  <p>Storage Server: {storageServer}</p>
+                  <div className='basstoitem'>
+                    <span>Bootable</span><input type='checkbox' checked={bootable} disabled /><br />
+                  </div>
+                  <div className='basstoitem'>
+                    <span>Writeable</span><input type='checkbox' checked={writable} disabled /><br />
+                  </div>
+                  <div className='basstoitem'>
+                    <span>Shareable</span><input type='checkbox' checked={shareable} disabled /><br />
+                  </div>
+                  <div className='basstoitem'>
+                    <span>Public</span><input type='checkbox' checked={visibility} disabled /><br />
+                  </div>
+                  <div className='basstoitem'>
+                    <span>Ownership</span><input type='checkbox' checked={ownership} disabled /><br />
                   </div>
                 </div>
               </div>
 
-              <h2>OS Selection</h2>
-              <input type='radio' id='linux' name='os' value='linux' onChange={() => this.setState({ osFamily: 'linux' })} />
-              <label for='linux'>Linux</label><br />
-              <input type='radio' id='windows' name='os' value='windows' onChange={() => this.setState({ osFamily: 'windows' })} />
-              <label for='windows'>Windows</label><br />
-              <input type='radio' id='mac' name='os' value='mac' onChange={() => this.setState({ osFamily: 'mac' })} />
-              <label for='mac'>Mac</label>
-
-              <h2>Storage Selection</h2>
-              <select
-                onChange={e => this.setState({
-                  storage: storages[e.target.value],
-                  storageServer: storages[e.target.value].server,
-                  bootable: storages[e.target.value].server,
-                  writable: !storages[e.target.value].readonly,
-                  shareable: storages[e.target.value].shareable,
-                  visibility: storages[e.target.value].private,
-                  ownership: storages[e.target.value].own,
-                  volumeIds: [...volumeIds, { vid: storages[e.target.value].volumeID }]
-                })}
-              >
-                <option>...</option>
-                {
-                  storages && storages.length > 0 && storages.map((storage, i) =>
-                    <option key={i} value={i}>{storage.name}</option>
-                  )
-                }
-              </select>
-              <p>Storage Server: {storageServer}</p>
-              Bootable <input type='checkbox' checked={bootable} disabled /><br />
-              Writeable <input type='checkbox' checked={writable} disabled /><br />
-              Shareable <input type='checkbox' checked={shareable} disabled /><br />
-              Public <input type='checkbox' checked={visibility} disabled /><br />
-              Ownership <input type='checkbox' checked={ownership} disabled /><br />
-
-              <br />
-              <br />
-              <br />
-
-              <button onClick={() => this.registerVirutalMachine()}>Create Virtual Machine</button>
+              <button className='basbutton' onClick={() => this.registerVirutalMachine()}>CONFIRM AND CREATE</button>
             </div>
-        }
+            <div className='basright'>
+              <span className='basrtitle'>Summary</span>
+              {!template && <span className='basrsubtitle'>Qui troverai il riepilogo del tuo settaggio</span>}
+              {
+                template &&
+                  <div>
+                    <div className='bastop'>
+                      <div className='bastopname'>
+                        <p>Template {template.info.name}</p>
+                      </div>
+                      <div className='bastoplogo'>
+                        <div>
+                          <div className='basspec'><span>{template.cpu.slots}C</span><span>{template.ram.ramsize}{template.ram.ramsize >= 1024 ? 'GB' : 'MB'}</span></div>
+                          <span className='basspectitle'>{template.info.name.substr(0, 2)}</span>
+                          <span className='basspecname'>{template.info.name}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <p>Description: {template.info.description}</p>
+                    <br />
+                    <div className='basridetails'>
+                      <div className='bascpu'>
+                        <h2>CPU</h2>
+                        <span>Slots: {template.cpu.slots}</span>
+                        <span>Overprovision: {template.cpu.overprovision}</span>
+                        <span>Allow SMT: {template.cpu.allowSMT}</span>
+                        <span>Archs: {template.cpu.archs}</span>
+                        <span>Flags: {template.cpu.flags}</span>
+                        <br />
+                      </div>
+                      <div className='basram'>
+                        <h2>RAM</h2>
+                        <span>RAM: {template.ram.ramsize}</span>
+                        <span>ECC: {template.ram.reqECC ? 'Yes' : 'No'}</span>
+                        <br />
+                        <h2>PCI</h2>
+                        {
+                          template.pci && template.pci.length > 0 && template.pci.map((pci, i) => {
+                            return (
+                              <div key={i}>
+                                <span>Vendor: {pci.vendor}</span>
+                                <span>Model: {pci.model}</span>
+                                <span>Quantity: {pci.quantity}</span>
+                              </div>
+                            )
+                          })
+                        }
+                      </div>
+                    </div>
+                  </div>
+              }
+            </div>
+          </div>
+        </div>
       </div>
     )
-  }
-}
-
-const styles = {
-  card: {
-    border: 'solid 1px'
-  },
-  columns: {
-    display: 'flex',
-    flexDirection: 'row'
   }
 }
 
