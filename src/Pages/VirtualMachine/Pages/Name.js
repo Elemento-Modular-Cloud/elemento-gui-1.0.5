@@ -27,11 +27,12 @@ class componentName extends Component {
     const { name } = this.state
 
     return (
-      <div>
-        <h2>Virtual Machine Name</h2>
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <span style={{ marginBottom: 50, fontSize: 25 }}>VM Name</span>
         <input
           type='text'
           value={name}
+          style={{ height: 35, width: 250 }}
           onChange={async e => {
             this.setState({ name: e.target.value })
             await this.updateState(e.target.value)

@@ -1,6 +1,6 @@
 import React, { Component } from 'reactn'
 import { persistState } from '../../Services'
-import { Button, ButtonBlack, ButtonOrange, Sidebar } from '../../Components'
+import { ButtonBlack, ButtonOrange, Sidebar } from '../../Components'
 import { ReactComponent as AdminPanel } from '../../Assets/utils/adminpanel.svg'
 import { ReactComponent as Playlist } from '../../Assets/utils/playlist.svg'
 
@@ -37,7 +37,7 @@ class VirtualMachineNew extends Component {
 
           <div className='vmheader'>
             <span>Virtual Machines</span>
-            <a href='/'>Back</a>
+            <a href='/vm'>Back</a>
           </div>
 
           <div className='vmbuttons'>

@@ -2,6 +2,8 @@ import React, { Component } from 'reactn'
 import { CustomSlider } from '../../../Components'
 import { persistState } from '../../../Services'
 import { getMemories } from '../../../Global/Model'
+import '../css/Pages.css'
+
 const marks = getMemories()
 
 class Cpu extends Component {
@@ -43,8 +45,8 @@ class Cpu extends Component {
     const { size, ecc, value } = this.state
 
     return (
-      <div>
-        <h2>Memory setup</h2>
+      <div className='membody'>
+        <span style={{ marginBottom: 50, fontSize: 25 }}>Memory Setup</span>
         <p>{size}</p>
 
         <CustomSlider
@@ -61,15 +63,17 @@ class Cpu extends Component {
           }}
         />
 
-        <h3>ECC?</h3>
-        <input
-          type='checkbox'
-          checked={ecc}
-          onChange={async e => {
-            this.setState({ ecc: e.target.checked })
-            this.updateState(size, e.target.checked)
-          }}
-        />
+        <div className='memecc'>
+          <h3>ECC?</h3>
+          <input
+            type='checkbox'
+            checked={ecc}
+            onChange={async e => {
+              this.setState({ ecc: e.target.checked })
+              this.updateState(size, e.target.checked)
+            }}
+          />
+        </div>
       </div>
     )
   }

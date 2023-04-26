@@ -2,6 +2,7 @@ import React, { Component } from 'reactn'
 import { CustomAutocomplete, CustomSlider } from '../../../Components'
 import { getArchs, getCPUInstructionExt, getCores, getOverprovision } from '../../../Global/Model'
 import { persistState } from '../../../Services'
+import '../css/Pages.css'
 
 const archs = getArchs()
 const coresMarks = getCores()
@@ -76,80 +77,86 @@ class Cpu extends Component {
     }
 
     return (
-      <div>
-        CPU Cores: {cores}
-        <CustomSlider
-          value={coresIndex}
-          step={1}
-          marks={coresMarks}
-          min={0}
-          max={7}
-          onChange={(e, i) => {
-            this.setState({ coresIndex: i, cores: coresMarks[i].scaledValue })
-            this.updateState(coresMarks[i].scaledValue, overprovision, archsList, flags)
-          }}
-        />
-        <br />
+      <div className='cpubody'>
+        <span style={{ marginBottom: 50, fontSize: 25 }}>CPU Setup</span>
+        <div className='cpuupper'>
+          <div className='cpuleft'>
+            CPU Cores: {cores}
+            <CustomSlider
+              value={coresIndex}
+              step={1}
+              marks={coresMarks}
+              min={0}
+              max={7}
+              onChange={(e, i) => {
+                this.setState({ coresIndex: i, cores: coresMarks[i].scaledValue })
+                this.updateState(coresMarks[i].scaledValue, overprovision, archsList, flags)
+              }}
+            />
+            <br />
 
-        Max Overprovision: {overprovision}
-        <CustomSlider
-          defaultValue={0}
-          value={overprovisionIndex}
-          step={1}
-          marks={overprovisionMarks}
-          min={0}
-          max={7}
-          scale={(x) => 1 ** x}
-          onChange={(e, i) => {
-            this.setState({
-              overprovisionIndex: i,
-              overprovision: overprovisionMarks[i].value + 1
-            })
-            this.updateState(cores, overprovisionMarks[i].value + 1, archsList, flags)
-          }}
-        />
-        <br />
+            Max Overprovision: {overprovision}
+            <CustomSlider
+              defaultValue={0}
+              value={overprovisionIndex}
+              step={1}
+              marks={overprovisionMarks}
+              min={0}
+              max={7}
+              scale={(x) => 1 ** x}
+              onChange={(e, i) => {
+                this.setState({
+                  overprovisionIndex: i,
+                  overprovision: overprovisionMarks[i].value + 1
+                })
+                this.updateState(cores, overprovisionMarks[i].value + 1, archsList, flags)
+              }}
+            />
+          </div>
+          <div className='cpuright'>
+            <span className='cpucaption'>Desired architectures</span>
+            <br />
+            <div className='cpuarchs'>
+              {
+                archs && archs.length > 0 && archs.map((arch, i) =>
+                  <div key={i}>
+                    <span>{arch}</span>
+                    <input
+                      type='checkbox'
+                      value={arch}
+                      checked={archsList.filter(x => x.value === arch && x.checked).length >= 1}
+                      onChange={async e => {
+                        const checked = e.target.checked
+                        const value = e.target.value
+                        let updateList = []
 
-        <h2>Desired architectures</h2>
-        {
-          archs && archs.length > 0 && archs.map((arch, i) =>
-            <div key={i}>
-              <span>{arch}</span>
-              <input
-                type='checkbox'
-                value={arch}
-                checked={archsList.filter(x => x.value === arch && x.checked).length >= 1}
-                onChange={async e => {
-                  const checked = e.target.checked
-                  const value = e.target.value
-                  let updateList = []
+                        if (checked) {
+                          updateList = [...archsList, { value, checked }]
+                        } else {
+                          updateList = [...archsList.filter(item => item.value !== value)]
+                        }
 
-                  if (checked) {
-                    updateList = [...archsList, { value, checked }]
-                  } else {
-                    updateList = [...archsList.filter(item => item.value !== value)]
-                  }
-
-                  this.setState({ archsList: updateList })
-                  this.updateState(cores, overprovision, updateList, flags)
-                }}
-              />
+                        this.setState({ archsList: updateList })
+                        this.updateState(cores, overprovision, updateList, flags)
+                      }}
+                    />
+                  </div>
+                )
+              }
             </div>
-          )
-        }
 
-        <br />
-
-        <h2>CPU instruction set extensions</h2>
-        <CustomAutocomplete
-          options={getCPUInstructionExt()}
-          value={flags}
-          checked={checked}
-          onChange={(event, flags) => {
-            this.setState({ flags })
-            this.updateState(cores, overprovision, archsList, flags)
-          }}
-        />
+            <span className='cpucaption'>CPU instruction set extensions</span>
+            <CustomAutocomplete
+              options={getCPUInstructionExt()}
+              value={flags}
+              checked={checked}
+              onChange={(event, flags) => {
+                this.setState({ flags })
+                this.updateState(cores, overprovision, archsList, flags)
+              }}
+            />
+          </div>
+        </div>
       </div>
     )
   }

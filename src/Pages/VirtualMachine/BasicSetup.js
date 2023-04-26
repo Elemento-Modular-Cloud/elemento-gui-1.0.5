@@ -148,7 +148,7 @@ class BasicSetup extends Component {
 
           <div className='basheader'>
             <span>Create new Virtual Machine</span>
-            <a href='/'>Back</a>
+            <a href='/newvm'>Back</a>
           </div>
 
           <span className='bassubtitle'>BASIC SETUP</span>

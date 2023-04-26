@@ -1,0 +1,56 @@
+
+/* CPU */
+.cpubody {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.cpuupper {
+  width: 80%;
+  display: flex;
+  flex-direction: row;
+}
+.cpuleft {
+  width: 50%;
+  margin: 50px;
+}
+.cpuright {
+  width: 50%;
+  margin: 50px;
+}
+.cpucaption {
+  font-size: 20px;
+}
+.cpuarchs {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 20px;
+}
+.cpuarchs div {
+  margin: 10px
+}
+
+/* Memory */
+.membody {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.memcaption {
+  font-size: 20px;
+}
+.memecc {
+  width: 100px;
+}
+
+/* Os */
+.osradio {
+  display: flex;
+  flex-direction: row;
+  margin-top: 20px;
+}
+.osradioitem {
+  padding: 20px;
+}

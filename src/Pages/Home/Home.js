@@ -9,6 +9,8 @@ import { ReactComponent as Pc } from '../../Assets/main/pc.svg'
 import { ReactComponent as License } from '../../Assets/main/license.svg'
 import { ReactComponent as Storage } from '../../Assets/main/storage.svg'
 import { ReactComponent as Network } from '../../Assets/main/network.svg'
+import { ReactComponent as Logout } from '../../Assets/utils/logout.svg'
+import { ReactComponent as Help } from '../../Assets/utils/help.svg'
 import swal from 'sweetalert'
 
 class Home extends Component {
@@ -79,10 +81,12 @@ class Home extends Component {
 
             <div className='homefooter'>
               <div className='btnlogout' onClick={() => this.logout()}>
+                <Logout />
                 <span>Logout</span>
               </div>
 
               <div className='btnhelp' onClick={() => this.logout()}>
+                <Help />
                 <span>Help</span>
               </div>
             </div>

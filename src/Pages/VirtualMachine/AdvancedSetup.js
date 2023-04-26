@@ -3,6 +3,8 @@ import { Api, persistState } from '../../Services'
 import { Cpu, Memory, Name, Network, Os, Pci, Resume, Storage } from './Pages'
 import { Config } from '../../Global'
 import { getMemories } from '../../Global/Model'
+import './css/AdvancedSetup.css'
+import { Sidebar } from '../../Components'
 
 const NAME_PAGE = 1
 const CPU_PAGE = 2
@@ -169,35 +171,51 @@ class AdvancedSetup extends Component {
 
   render () {
     const { page } = this.state
-    const { body } = styles
 
     return (
-      <div>
-        <a href='/newvm'>Back</a>
-        <h1>Advanced setup ({page}/8)</h1>
+      <div className='advpage'>
+        <Sidebar selected='vms' />
+        <div className='advbody'>
+          <hr />
 
-        <div style={body}>
-          {page === NAME_PAGE && <Name setName={name => this.setState({ name })} />}
-          {page === CPU_PAGE && <Cpu setCpu={cpu => this.setState({ cpu })} />}
-          {page === MEMORY_PAGE && <Memory setMemory={memory => this.setState({ memory })} />}
-          {page === OS_PAGE && <Os setOs={os => this.setState({ os })} />}
-          {page === STORAGE_PAGE && <Storage setVolumeIds={volumeIds => this.setState({ volumeIds })} />}
-          {page === PCI_PAGE && <Pci setPci={pci => this.setState({ pci })} />}
-          {page === NETWORK_PAGE && <Network />}
-          {page === RESUME_PAGE && <Resume register={async () => await this.register()} />}
-        </div>
-        <div>
-          <button onClick={() => this.previous()}>Previous</button>
-          <button onClick={() => this.next()}>Next</button>
+          <div className='advheader'>
+            <span>Create new Virtual Machine</span>
+            <a href='/newvm'>Back</a>
+          </div>
+
+          <span className='advsubtitle'>ADVANCED SETUP</span>
+
+          <div className='advcenter'>
+            {page === NAME_PAGE && <Name setName={name => this.setState({ name })} />}
+            {page === CPU_PAGE && <Cpu setCpu={cpu => this.setState({ cpu })} />}
+            {page === MEMORY_PAGE && <Memory setMemory={memory => this.setState({ memory })} />}
+            {page === OS_PAGE && <Os setOs={os => this.setState({ os })} />}
+            {page === STORAGE_PAGE && <Storage setVolumeIds={volumeIds => this.setState({ volumeIds })} />}
+            {page === PCI_PAGE && <Pci setPci={pci => this.setState({ pci })} />}
+            {page === NETWORK_PAGE && <Network />}
+            {page === RESUME_PAGE && <Resume register={async () => await this.register()} />}
+
+            <div className='advtools'>
+              <button className='advprevious' onClick={() => this.previous()}>Previous</button>
+              <div className='advdotsbox'>
+                <div className='advdots'>
+                  <div className='advdot' style={{ backgroundColor: page >= 1 ? '#f28e00' : 'lightgray' }}><div className='advdotinner' /></div>
+                  <div className='advdot' style={{ backgroundColor: page >= 2 ? '#f28e00' : 'lightgray' }}><div className='advdotinner' /></div>
+                  <div className='advdot' style={{ backgroundColor: page >= 3 ? '#f28e00' : 'lightgray' }}><div className='advdotinner' /></div>
+                  <div className='advdot' style={{ backgroundColor: page >= 4 ? '#f28e00' : 'lightgray' }}><div className='advdotinner' /></div>
+                  <div className='advdot' style={{ backgroundColor: page >= 5 ? '#f28e00' : 'lightgray' }}><div className='advdotinner' /></div>
+                  <div className='advdot' style={{ backgroundColor: page >= 6 ? '#f28e00' : 'lightgray' }}><div className='advdotinner' /></div>
+                  <div className='advdot' style={{ backgroundColor: page >= 7 ? '#f28e00' : 'lightgray' }}><div className='advdotinner' /></div>
+                  <div className='advdot' style={{ backgroundColor: page >= 8 ? '#f28e00' : 'lightgray' }}><div className='advdotinner' /></div>
+                </div>
+                <span>{page} of 8 completed</span>
+              </div>
+              <button className='advnext' onClick={() => this.next()}>Next</button>
+            </div>
+          </div>
         </div>
       </div>
     )
-  }
-}
-
-const styles = {
-  body: {
-    height: 600
   }
 }
 

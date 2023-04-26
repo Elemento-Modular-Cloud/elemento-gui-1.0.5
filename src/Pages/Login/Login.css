@@ -37,8 +37,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: grab;
 }
 .loginregister {
+  cursor: grab;
   text-decoration-line: underline;
   color: #F28E00;
   font-size: 14px;

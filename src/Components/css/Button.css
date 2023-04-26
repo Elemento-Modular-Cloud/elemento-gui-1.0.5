@@ -16,6 +16,10 @@
 
 .btncard:hover {
   background-color: #f28e00;
+  cursor: grab;
+  -webkit-box-shadow: 10px 10px 40px 3px #f28e00aa;
+  -moz-box-shadow: 10px 10px 40px 3px #f28e00aa;
+  box-shadow: 10px 10px 40px 3px #f28e00aa;
 }
 .btncard:hover > svg g {
   stroke: #ffffff;

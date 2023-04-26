@@ -7,7 +7,7 @@ import { ReactComponent as Settings } from '../Assets/utils/settings.svg'
 const Button = ({ Icon, page, name, text }) => {
   const navigate = useNavigate()
   return (
-    <div className='btncardorange'>
+    <div className='btncardorange' onClick={() => navigate(page)}>
       <Settings id='svgsett' className='btniconorange' />
       <Icon id='svgicon' className='btniconorange' />
       <br />
@@ -15,7 +15,7 @@ const Button = ({ Icon, page, name, text }) => {
       <br />
       <span className='btntextorange'>{text}</span>
       <div className='btnarrowdiv'>
-        <Arrow className='btnarroworange' onClick={() => navigate(page)} />
+        <Arrow className='btnarroworange' />
         <span>Click to setup</span>
       </div>
     </div>

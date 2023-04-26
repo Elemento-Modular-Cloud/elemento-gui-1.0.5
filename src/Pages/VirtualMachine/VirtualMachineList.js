@@ -4,6 +4,7 @@ import { Config } from '../../Global'
 import './css/VirtualMachineList.css'
 import { Sidebar, Navigate } from '../../Components'
 import { ReactComponent as Arrow } from '../../Assets/utils/arrow.svg'
+import swal from 'sweetalert'
 
 class VirtualMachineList extends Component {
   constructor (props) {
@@ -19,14 +20,19 @@ class VirtualMachineList extends Component {
   }
 
   async getStatus () {
+    this.setState({ loading: true })
     Api.createClient(Config.API_URL_MATCHER)
     const res = await Api.get('/status', {})
 
     if (res.ok) {
       this.setState({ vms: res.data })
     } else {
-      window.alert('Could not load vms')
+      swal('Error', 'Could not load vms', 'error', {
+        buttons: false,
+        timer: 3000
+      })
     }
+    this.setState({ loading: false })
   }
 
   async deleteVirtualMachine (uniqueID) {
@@ -37,10 +43,16 @@ class VirtualMachineList extends Component {
     })
 
     if (res.ok) {
-      window.alert('Virtual machine deleted succesfully')
+      swal('Success', 'Virtual machine deleted succesfully', 'success', {
+        buttons: false,
+        timer: 3000
+      })
       await this.getStatus()
     } else {
-      window.alert('Could not delete the selected virtual machine')
+      swal('Error', 'Could not delete the selected virtual machine', 'error', {
+        buttons: false,
+        timer: 3000
+      })
     }
     this.setState({ loading: false })
   }
@@ -56,7 +68,7 @@ class VirtualMachineList extends Component {
 
           <div className='vmlheader'>
             <span>Virtual Machines</span>
-            <a href='/'>Back</a>
+            <a href='/vm'>Back</a>
           </div>
 
           {loading && <div className='lds-roller'><div /><div /><div /><div /><div /><div /><div /><div /></div>}
