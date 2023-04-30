@@ -1,10 +1,11 @@
 import React, { Component } from 'reactn'
 import { Api, persistState } from '../../Services'
-import { Cpu, Memory, Name, Network, Os, Pci, Resume, Storage } from './Pages'
+import { Cpu, Memory, Name, Os, Pci, Resume, Storage } from './Pages'
 import { Config } from '../../Global'
 import { getMemories } from '../../Global/Model'
 import './css/AdvancedSetup.css'
 import { Sidebar } from '../../Components'
+import swal from 'sweetalert'
 
 const NAME_PAGE = 1
 const CPU_PAGE = 2
@@ -12,8 +13,8 @@ const MEMORY_PAGE = 3
 const OS_PAGE = 4
 const STORAGE_PAGE = 5
 const PCI_PAGE = 6
-const NETWORK_PAGE = 7
-const RESUME_PAGE = 8
+// const NETWORK_PAGE = 7
+const RESUME_PAGE = 7
 
 class AdvancedSetup extends Component {
   constructor (props) {
@@ -47,15 +48,26 @@ class AdvancedSetup extends Component {
   }
 
   next () {
-    const { page, name, cpu, memory, os, volumeIds, pci } = this.state
+    const {
+      page,
+      name,
+      cpu,
+      os
+      // memory,
+      // volumeIds,
+      // pci
+    } = this.state
 
     let next = true
 
     if (page === NAME_PAGE) {
       console.log(name)
 
-      if (!/^[a-zA-Z0-9_-]*$/.test(name)) {
-        window.alert('wrong vm name')
+      if (!/^[a-zA-Z0-9_-]*$/.test(name) || name === '') {
+        swal('Info', 'Please, insert a VM name before to continue', 'info', {
+          buttons: false,
+          timer: 3000
+        })
         next = false
       }
     } else if (page === CPU_PAGE) {
@@ -63,29 +75,38 @@ class AdvancedSetup extends Component {
       console.log(cpu)
 
       if (cores <= 0 || cores > 8) {
-        window.alert('Please, select at least 1 core')
+        swal('Info', 'Please, select at least 1 core for the CPU', 'info', {
+          buttons: false,
+          timer: 3000
+        })
         next = false
       } else if (overprovision <= 0 || overprovision > 8) {
-        window.alert('Please, select at least 1 overprovision')
+        swal('Info', 'Please, select at least 1 Overprovision', 'info', {
+          buttons: false,
+          timer: 3000
+        })
         next = false
       } else if (archsList.length === 0) {
-        window.alert('Please, select at least 1 architecture')
+        swal('Info', 'Please, select at least 1 Architecture', 'info', {
+          buttons: false,
+          timer: 3000
+        })
         next = false
       }
     } else if (page === MEMORY_PAGE) {
-      console.log(memory)
       // next = false
     } else if (page === OS_PAGE) {
-      console.log(os)
       if (!os || os.os === '') {
-        window.alert('Please, select the desired os')
+        swal('Info', 'Please, select the desired OS before to continue', 'info', {
+          buttons: false,
+          timer: 3000
+        })
         next = false
       }
     } else if (page === STORAGE_PAGE) {
-      console.log(volumeIds)
       // next = false
     } else if (page === PCI_PAGE) {
-      console.log(pci.pci)
+      // next = false
     }
 
     next && this.setState({ page: (page + 1) <= 8 ? (page + 1) : 8 })
@@ -137,8 +158,6 @@ class AdvancedSetup extends Component {
     })
 
     if (res.ok) {
-      window.alert('Can allocate successfully')
-
       const ret = await Api.post('/register', {
         info: {
           vm_name: name
@@ -159,13 +178,22 @@ class AdvancedSetup extends Component {
       })
 
       if (ret.ok) {
-        window.alert('Virtual machine registered successfully!')
-        window.location.href = '/vm'
+        swal('Success', 'Virtual machine registered successfully!', 'success', {
+          buttons: false,
+          timer: 3000
+        })
+        window.location.href = '/vmlist'
       } else {
-        window.alert('Could not register the new virtual machine')
+        swal('Error', 'Could not register the new virtual machine', 'error', {
+          buttons: false,
+          timer: 3000
+        })
       }
     } else {
-      window.alert('Could not allocate the new virtual machine')
+      swal('Error', 'Could not allocate the new virtual machine', 'error', {
+        buttons: false,
+        timer: 3000
+      })
     }
   }
 
@@ -192,11 +220,11 @@ class AdvancedSetup extends Component {
             {page === OS_PAGE && <Os setOs={os => this.setState({ os })} />}
             {page === STORAGE_PAGE && <Storage setVolumeIds={volumeIds => this.setState({ volumeIds })} />}
             {page === PCI_PAGE && <Pci setPci={pci => this.setState({ pci })} />}
-            {page === NETWORK_PAGE && <Network />}
+            {/* {page === NETWORK_PAGE && <Network />} */}
             {page === RESUME_PAGE && <Resume register={async () => await this.register()} />}
 
             <div className='advtools'>
-              <button className='advprevious' onClick={() => this.previous()}>Previous</button>
+              {page > 1 && <button className='advprevious' onClick={() => this.previous()}>Previous</button>}
               <div className='advdotsbox'>
                 <div className='advdots'>
                   <div className='advdot' style={{ backgroundColor: page >= 1 ? '#f28e00' : 'lightgray' }}><div className='advdotinner' /></div>
@@ -206,9 +234,9 @@ class AdvancedSetup extends Component {
                   <div className='advdot' style={{ backgroundColor: page >= 5 ? '#f28e00' : 'lightgray' }}><div className='advdotinner' /></div>
                   <div className='advdot' style={{ backgroundColor: page >= 6 ? '#f28e00' : 'lightgray' }}><div className='advdotinner' /></div>
                   <div className='advdot' style={{ backgroundColor: page >= 7 ? '#f28e00' : 'lightgray' }}><div className='advdotinner' /></div>
-                  <div className='advdot' style={{ backgroundColor: page >= 8 ? '#f28e00' : 'lightgray' }}><div className='advdotinner' /></div>
+                  {/* <div className='advdot' style={{ backgroundColor: page >= 8 ? '#f28e00' : 'lightgray' }}><div className='advdotinner' /></div> */}
                 </div>
-                <span>{page} of 8 completed</span>
+                <span>{page} of {RESUME_PAGE} completed</span>
               </div>
               <button className='advnext' onClick={() => this.next()}>Next</button>
             </div>

@@ -8,7 +8,7 @@ import './Home.css'
 import { ReactComponent as Pc } from '../../Assets/main/pc.svg'
 import { ReactComponent as License } from '../../Assets/main/license.svg'
 import { ReactComponent as Storage } from '../../Assets/main/storage.svg'
-import { ReactComponent as Network } from '../../Assets/main/network.svg'
+// import { ReactComponent as Network } from '../../Assets/main/network.svg'
 import { ReactComponent as Logout } from '../../Assets/utils/logout.svg'
 import { ReactComponent as Help } from '../../Assets/utils/help.svg'
 import swal from 'sweetalert'
@@ -73,9 +73,9 @@ class Home extends Component {
           </div>
           <div className='homebody'>
             <div className='homebuttons'>
-              <Button Icon={Pc} page='/vm' name='Virtual Machines' text='Lorem Ipsum is simply dummy text of the printing and typesetting industry.' />
+              <Button Icon={Pc} page='/vmlist' name='Virtual Machines' text='Lorem Ipsum is simply dummy text of the printing and typesetting industry.' />
               <Button Icon={Storage} page='/storage' name='Storage' text='Lorem Ipsum is simply dummy text of the printing and typesetting industry.' />
-              <Button Icon={Network} page='/network' name='Network' text='Lorem Ipsum is simply dummy text of the printing and typesetting industry.' />
+              {/* <Button Icon={Network} page='/network' name='Network' text='Lorem Ipsum is simply dummy text of the printing and typesetting industry.' /> */}
               <Button Icon={License} page='/licences' name='Licences' text='Lorem Ipsum is simply dummy text of the printing and typesetting industry.' />
             </div>
 

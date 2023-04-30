@@ -273,6 +273,7 @@ class Storage extends Component {
             isOpen={showModal}
             style={customStyle}
             className='stomodal'
+            ariaHideApp={false}
             onRequestClose={() => this.setState({ showModal: false })}
           >
             <h2>Create new volume</h2>
