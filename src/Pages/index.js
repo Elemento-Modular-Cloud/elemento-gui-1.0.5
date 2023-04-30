@@ -5,7 +5,7 @@ import Network from './Network/Network'
 import Storage from './Storage/Storage'
 import Setup from './Setup/Setup'
 import {
-  VirtualMachine, VirtualMachineNew, VirtualMachineList,
+  VirtualMachineNew, VirtualMachineList,
   BasicSetup, AdvancedSetup
 } from './VirtualMachine'
 
@@ -16,7 +16,6 @@ export {
   Network,
   Storage,
   Setup,
-  VirtualMachine,
   VirtualMachineList,
   VirtualMachineNew,
   BasicSetup,
