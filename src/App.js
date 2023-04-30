@@ -4,7 +4,7 @@ import { restoreState } from './Services'
 import {
   Home, Licences, Login, Network,
   Storage, BasicSetup, AdvancedSetup, Setup,
-  VirtualMachine, VirtualMachineList, VirtualMachineNew
+  VirtualMachineList, VirtualMachineNew
 } from './Pages'
 
 export default class App extends Component {
@@ -30,7 +30,6 @@ export default class App extends Component {
           <Route path='/licences' element={<Licences />} />
           <Route path='/network' element={<Network />} />
           <Route path='/storage' element={<Storage />} />
-          <Route path='/vm' element={<VirtualMachine />} />
           <Route path='/vmlist' element={<VirtualMachineList />} />
           <Route path='/newvm' element={<VirtualMachineNew />} />
           <Route path='/newvm/basic' element={<BasicSetup />} />

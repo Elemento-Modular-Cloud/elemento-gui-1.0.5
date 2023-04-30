@@ -6,8 +6,8 @@
 }
 .vmbody {
   width: 100%;
-  padding: 50px;
-  margin-top: 30px;
+  padding: 20px;
+  margin-top: 20px;
 }
 .vmheader {
   width: 100%;
@@ -28,4 +28,10 @@
 .vmbuttons {
   display: flex;
   flex-direction: row;
+}
+
+@media screen and (max-width: 800px) {
+  .sidebar {
+    min-width: 220px;
+  }
 }

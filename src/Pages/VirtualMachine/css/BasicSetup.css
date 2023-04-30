@@ -9,6 +9,7 @@
   width: 78%;
   padding: 50px;
   margin-top: 30px;
+  overflow: scroll;
 }
 .basheader {
   width: 100%;
@@ -31,7 +32,7 @@
   flex-direction: row;
 }
 .bascenter {
-  width: 50%;
+  width: 60%;
   margin-top: 30px;
 }
 .basright {
@@ -80,12 +81,24 @@
 }
 .basradioitem {
   padding: 20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px;
+
+  -webkit-box-shadow: 10px 10px 40px 3px #f28e00aa;
+  -moz-box-shadow: 10px 10px 40px 3px #f28e00aa;
+  box-shadow: 10px 10px 40px 3px #f28e00aa;
 }
 .basstorage {
   width: 35%;
   display: flex;
   flex-direction: column;
   margin-bottom: 50px;
+  margin-top: 20px
 }
 .basstorage select {
   width: 230px;
@@ -125,7 +138,6 @@
   color: #f28e00;
   border: solid 1px #f28e00;
 }
-
 .basrtitle {
   font-weight: bold;
   font-size: 20px;
@@ -139,6 +151,7 @@
   justify-content: space-between;
 }
 .bascpu {
+  width: 50%;
   display: flex;
   flex-direction: column;
 }
@@ -146,6 +159,7 @@
   margin-top: 8px
 }
 .basram {
+  width: 50%;
   display: flex;
   flex-direction: column;
 }
@@ -185,4 +199,31 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
+}
+
+@media screen and (max-width: 800px) {
+  .bascenter {
+    min-width: 400px;
+  }
+  .basmachine {
+    min-width: 200px;
+    margin-right: 20px
+  }
+  .bascontent {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .basstorage {
+    width: 55%;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .bascenter {
+    min-width: 400px;
+  }
+  .basmachine {
+    min-width: 200px;
+    margin-right: 20px
+  }
 }

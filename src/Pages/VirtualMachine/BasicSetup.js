@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import { Api } from '../../Services'
-import { Config } from '../../Global'
+import { Config, Utils } from '../../Global'
 import './css/BasicSetup.css'
-import { Sidebar } from '../../Components'
+import { CustomSelect, Sidebar } from '../../Components'
+import { models, vendors } from '../../Global/Model'
 import { ReactComponent as Windows } from '../../Assets/os/windows.svg'
 import { ReactComponent as Linux } from '../../Assets/os/linux.svg'
-import { ReactComponent as Apple } from '../../Assets/os/apple.svg'
+// import { ReactComponent as Apple } from '../../Assets/os/apple.svg'
 import swal from 'sweetalert'
 
 class BasicSetup extends Component {
@@ -24,7 +25,8 @@ class BasicSetup extends Component {
       shareable: false,
       visibility: false,
       ownership: false,
-      volumeIds: []
+      volumeIds: [],
+      storageSelected: []
     }
   }
 
@@ -61,13 +63,49 @@ class BasicSetup extends Component {
     }
   }
 
+  toRGB (s) {
+    let hash = 0
+    if (s.length === 0) return hash
+    for (let i = 0; i < s.length; i++) {
+      hash = s.charCodeAt(i) + ((hash << 5) - hash)
+      hash = hash & hash
+    }
+    const rgb = [0, 0, 0]
+    for (let j = 0; j < 3; j++) {
+      rgb[j] = (hash >> (j * 8)) & 255
+    }
+    return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`
+  }
+
   async registerVirutalMachine () {
     const {
       name,
       template,
       osFamily,
-      volumeIds
+      storageSelected
     } = this.state
+
+    if (!name || name === '') {
+      swal('Info', 'Please insert a VM name before to continue', 'info', {
+        buttons: false,
+        timer: 3000
+      })
+      return
+    }
+    if (!template) {
+      swal('Info', 'Please select a template before to continue', 'info', {
+        buttons: false,
+        timer: 3000
+      })
+      return
+    }
+    if (osFamily === '') {
+      swal('Info', 'Please select the desired OS before to continue', 'info', {
+        buttons: false,
+        timer: 3000
+      })
+      return
+    }
 
     const slots = template.cpu.slots
     const overprovision = template.cpu.overprovision
@@ -76,6 +114,7 @@ class BasicSetup extends Component {
     const flags = template.cpu.flags
     const ramsize = template.ram.ramsize
     const reqECC = template.ram.reqECC
+    const volumeIds = storageSelected.map(storage => { return { vid: storage.volumeID } })
 
     Api.createClient(Config.API_URL_MATCHER)
     const res = await Api.post('/canallocate', {
@@ -117,8 +156,9 @@ class BasicSetup extends Component {
         swal('Success', 'Virtual machine registered successfully!', 'success', {
           buttons: false,
           timer: 3000
+        }).then(() => {
+          window.location.href = '/vmlist'
         })
-        window.location.href = '/vmlist'
       } else {
         swal('Error', 'Could not register the new virtual machine', 'error', {
           buttons: false,
@@ -133,11 +173,17 @@ class BasicSetup extends Component {
     }
   }
 
+  removeStorage (name) {
+    const { storageSelected } = this.state
+    const removed = storageSelected.filter(s => s.name !== name)
+    this.setState({ storageSelected: [...removed] })
+  }
+
   render () {
     const {
       templates, template, storages, storageServer,
       bootable, writable, shareable, visibility, ownership,
-      volumeIds, storage
+      storage, osFamily, storageSelected // volumeIds
     } = this.state
 
     return (
@@ -163,60 +209,83 @@ class BasicSetup extends Component {
 
                 <div className='basmachine'>
                   <span>Select a template:</span>
-                  <select onChange={e => this.setState({ template: templates[e.target.value] })}>
-                    <option>...</option>
-                    {
-                      templates && templates.length > 0 && templates.map((template, i) =>
-                        <option key={i} value={i}>{template.info.name}</option>
-                      )
-                    }
-                  </select>
+                  <CustomSelect
+                    options={templates.map(t => t.info.name)}
+                    onChange={(event, template) => {
+                      this.setState({ template: templates.filter(t => t.info.name === template)[0] })
+                    }}
+                  />
                 </div>
               </div>
 
               <div className='basradio'>
                 <span className='bascaption'>OS Selection*</span>
-                <div className='basradioitem'>
-                  <input type='radio' id='linux' name='os' value='linux' onChange={() => this.setState({ osFamily: 'linux' })} />
-                  <Linux />
+                <div
+                  className='basradioitem'
+                  onClick={() => this.setState({ osFamily: 'linux' })}
+                  style={{ backgroundColor: osFamily === 'linux' ? '#f28e00' : 'white' }}
+                >
+                  <Linux fill={osFamily === 'linux' ? 'white' : 'black'} />
                 </div>
-                <div className='basradioitem'>
-                  <input type='radio' id='windows' name='os' value='windows' onChange={() => this.setState({ osFamily: 'windows' })} />
-                  <Windows />
-                </div>
-                <div className='basradioitem'>
-                  <input type='radio' id='mac' name='os' value='mac' onChange={() => this.setState({ osFamily: 'mac' })} />
-                  <Apple />
+                <div
+                  className='basradioitem'
+                  onClick={() => this.setState({ osFamily: 'windows' })}
+                  style={{ backgroundColor: osFamily === 'windows' ? '#f28e00' : 'white' }}
+                >
+                  <Windows fill={osFamily === 'windows' ? 'white' : 'black'} />
                 </div>
               </div>
 
               <div className='basstorage'>
                 <span className='bascaption'>Storage Selection</span>
-                <select
-                  onChange={e => {
-                    if (e.target.value === '...') {
-                      this.setState({ storage: null })
-                    } else {
-                      this.setState({
-                        storage: storages[e.target.value],
-                        storageServer: storages[e.target.value].server,
-                        bootable: storages[e.target.value].server,
-                        writable: !storages[e.target.value].readonly,
-                        shareable: storages[e.target.value].shareable,
-                        visibility: storages[e.target.value].private,
-                        ownership: storages[e.target.value].own,
-                        volumeIds: [...volumeIds, { vid: storages[e.target.value].volumeID }]
+                <CustomSelect
+                  options={storages.map(s => s.name)}
+                  onChange={(event, storageSelected) => {
+                    if (storageSelected) {
+                      const { storageSelected: stosel } = this.state
+                      const exists = stosel.filter(s => s.name === storageSelected)
+
+                      exists.length === 0 && this.setState({
+                        storageSelected: [...stosel, storages.filter(s => s.name === storageSelected)[0]]
                       })
                     }
                   }}
-                >
-                  <option>...</option>
-                  {
-                    storages && storages.length > 0 && storages.map((storage, i) =>
-                      <option key={i} value={i}>{storage.name}</option>
-                    )
-                  }
-                </select>
+                />
+
+                {
+                  storageSelected.length > 0 &&
+                    <table style={{ marginTop: 20 }}>
+                      <thead>
+                        <tr>
+                          <td>Name</td>
+                          <td>Bootable</td>
+                          <td>Read Only</td>
+                          <td>Shareable</td>
+                          <td>Private</td>
+                          <td>Own</td>
+                          <td>Remove</td>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {
+                          storageSelected.length > 0 && storageSelected.map((storage, i) => {
+                            return (
+                              <tr key={i}>
+                                <td>{storage.name}</td>
+                                <td><input type='checkbox' checked={storage.bootable} disabled /></td>
+                                <td><input type='checkbox' checked={storage.readonly} disabled /></td>
+                                <td><input type='checkbox' checked={storage.shareable} disabled /></td>
+                                <td><input type='checkbox' checked={storage.private} disabled /></td>
+                                <td><input type='checkbox' checked={storage.own} disabled /></td>
+                                <td><button className='bn632-hover bn28' onClick={async () => await this.removeStorage(storage.name)}>Remove</button></td>
+                              </tr>
+                            )
+                          })
+                        }
+                      </tbody>
+                    </table>
+                }
+
                 <div className='basstorageinfo' style={{ display: storage ? 'block' : 'none' }}>
                   <p>Storage Server: {storageServer}</p>
                   <div className='basstoitem'>
@@ -236,8 +305,6 @@ class BasicSetup extends Component {
                   </div>
                 </div>
               </div>
-
-              <button className='basbutton' onClick={() => this.registerVirutalMachine()}>CONFIRM AND CREATE</button>
             </div>
             <div className='basright'>
               <span className='basrtitle'>Summary</span>
@@ -249,9 +316,9 @@ class BasicSetup extends Component {
                       <div className='bastopname'>
                         <p>Template {template.info.name}</p>
                       </div>
-                      <div className='bastoplogo'>
+                      <div className='bastoplogo' style={{ backgroundColor: this.toRGB(template.info.name) }}>
                         <div>
-                          <div className='basspec'><span>{template.cpu.slots}C</span><span>{template.ram.ramsize}{template.ram.ramsize >= 1024 ? 'GB' : 'MB'}</span></div>
+                          <div className='basspec'><span>{template.cpu.slots}C</span><span>{Utils.formatBytes(template.ram.ramsize * 1000000)}</span></div>
                           <span className='basspectitle'>{template.info.name.substr(0, 2)}</span>
                           <span className='basspecname'>{template.info.name}</span>
                         </div>
@@ -266,12 +333,12 @@ class BasicSetup extends Component {
                         <span>Overprovision: {template.cpu.overprovision}</span>
                         <span>Allow SMT: {template.cpu.allowSMT}</span>
                         <span>Archs: {template.cpu.archs}</span>
-                        <span>Flags: {template.cpu.flags}</span>
+                        <span>Flags: {template.cpu.flags.join(', ')}</span>
                         <br />
                       </div>
                       <div className='basram'>
                         <h2>RAM</h2>
-                        <span>RAM: {template.ram.ramsize}</span>
+                        <span>RAM: {Utils.formatBytes(template.ram.ramsize * 1000000)}</span>
                         <span>ECC: {template.ram.reqECC ? 'Yes' : 'No'}</span>
                         <br />
                         <h2>PCI</h2>
@@ -279,8 +346,8 @@ class BasicSetup extends Component {
                           template.pci && template.pci.length > 0 && template.pci.map((pci, i) => {
                             return (
                               <div key={i}>
-                                <span>Vendor: {pci.vendor}</span>
-                                <span>Model: {pci.model}</span>
+                                <span>Vendor: {vendors[Object.keys(vendors).filter(item => item === pci.vendor)[0]]}</span><br /><br />
+                                <span>Model: {models[Object.keys(models).filter(item => item === pci.vendor)].filter(item => item[1] === pci.model)[0][0]}</span><br /><br />
                                 <span>Quantity: {pci.quantity}</span>
                               </div>
                             )
@@ -292,6 +359,7 @@ class BasicSetup extends Component {
               }
             </div>
           </div>
+          <button className='basbutton' onClick={() => this.registerVirutalMachine()}>CONFIRM AND CREATE</button>
         </div>
       </div>
     )

@@ -53,4 +53,15 @@
 }
 .osradioitem {
   padding: 20px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px;
+
+  -webkit-box-shadow: 10px 10px 40px 3px #f28e00aa;
+  -moz-box-shadow: 10px 10px 40px 3px #f28e00aa;
+  box-shadow: 10px 10px 40px 3px #f28e00aa;
 }

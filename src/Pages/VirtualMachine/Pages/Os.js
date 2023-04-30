@@ -2,7 +2,7 @@ import React, { Component } from 'reactn'
 import { persistState } from '../../../Services'
 import { ReactComponent as Windows } from '../../../Assets/os/windows.svg'
 import { ReactComponent as Linux } from '../../../Assets/os/linux.svg'
-import { ReactComponent as Apple } from '../../../Assets/os/apple.svg'
+// import { ReactComponent as Apple } from '../../../Assets/os/apple.svg'
 import '../css/Pages.css'
 
 class Os extends Component {
@@ -34,23 +34,32 @@ class Os extends Component {
   }
 
   render () {
+    const { os } = this.state
     return (
       <>
         <span style={{ marginBottom: 50, fontSize: 25 }}>OS Setup</span>
         <div className='osradio'>
-          <span className='oscaption'>OS Selection*</span>
-          <div className='osradioitem'>
-            <input type='radio' id='linux' name='os' value='linux' onClick={async () => await this.updateState('linux')} />
-            <Linux />
+          <div
+            className='osradioitem'
+            onClick={async () => await this.updateState('linux')}
+            style={{ backgroundColor: os === 'linux' ? '#f28e00' : 'white' }}
+          >
+            <Linux fill={os === 'linux' ? 'white' : 'black'} />
           </div>
-          <div className='osradioitem'>
-            <input type='radio' id='windows' name='os' value='windows' onClick={async () => await this.updateState('windows')} />
-            <Windows />
+          <div
+            className='osradioitem'
+            onClick={async () => await this.updateState('windows')}
+            style={{ backgroundColor: os === 'windows' ? '#f28e00' : 'white' }}
+          >
+            <Windows fill={os === 'windows' ? 'white' : 'black'} />
           </div>
-          <div className='osradioitem'>
-            <input type='radio' id='mac' name='os' value='mac' onClick={async () => await this.updateState('mac')} />
-            <Apple />
-          </div>
+          {/* <div
+            className='osradioitem'
+            onClick={async () => await this.updateState('apple')}
+            style={{ backgroundColor: os === 'apple' ? '#f28e00' : 'white' }}
+          >
+            <Apple fill={os === 'apple' ? 'white' : 'black'} />
+          </div> */}
         </div>
       </>
     )

@@ -68,7 +68,7 @@ class VirtualMachineList extends Component {
 
           <div className='vmlheader'>
             <span>Virtual Machines</span>
-            <a href='/vm'>Back</a>
+            <a href='/'>Back</a>
           </div>
 
           {loading && <div className='lds-roller'><div /><div /><div /><div /><div /><div /><div /><div /></div>}
