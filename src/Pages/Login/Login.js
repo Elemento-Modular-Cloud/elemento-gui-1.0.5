@@ -69,6 +69,12 @@ class Login extends Component {
     }
   }
 
+  async handleKeyDown (event) {
+    if (event.keyCode === 13) {
+      await this.login()
+    }
+  }
+
   render () {
     const { register, username, password, name, surname, email, passwordr, disableLogin } = this.state
 
@@ -96,7 +102,7 @@ class Login extends Component {
                   <span>Username or email*</span>
                   <input type='text' value={username} onChange={e => this.setState({ username: e.target.value })} />
                   <span>Password*</span>
-                  <input type='password' value={password} onChange={e => this.setState({ password: e.target.value })} />
+                  <input type='password' value={password} onChange={e => this.setState({ password: e.target.value })} onKeyDown={e => this.handleKeyDown(e)} />
                 </div>
                 {
                   !disableLogin &&
