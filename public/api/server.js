@@ -1,8 +1,8 @@
 const express = require('express')
+const http = require('http')
+const socketIo = require('socket.io')
 const cors = require('cors')
 const apisauce = require('apisauce')
-const { spawnSync } = require('child_process')
-const path = require('path')
 
 const API_PORT = 3456
 const API_BASE_ADDR = 'http://10.164.0.3'
@@ -12,9 +12,12 @@ const API_URL_NETWORK = `${API_BASE_ADDR}:37777/`
 const API_URL_AUTHENT = `${API_BASE_ADDR}:47777/`
 
 const app = express()
+const server = http.createServer(app)
+const io = socketIo(server, { cors: { origin: '*' } })
+
 app.use(cors({ origin: '*' }))
 
-async function checkServicesTest () {
+app.get('/services', async (req, res) => {
   const client = apisauce.create({
     timeout: 1000,
     headers: {
@@ -22,86 +25,74 @@ async function checkServicesTest () {
     }
   })
 
-  const out1 = await client.get('http://localhost:8080')
-  return out1.ok
-}
+  const matcher = await client.get(API_URL_MATCHER)
+  const storage = await client.get(API_URL_STORAGE)
+  const network = await client.get(API_URL_NETWORK)
+  const authent = await client.get(API_URL_AUTHENT)
 
-async function checkServices () {
-  const client = apisauce.create({
-    timeout: 1000,
-    headers: {
-      'Content-Type': 'application/json'
-    }
+  res.send({
+    matcher: matcher.ok,
+    storage: storage.ok,
+    network: network.ok,
+    authent: authent.ok
   })
-
-  const out1 = await client.get(API_URL_MATCHER)
-  const out2 = await client.get(API_URL_STORAGE)
-  const out3 = await client.get(API_URL_NETWORK)
-  const out4 = await client.get(API_URL_AUTHENT)
-  return out1.ok && out2.ok && out3.ok && out4.ok
-}
-
-app.get('/services/installed', async (req, res) => {
-  const outcome = await checkServices()
-
-  if (outcome) {
-    res.send({
-      servicesInstalled: true
-    })
-  } else {
-    res.send({
-      servicesInstalled: false
-    })
-  }
 })
 
-app.get('/services/requirements', async (req, res) => {
-  const procNode = spawnSync('node', ['-v'])
-  const procDocker = spawnSync('docker', ['ps'])
+io.on('connection', (socket) => {
+  console.log('a user connected')
+  socket.on('disconnect', () => {
+    console.log('user disconnected')
+  })
+})
 
-  if (procNode.error || procDocker.error) {
-    res.send({
-      requirementsInstalled: false
-    })
-  } else {
-    const stdoutNode = procNode.stdout.toString()
-    const stderrNode = procNode.stderr.toString()
-    const stdoutDocker = procDocker.stdout.toString()
-    const stderrDocker = procDocker.stderr.toString()
+app.get('/download', async (req, res) => {
+  const fs = require('fs')
+  const https = require('https')
+  const url = 'https://repo.elemento.cloud/app/Elemento_daemons.dmg'
+  const filepath = '/Users/francescochiapello/Downloads/Elemento_daemons.dmg'
 
-    if (
-      stdoutNode && stdoutDocker &&
-      (!stderrNode || stderrNode === '') &&
-      (!stderrDocker || stderrDocker === '')
-    ) {
-      res.send({
-        requirementsInstalled: true
-      })
-    } else {
-      res.send({
-        requirementsInstalled: false
-      })
+  https.get(url, (response) => {
+    if (response.statusCode !== 200) {
+      return `Failed to download file: HTTP status code ${response.statusCode}`
     }
-  }
+
+    const totalSize = parseInt(response.headers['content-length'], 10)
+    io.emit('total', {
+      totalSize
+    })
+
+    const file = fs.createWriteStream(filepath)
+    response.pipe(file)
+
+    let chunks = 0
+
+    response.on('data', (chunk) => {
+      chunks += chunk.length
+      io.emit('chunk', {
+        chunk: Math.round((chunks / totalSize) * 100)
+      })
+    })
+
+    file.on('finish', () => {
+      file.close()
+      return filepath
+    })
+
+    file.on('error', (err) => {
+      console.error('File error:', err)
+      return err
+    })
+
+    response.on('error', (err) => {
+      console.error('Response error:', err)
+      return err
+    })
+  }).on('error', (err) => {
+    console.error('Request error:', err)
+    return err
+  })
 })
 
-app.get('/services/install', async (req, res) => {
-  await spawnSync('docker-compose', ['-f', path.join(__dirname, 'docker', 'docker-compose.yml'), 'up', '-d'])
-  const outcome = await checkServicesTest()
-
-  if (outcome) {
-    console.log('services installed')
-    res.send({
-      servicesInstalled: true
-    })
-  } else {
-    console.log('services not installed')
-    res.send({
-      servicesInstalled: false
-    })
-  }
-})
-
-app.listen(API_PORT, () => {
+server.listen(API_PORT, () => {
   console.log(`Server started on port ${API_PORT}`)
 })

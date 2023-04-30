@@ -41,23 +41,15 @@ export default class App extends Component {
   }
 
   render () {
-    const { loggedIn } = this.state
+    const { setup, loggedIn } = this.state
     return (
-      loggedIn
-        ? this.renderApp()
-        : <Login postLogin={() => this.setState({ loggedIn: true })} />
+      !setup
+        ? <Setup postSetup={() => this.setState({ setup: true })} />
+        : (
+            loggedIn
+              ? this.renderApp()
+              : <Login postLogin={() => this.setState({ loggedIn: true })} />
+          )
     )
   }
-  // render () {
-  //   const { setup, loggedIn } = this.state
-  //   return (
-  //     !setup
-  //       ? <Setup postSetup={() => this.setState({ setup: true })} />
-  //       : (
-  //           loggedIn
-  //             ? this.renderApp()
-  //             : <Login postLogin={() => this.setState({ loggedIn: true })} />
-  //         )
-  //   )
-  // }
 }
