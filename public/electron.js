@@ -10,9 +10,8 @@ function createWindow () {
   mainWindow.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`)
   mainWindow.on('closed', () => { mainWindow = null })
   mainWindow.setSize(800, 600, true)
-  // mainWindow.setKiosk(true)
+  mainWindow.setMinimumSize(800, 600)
 
-  // Start the Node.js API
   try {
     const apiPath = path.join(__dirname, 'api', 'server.js')
     spawn('node', [apiPath], { stdio: 'inherit' })
