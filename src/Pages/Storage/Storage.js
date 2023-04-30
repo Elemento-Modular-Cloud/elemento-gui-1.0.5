@@ -38,7 +38,7 @@ class Storage extends Component {
     Api.createClient(Config.API_URL_STORAGE)
     const res = await Api.get('/accessible')
 
-    if (res.ok) {
+    if (res.ok && res.data && res.data.length > 0) {
       const personalStorages = res.data.filter(storage => storage.own)
       const publicStorages = res.data.filter(storage => !storage.own)
 
@@ -175,18 +175,18 @@ class Storage extends Component {
                       <table className='stotable'>
                         <thead className='stotablehead'>
                           <tr>
-                            <td>Bootable</td>
                             <td>Name</td>
-                            <td>Private</td>
-                            <td>Read Only</td>
-                            <td>Shareable</td>
-                            <td>Size</td>
-                            <td>Volume ID</td>
-                            <td>Server URL</td>
+                            <td style={{ width: 80 }}>Bootable</td>
+                            <td style={{ width: 80 }}>Private</td>
+                            <td style={{ width: 80 }}>Read Only</td>
+                            <td style={{ width: 80 }}>Shareable</td>
+                            <td style={{ width: 80 }}>Own</td>
+                            <td style={{ width: 80 }}>Size</td>
+                            <td style={{ maxWidth: 200 }}>Volume ID</td>
+                            <td style={{ display: 'none' }}>Server URL</td>
                             <td>Server</td>
-                            <td>Own</td>
                             <td>Servers N.</td>
-                            <td>Servers</td>
+                            <td style={{ display: 'none' }}>Servers</td>
                             <td>Destroy</td>
                           </tr>
                         </thead>
@@ -195,18 +195,18 @@ class Storage extends Component {
                             personalStorages && personalStorages.length > 0 && personalStorages.map((storage, i) => {
                               return (
                                 <tr key={i}>
-                                  <td>{storage.bootable ? 'Yes' : 'No'}</td>
                                   <td>{storage.name}</td>
-                                  <td>{storage.private ? 'Yes' : 'No'}</td>
-                                  <td>{storage.readonly ? 'Yes' : 'No'}</td>
-                                  <td>{storage.shareable ? 'Yes' : 'No'}</td>
-                                  <td>{Utils.formatBytes(storage.size)}</td>
-                                  <td>{storage.volumeID}</td>
-                                  <td>{storage.serverurl}</td>
+                                  <td style={{ width: 80 }}>{storage.bootable ? 'Yes' : 'No'}</td>
+                                  <td style={{ width: 80 }}>{storage.private ? 'Yes' : 'No'}</td>
+                                  <td style={{ width: 80 }}>{storage.readonly ? 'Yes' : 'No'}</td>
+                                  <td style={{ width: 80 }}>{storage.shareable ? 'Yes' : 'No'}</td>
+                                  <td style={{ width: 80 }}>{storage.own ? 'Yes' : 'No'}</td>
+                                  <td style={{ width: 80 }}>{Utils.formatBytes(storage.size)}</td>
+                                  <td style={{ maxWidth: 200, overflow: 'scroll' }}>{storage.volumeID}</td>
+                                  <td style={{ display: 'none' }}>{storage.serverurl}</td>
                                   <td>{storage.server}</td>
-                                  <td>{storage.own ? 'Yes' : 'No'}</td>
                                   <td>{storage.nservers}</td>
-                                  <td>{storage.servers}</td>
+                                  <td style={{ display: 'none' }}>{storage.servers.join(' - ')}</td>
                                   <td>
                                     <button className='bn632-hover bn28' onClick={async () => await this.destroyStorage(storage.volumeID)}>Destroy</button>
                                   </td>
@@ -223,18 +223,18 @@ class Storage extends Component {
                       <table className='stotable'>
                         <thead className='stotablehead'>
                           <tr>
-                            <td>Bootable</td>
                             <td>Name</td>
-                            <td>Private</td>
-                            <td>Read Only</td>
-                            <td>Shareable</td>
-                            <td>Size</td>
-                            <td>Volume ID</td>
-                            <td>Server URL</td>
+                            <td style={{ width: 80 }}>Bootable</td>
+                            <td style={{ width: 80 }}>Private</td>
+                            <td style={{ width: 80 }}>Read Only</td>
+                            <td style={{ width: 80 }}>Shareable</td>
+                            <td style={{ width: 80 }}>Own</td>
+                            <td style={{ width: 80 }}>Size</td>
+                            <td style={{ maxWidth: 200 }}>Volume ID</td>
+                            <td style={{ display: 'none' }}>Server URL</td>
                             <td>Server</td>
-                            <td>Own</td>
                             <td>Servers N.</td>
-                            <td>Servers</td>
+                            <td style={{ display: 'none' }}>Servers</td>
                             <td>Destroy</td>
                           </tr>
                         </thead>
@@ -243,18 +243,18 @@ class Storage extends Component {
                             publicStorages && publicStorages.length > 0 && publicStorages.map((storage, i) => {
                               return (
                                 <tr key={i}>
-                                  <td>{storage.bootable ? 'Yes' : 'No'}</td>
                                   <td>{storage.name}</td>
-                                  <td>{storage.private ? 'Yes' : 'No'}</td>
-                                  <td>{storage.readonly ? 'Yes' : 'No'}</td>
-                                  <td>{storage.shareable ? 'Yes' : 'No'}</td>
-                                  <td>{Utils.formatBytes(storage.size)}</td>
-                                  <td>{storage.volumeID}</td>
-                                  <td>{storage.serverurl}</td>
+                                  <td style={{ width: 80 }}>{storage.bootable ? 'Yes' : 'No'}</td>
+                                  <td style={{ width: 80 }}>{storage.private ? 'Yes' : 'No'}</td>
+                                  <td style={{ width: 80 }}>{storage.readonly ? 'Yes' : 'No'}</td>
+                                  <td style={{ width: 80 }}>{storage.shareable ? 'Yes' : 'No'}</td>
+                                  <td style={{ width: 80 }}>{storage.own ? 'Yes' : 'No'}</td>
+                                  <td style={{ width: 80 }}>{Utils.formatBytes(storage.size)}</td>
+                                  <td style={{ maxWidth: 200, overflow: 'scroll' }}>{storage.volumeID}</td>
+                                  <td style={{ display: 'none' }}>{storage.serverurl}</td>
                                   <td>{storage.server}</td>
-                                  <td>{storage.own ? 'Yes' : 'No'}</td>
                                   <td>{storage.nservers}</td>
-                                  <td>{storage.servers}</td>
+                                  <td style={{ display: 'none' }}>{storage.servers.join(' - ')}</td>
                                   <td>
                                     <button className='bn632-hover bn28' onClick={async () => await this.destroyStorage(storage.volumeID)}>Destroy</button>
                                   </td>
