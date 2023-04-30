@@ -73,6 +73,9 @@
   rotate: 180deg;
   margin-right: 20px;
 }
+.divider {
+  margin-left: 80px;
+}
 
 
 @media only screen and (max-width: 450px) {
@@ -83,10 +86,16 @@
 
 @media screen and (max-width: 800px) {
   .btncardorange {
-    max-width: 360px;
+    max-width: 220px;
+    margin: 0px;
+  }
+  .divider {
+    margin-left: 20px;
+  }
+  .btnspanorange {
+    margin-top: 250px;
   }
 }
-
 
 @media screen and (min-width: 800px) and (max-width: 1200px) {
 }

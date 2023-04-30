@@ -8,7 +8,7 @@ import { ReactComponent as User } from '../Assets/utils/user.svg'
 import { ReactComponent as Pc } from '../Assets/main/pc.svg'
 import { ReactComponent as License } from '../Assets/main/license.svg'
 import { ReactComponent as Storage } from '../Assets/main/storage.svg'
-import { ReactComponent as Network } from '../Assets/main/network.svg'
+// import { ReactComponent as Network } from '../Assets/main/network.svg'
 import { ReactComponent as Logout } from '../Assets/utils/logout.svg'
 import swal from 'sweetalert'
 
@@ -43,7 +43,7 @@ const Sidebar = ({ selected }) => {
         <span>{username}</span>
       </div>
 
-      <div className={selected === 'vms' ? 'sideitemboxselected' : 'sideitembox'} onClick={() => navigate('/vm')}>
+      <div className={selected === 'vms' ? 'sideitemboxselected' : 'sideitembox'} onClick={() => navigate('/vmlist')}>
         <Pc />
         <span>Virtual Machines</span>
       </div>
@@ -51,10 +51,10 @@ const Sidebar = ({ selected }) => {
         <Storage />
         <span>Storage</span>
       </div>
-      <div className={selected === 'network' ? 'sideitemboxselected' : 'sideitembox'} onClick={() => navigate('/network')}>
+      {/* <div className={selected === 'network' ? 'sideitemboxselected' : 'sideitembox'} onClick={() => navigate('/network')}>
         <Network />
         <span>Network</span>
-      </div>
+      </div> */}
       <div className={selected === 'licences' ? 'sideitemboxselected' : 'sideitembox'} onClick={() => navigate('/licences')}>
         <License />
         <span>Licenses</span>
