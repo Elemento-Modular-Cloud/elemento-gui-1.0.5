@@ -5,6 +5,8 @@ import { Config, Utils } from '../../Global'
 import { Sidebar } from '../../Components'
 import './Storage.css'
 import { ReactComponent as Arrow } from '../../Assets/utils/arrow.svg'
+import { ReactComponent as CheckGreen } from '../../Assets/utils/checkgreen.svg'
+import { ReactComponent as CheckRed } from '../../Assets/utils/checkred.svg'
 import swal from 'sweetalert'
 
 Modal.defaultStyles.overlay.backgroundColor = '#f28e00bb'
@@ -175,7 +177,7 @@ class Storage extends Component {
                       <table className='stotable'>
                         <thead className='stotablehead'>
                           <tr>
-                            <td>Name</td>
+                            <td style={{ fontWeight: 'bold' }}>Name</td>
                             <td style={{ width: 80 }}>Bootable</td>
                             <td style={{ width: 80 }}>Private</td>
                             <td style={{ width: 80 }}>Read Only</td>
@@ -196,11 +198,11 @@ class Storage extends Component {
                               return (
                                 <tr key={i}>
                                   <td>{storage.name}</td>
-                                  <td style={{ width: 80 }}>{storage.bootable ? 'Yes' : 'No'}</td>
-                                  <td style={{ width: 80 }}>{storage.private ? 'Yes' : 'No'}</td>
-                                  <td style={{ width: 80 }}>{storage.readonly ? 'Yes' : 'No'}</td>
-                                  <td style={{ width: 80 }}>{storage.shareable ? 'Yes' : 'No'}</td>
-                                  <td style={{ width: 80 }}>{storage.own ? 'Yes' : 'No'}</td>
+                                  <td style={{ width: 80 }}>{storage.bootable ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
+                                  <td style={{ width: 80 }}>{storage.private ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
+                                  <td style={{ width: 80 }}>{storage.readonly ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
+                                  <td style={{ width: 80 }}>{storage.shareable ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
+                                  <td style={{ width: 80 }}>{storage.own ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
                                   <td style={{ width: 80 }}>{Utils.formatBytes(storage.size)}</td>
                                   <td style={{ maxWidth: 200, overflow: 'scroll' }}>{storage.volumeID}</td>
                                   <td style={{ display: 'none' }}>{storage.serverurl}</td>
@@ -243,12 +245,12 @@ class Storage extends Component {
                             publicStorages && publicStorages.length > 0 && publicStorages.map((storage, i) => {
                               return (
                                 <tr key={i}>
-                                  <td>{storage.name}</td>
-                                  <td style={{ width: 80 }}>{storage.bootable ? 'Yes' : 'No'}</td>
-                                  <td style={{ width: 80 }}>{storage.private ? 'Yes' : 'No'}</td>
-                                  <td style={{ width: 80 }}>{storage.readonly ? 'Yes' : 'No'}</td>
-                                  <td style={{ width: 80 }}>{storage.shareable ? 'Yes' : 'No'}</td>
-                                  <td style={{ width: 80 }}>{storage.own ? 'Yes' : 'No'}</td>
+                                  <td style={{ fontWeight: 'bold' }}>{storage.name}</td>
+                                  <td style={{ width: 80 }}>{storage.bootable ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
+                                  <td style={{ width: 80 }}>{storage.private ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
+                                  <td style={{ width: 80 }}>{storage.readonly ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
+                                  <td style={{ width: 80 }}>{storage.shareable ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
+                                  <td style={{ width: 80 }}>{storage.own ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
                                   <td style={{ width: 80 }}>{Utils.formatBytes(storage.size)}</td>
                                   <td style={{ maxWidth: 200, overflow: 'scroll' }}>{storage.volumeID}</td>
                                   <td style={{ display: 'none' }}>{storage.serverurl}</td>

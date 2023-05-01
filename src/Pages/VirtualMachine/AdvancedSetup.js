@@ -61,8 +61,6 @@ class AdvancedSetup extends Component {
     let next = true
 
     if (page === NAME_PAGE) {
-      console.log(name)
-
       if (!/^[a-zA-Z0-9_-]*$/.test(name) || name === '') {
         swal('Info', 'Please, insert a VM name before to continue', 'info', {
           buttons: false,
@@ -71,22 +69,12 @@ class AdvancedSetup extends Component {
         next = false
       }
     } else if (page === CPU_PAGE) {
-      const { cores, overprovision, archsList } = cpu
-      console.log(cpu)
+      const {
+        // cores, overprovision,
+        archsList
+      } = cpu
 
-      if (cores <= 0 || cores > 8) {
-        swal('Info', 'Please, select at least 1 core for the CPU', 'info', {
-          buttons: false,
-          timer: 3000
-        })
-        next = false
-      } else if (overprovision <= 0 || overprovision > 8) {
-        swal('Info', 'Please, select at least 1 Overprovision', 'info', {
-          buttons: false,
-          timer: 3000
-        })
-        next = false
-      } else if (archsList.length === 0) {
+      if (archsList.length === 0) {
         swal('Info', 'Please, select at least 1 Architecture', 'info', {
           buttons: false,
           timer: 3000
@@ -181,18 +169,23 @@ class AdvancedSetup extends Component {
         swal('Success', 'Virtual machine registered successfully!', 'success', {
           buttons: false,
           timer: 3000
+        }).then(() => {
+          window.location.href = '/vmlist'
         })
-        window.location.href = '/vmlist'
       } else {
         swal('Error', 'Could not register the new virtual machine', 'error', {
           buttons: false,
           timer: 3000
+        }).then(() => {
+          window.location.href = '/newvm'
         })
       }
     } else {
       swal('Error', 'Could not allocate the new virtual machine', 'error', {
         buttons: false,
         timer: 3000
+      }).then(() => {
+        window.location.href = '/newvm'
       })
     }
   }
@@ -224,21 +217,25 @@ class AdvancedSetup extends Component {
             {page === RESUME_PAGE && <Resume register={async () => await this.register()} />}
 
             <div className='advtools'>
-              {page > 1 && <button className='advprevious' onClick={() => this.previous()}>Previous</button>}
-              <div className='advdotsbox'>
-                <div className='advdots'>
-                  <div className='advdot' style={{ backgroundColor: page >= 1 ? '#f28e00' : 'lightgray' }}><div className='advdotinner' /></div>
-                  <div className='advdot' style={{ backgroundColor: page >= 2 ? '#f28e00' : 'lightgray' }}><div className='advdotinner' /></div>
-                  <div className='advdot' style={{ backgroundColor: page >= 3 ? '#f28e00' : 'lightgray' }}><div className='advdotinner' /></div>
-                  <div className='advdot' style={{ backgroundColor: page >= 4 ? '#f28e00' : 'lightgray' }}><div className='advdotinner' /></div>
-                  <div className='advdot' style={{ backgroundColor: page >= 5 ? '#f28e00' : 'lightgray' }}><div className='advdotinner' /></div>
-                  <div className='advdot' style={{ backgroundColor: page >= 6 ? '#f28e00' : 'lightgray' }}><div className='advdotinner' /></div>
-                  <div className='advdot' style={{ backgroundColor: page >= 7 ? '#f28e00' : 'lightgray' }}><div className='advdotinner' /></div>
-                  {/* <div className='advdot' style={{ backgroundColor: page >= 8 ? '#f28e00' : 'lightgray' }}><div className='advdotinner' /></div> */}
-                </div>
-                <span>{page} of {RESUME_PAGE} completed</span>
-              </div>
-              <button className='advnext' onClick={() => this.next()}>Next</button>
+              {page > 1 && page !== RESUME_PAGE && <button className='advprevious' onClick={() => this.previous()}>Previous</button>}
+              {page === 1 && page !== RESUME_PAGE && <div className='advpreviousvoid' />}
+              {
+                page !== RESUME_PAGE &&
+                  <div className='advdotsbox'>
+                    <div className='advdots'>
+                      <div className='advdot' style={{ backgroundColor: page >= 1 ? '#f28e00' : 'lightgray' }}><div className='advdotinner' /></div>
+                      <div className='advdot' style={{ backgroundColor: page >= 2 ? '#f28e00' : 'lightgray' }}><div className='advdotinner' /></div>
+                      <div className='advdot' style={{ backgroundColor: page >= 3 ? '#f28e00' : 'lightgray' }}><div className='advdotinner' /></div>
+                      <div className='advdot' style={{ backgroundColor: page >= 4 ? '#f28e00' : 'lightgray' }}><div className='advdotinner' /></div>
+                      <div className='advdot' style={{ backgroundColor: page >= 5 ? '#f28e00' : 'lightgray' }}><div className='advdotinner' /></div>
+                      <div className='advdot' style={{ backgroundColor: page >= 6 ? '#f28e00' : 'lightgray' }}><div className='advdotinner' /></div>
+                      <div className='advdot' style={{ backgroundColor: page >= 7 ? '#f28e00' : 'lightgray' }}><div className='advdotinner' /></div>
+                      {/* <div className='advdot' style={{ backgroundColor: page >= 8 ? '#f28e00' : 'lightgray' }}><div className='advdotinner' /></div> */}
+                    </div>
+                    <span>{page} of {RESUME_PAGE} completed</span>
+                  </div>
+              }
+              {page !== RESUME_PAGE && <button className='advnext' onClick={() => this.next()}>Next</button>}
             </div>
           </div>
         </div>

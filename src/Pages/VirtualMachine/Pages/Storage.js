@@ -1,6 +1,10 @@
 import React, { Component } from 'reactn'
 import { Api, persistState } from '../../../Services'
-import { Config } from '../../../Global'
+import { Config, Utils } from '../../../Global'
+import { CustomSelect } from '../../../Components'
+import { ReactComponent as CheckGreen } from '../../../Assets/utils/checkgreen.svg'
+import { ReactComponent as CheckRed } from '../../../Assets/utils/checkred.svg'
+import '../css/Pages.css'
 
 class Storage extends Component {
   constructor (props) {
@@ -20,12 +24,12 @@ class Storage extends Component {
 
     const { advancedSetup: { volumeIds } } = this.global
     const storagesSelected = []
-    volumeIds.forEach(volume => {
+    volumeIds && volumeIds.length > 0 && volumeIds.forEach(volume => {
       storagesSelected.push(storages.filter(storage => storage.volumeID === volume.vid)[0])
     })
 
     this.setState({
-      storagesIds: volumeIds,
+      storagesIds: volumeIds || [],
       storagesSelected
     })
   }
@@ -44,9 +48,9 @@ class Storage extends Component {
     }
   }
 
-  async updateState () {
+  async updateState (storageSelected) {
     const { advancedSetup } = this.global
-    const { storages, storagesIds, storageSelected, storagesSelected } = this.state
+    const { storages, storagesIds, storagesSelected } = this.state
 
     const exists = storagesSelected.filter(storage => storage.volumeID === storageSelected).length > 0
     if (exists) {
@@ -73,6 +77,21 @@ class Storage extends Component {
     }, persistState)
   }
 
+  async removeStorage (volumeID) {
+    const { storagesSelected } = this.state
+    const updated = [...storagesSelected.filter(s => s.volumeID !== volumeID)]
+    const volumeIds = updated.map(item => { return { vid: item.volumeID } })
+
+    this.setState({ volumeIds, storagesSelected: updated })
+
+    this.props.setVolumeIds({ volumeIds })
+    await this.setGlobal({
+      advancedSetup: {
+        volumeIds
+      }
+    }, persistState)
+  }
+
   render () {
     const { storages, storagesSelected } = this.state
 
@@ -80,21 +99,18 @@ class Storage extends Component {
       <div>
         <h2>Storage setup</h2>
 
-        <select
-          onChange={async e => {
-            this.setState({ storageSelected: e.target.value })
-          }}
-        >
-          <option>...</option>
-          {
-            storages && storages.length > 0 && storages.map((storage, i) =>
-              <option key={i} value={storage.volumeID}>{storage.name}</option>
-            )
-          }
-        </select>
-        <br />
-        <br />
-        <button onClick={async () => await this.updateState()}>Add this volume</button>
+        <div className='advstoselect'>
+          <CustomSelect
+            options={storages.map(s => s.name)}
+            onChange={async (event, storageSelected) => {
+              if (storageSelected) {
+                const selected = storages.filter(storage => storage.name === storageSelected)[0].volumeID
+                this.setState({ storageSelected: selected })
+                await this.updateState(selected)
+              }
+            }}
+          />
+        </div>
         <br />
         <br />
         <div>
@@ -102,18 +118,19 @@ class Storage extends Component {
           <table>
             <thead>
               <tr>
-                <td>Bootable</td>
                 <td>Name</td>
+                <td>Bootable</td>
                 <td>Private</td>
                 <td>Read Only</td>
                 <td>Shareable</td>
+                <td>Own</td>
                 <td>Size</td>
                 <td>Volume ID</td>
-                <td>Server URL</td>
-                <td>Server</td>
-                <td>Own</td>
+                {/* <td>Server URL</td> */}
+                {/* <td>Server</td> */}
                 <td>Servers N.</td>
-                <td>Servers</td>
+                {/* <td>Servers</td> */}
+                <td>Remove</td>
               </tr>
             </thead>
             <tbody>
@@ -121,18 +138,21 @@ class Storage extends Component {
                 storagesSelected && storagesSelected.length > 0 && storagesSelected.map((storage, i) => {
                   return (
                     <tr key={i}>
-                      <td>{storage.bootable ? 'Yes' : 'No'}</td>
                       <td>{storage.name}</td>
-                      <td>{storage.private ? 'Yes' : 'No'}</td>
-                      <td>{storage.readonly ? 'Yes' : 'No'}</td>
-                      <td>{storage.shareable ? 'Yes' : 'No'}</td>
-                      <td>{storage.size}</td>
+                      <td>{storage.bootable ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
+                      <td>{storage.private ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
+                      <td>{storage.readonly ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
+                      <td>{storage.shareable ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
+                      <td>{storage.own ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
+                      <td>{Utils.formatBytes(storage.size)}</td>
                       <td>{storage.volumeID}</td>
-                      <td>{storage.serverurl}</td>
-                      <td>{storage.server}</td>
-                      <td>{storage.own ? 'Yes' : 'No'}</td>
+                      {/* <td>{storage.serverurl}</td> */}
+                      {/* <td>{storage.server}</td> */}
                       <td>{storage.nservers}</td>
-                      <td>{storage.servers}</td>
+                      {/* <td>{storage.servers}</td> */}
+                      <td>
+                        <button className='bn28' onClick={() => this.removeStorage(storage.volumeID)}>Remove</button>
+                      </td>
                     </tr>
                   )
                 })

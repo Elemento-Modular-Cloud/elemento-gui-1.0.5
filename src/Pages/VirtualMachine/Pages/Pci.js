@@ -1,6 +1,9 @@
 import React, { Component } from 'reactn'
 import { models, vendors } from '../../../Global/Model'
 import { persistState } from '../../../Services'
+import { CustomSelect } from '../../../Components'
+import '../css/Pages.css'
+import swal from 'sweetalert'
 
 const DEFAULT_NONE_ID = '0000'
 
@@ -23,9 +26,11 @@ class Pci extends Component {
     await this.updateState([])
   }
 
-  async addPci () {
+  async addPci (modelId) {
     try {
-      const { vendorId, modelId, pci } = this.state
+      const { vendorId, pci } = this.state // modelId
+      if (pci.filter(p => p.modelId === modelId).length > 0) { return }
+
       const pcis = [
         ...pci,
         {
@@ -39,7 +44,10 @@ class Pci extends Component {
       this.setState({ pci: pcis })
       await this.updateState(pcis)
     } catch (error) {
-      window.alert('Error during model selection, please select it again')
+      swal('Error', 'Error during model selection, please select it again', 'error', {
+        buttons: false,
+        timer: 3000
+      })
     }
   }
 
@@ -69,63 +77,72 @@ class Pci extends Component {
       <div>
         <h2>Pci setup</h2>
 
-        <h3>Vendor</h3>
-        <select onChange={e => this.setState({ vendorId: e.target.value })}>
+        <div className='pciselectors'>
+          <div className='pciselectvendor'>
+            <h3>Vendor</h3>
+            <CustomSelect
+              style={{ windth: '100%' }}
+              options={Object.keys(vendors).sort((a, b) => a - b).map(item => `${item} @ ${vendors[item]}`)}
+              onChange={(event, vendor) => {
+                if (vendor) {
+                  const splitted = vendor.split(' @ ')
+                  const vendorId = splitted[0]
+                  this.setState({ vendorId })
+                }
+              }}
+            />
+          </div>
+
           {
-            vendors && Object.keys(vendors).sort((a, b) => a - b).map((item, i) =>
-              <option key={i} value={item}>{vendors[item]}</option>)
+            vendorId !== DEFAULT_NONE_ID &&
+              <div className='pciselectmodel'>
+                <h3>Model</h3>
+                <CustomSelect
+                  options={models[Object.keys(models).filter(item => item === vendorId)[0]].map(item => `${item[1]} @ ${item[0]}`)}
+                  onChange={async (event, model) => {
+                    if (model) {
+                      const splitted = model.split(' @ ')
+                      const modelId = splitted[0]
+                      this.setState({ modelId })
+                      await this.addPci(modelId)
+                    }
+                  }}
+                />
+              </div>
           }
-        </select>
-        <br />
+        </div>
 
         {
-          vendorId !== DEFAULT_NONE_ID &&
-            <div>
-              <h3>Model</h3>
-              <select onChange={e => this.setState({ modelId: e.target.value })}>
-                <option value={DEFAULT_NONE_ID}>None</option>
+          pci && pci.length > 0 &&
+            <table className='pcitable'>
+              <thead>
+                <tr>
+                  <td>Vedor ID</td>
+                  <td>Vedor</td>
+                  <td>Model ID</td>
+                  <td>Model</td>
+                  <td>Delete</td>
+                </tr>
+              </thead>
+              <tbody>
                 {
-                  models && models[Object.keys(models).filter(item => item === vendorId)[0]].map((item, i) =>
-                    <option key={i} value={item[1]}>{item[0]}</option>)
+                  pci && pci.length > 0 && pci.map((item, i) => {
+                    return (
+                      <tr key={i}>
+                        <td>{item.vendorId}</td>
+                        <td>{item.vendor}</td>
+                        <td>{item.modelId}</td>
+                        <td>{item.model}</td>
+                        <td>
+                          <button className='bn632-hover bn28' onClick={() => this.removePci(item.modelId)}>Delete</button>
+                        </td>
+                      </tr>
+                    )
+                  })
                 }
-              </select>
-              <br />
-              <br />
-
-              <button onClick={async () => await this.addPci()}>Add</button>
-            </div>
+              </tbody>
+            </table>
         }
-        <br />
-        <br />
-
-        <table>
-          <thead>
-            <tr>
-              <td>Vedor ID</td>
-              <td>Vedor</td>
-              <td>Model ID</td>
-              <td>Model</td>
-              <td>Delete</td>
-            </tr>
-          </thead>
-          <tbody>
-            {
-              pci && pci.length > 0 && pci.map((item, i) => {
-                return (
-                  <tr key={i}>
-                    <td>{item.vendorId}</td>
-                    <td>{item.vendor}</td>
-                    <td>{item.modelId}</td>
-                    <td>{item.model}</td>
-                    <td>
-                      <button onClick={() => this.removePci(item.modelId)}>Delete</button>
-                    </td>
-                  </tr>
-                )
-              })
-            }
-          </tbody>
-        </table>
       </div>
     )
   }

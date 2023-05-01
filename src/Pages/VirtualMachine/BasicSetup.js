@@ -63,20 +63,6 @@ class BasicSetup extends Component {
     }
   }
 
-  toRGB (s) {
-    let hash = 0
-    if (s.length === 0) return hash
-    for (let i = 0; i < s.length; i++) {
-      hash = s.charCodeAt(i) + ((hash << 5) - hash)
-      hash = hash & hash
-    }
-    const rgb = [0, 0, 0]
-    for (let j = 0; j < 3; j++) {
-      rgb[j] = (hash >> (j * 8)) & 255
-    }
-    return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`
-  }
-
   async registerVirutalMachine () {
     const {
       name,
@@ -316,7 +302,7 @@ class BasicSetup extends Component {
                       <div className='bastopname'>
                         <p>Template {template.info.name}</p>
                       </div>
-                      <div className='bastoplogo' style={{ backgroundColor: this.toRGB(template.info.name) }}>
+                      <div className='bastoplogo' style={{ backgroundColor: Utils.toRGB(template.info.name) }}>
                         <div>
                           <div className='basspec'><span>{template.cpu.slots}C</span><span>{Utils.formatBytes(template.ram.ramsize * 1000000)}</span></div>
                           <span className='basspectitle'>{template.info.name.substr(0, 2)}</span>
