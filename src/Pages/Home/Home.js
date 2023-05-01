@@ -28,6 +28,12 @@ class Home extends Component {
       const { username, password } = this.global
       Api.createClient(Config.API_URL_AUTHENT)
       const res = await Api.get('/login', { username, password })
+      if (!res.ok) {
+        swal('Error', 'Could not login to the services. Please, try again later.', 'error', {
+          buttons: false,
+          timer: 3000
+        })
+      }
       console.log(res.ok ? 'Logged In' : 'Logged out')
     } catch (error) {
       swal('Error', 'Could not connect to remote services', 'error', {

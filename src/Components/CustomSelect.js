@@ -5,6 +5,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete'
 export default function CustomSelect (props) {
   return (
     <Autocomplete
+      style={props.style}
       multi={props.multi}
       id='checkboxes-tags-demo'
       options={props.options}
