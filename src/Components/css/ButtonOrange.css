@@ -8,13 +8,20 @@
   padding: 30px;
   position: relative;
   overflow: hidden;
-  /* display: flex;
-  flex-direction: column;
-  justify-content: center; */
-
   -webkit-box-shadow: 10px 10px 40px 3px rgba(95, 95, 95, 0.75);
   -moz-box-shadow: 10px 10px 40px 3px rgba(95, 95, 95, 0.75);
   box-shadow: 10px 10px 40px 3px rgba(95, 95, 95, 0.75);
+}
+.btncardorange:hover {
+  cursor: grab;
+  -webkit-box-shadow: 10px 10px 40px 3px #f28e00aa;
+  -moz-box-shadow: 10px 10px 40px 3px #f28e00aa;
+  box-shadow: 10px 10px 40px 3px #f28e00aa;
+}
+.btncardorange:hover #svgsett {
+  animation-name: rotate;
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
 }
 #svgicon {
   width: 80px;
@@ -104,5 +111,14 @@
   .btncardorange {
     min-width: 50px;
     min-height: 250px;
+  }
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
   }
 }
