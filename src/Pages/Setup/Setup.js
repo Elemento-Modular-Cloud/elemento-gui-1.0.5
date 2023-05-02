@@ -16,14 +16,25 @@ class Setup extends Component {
     super(props)
     this.state = {
       chunk: 0,
-      downloaded: true,
-      installed: true,
+      downloaded: false,
+      installed: false,
       loading: false
     }
   }
 
   wait (milliseconds) {
     return new Promise(resolve => setTimeout(resolve, milliseconds))
+  }
+
+  async checkServicesClean () {
+    Api.createClient(Config.API_INTERNALSVC)
+    const res = await Api.get('/services')
+
+    if (res.ok && res.data && res.data.matcher && res.data.storage && res.data.network && res.data.authent) {
+      return true
+    } else {
+      return false
+    }
   }
 
   async checkServices () {
@@ -37,11 +48,11 @@ class Setup extends Component {
       res.ok && res.data &&
       res.data.matcher && res.data.storage && res.data.network && res.data.authent
     ) {
-      this.setState({ installed: true })
+      this.setState({ downloaded: true, installed: true })
     } else {
-      swal('Error', 'Services are not reachable. Please contact support.', 'error', {
+      swal('Info', 'Services are not reachable. Please, check that the daemons are running and try again later.', 'info', {
         buttons: false,
-        timer: 3000
+        timer: 4000
       })
     }
     this.setState({ loading: false })
@@ -49,6 +60,7 @@ class Setup extends Component {
 
   async componentDidUpdate () {
     if (!socket) {
+      console.log('open socket')
       socket = io(Config.API_INTERNALSVC)
     }
   }
@@ -58,26 +70,39 @@ class Setup extends Component {
       socket.on('connect', () => {
         console.log('connected to server')
       })
-
-      socket.on('chunk', async (data) => {
-        const chunk = data.chunk
-        this.setState({ chunk })
-
-        if (chunk === 100) {
-          await this.wait(2000)
-          this.setState({ downloaded: true, loading: false })
-        }
-      })
     }
+    await this.checkServices()
   }
 
   async downloadDaemons () {
     this.setState({ loading: true })
+
+    socket.on('chunk', async (data) => {
+      const chunk = data.chunk
+      this.setState({ chunk })
+
+      if (chunk === 100) {
+        await this.wait(2000)
+        this.setState({ downloaded: true, loading: false })
+        const refresh = setInterval(async () => {
+          const running = await this.checkServicesClean()
+          if (running) {
+            this.setState({ installed: true })
+          }
+        }, 2000)
+        this.setState({ refresh })
+      }
+    })
+
     Api.createClient(Config.API_INTERNALSVC)
-    await Api.get('/download')
+    const res = await Api.get('/download')
+    console.log(res.ok)
   }
 
   async continue () {
+    const { refresh } = this.state
+    clearInterval(refresh)
+
     this.setState({ loading: true })
     await this.setGlobal({ setup: true }, persistState)
     await this.props.postSetup()
@@ -111,8 +136,11 @@ class Setup extends Component {
                   <span>Welcome to the Elemento Setup board!</span><br /><br />
                   <span>Before to use the Elemento app we must to setup some services useful to connect you to the Elemento Cloud services.</span><br />
                   <span>Please, click on Download button and next open the installer file. Then come here again and proceed to the next step!</span><br /><br />
-                  {!loading && <button className='downloadbutton' onClick={async () => await this.downloadDaemons()}>Download services</button>}
-                  {loading && <div className='lds-roller'><div /><div /><div /><div /><div /><div /><div /><div /></div>}
+                  <div style={{ display: 'flex', flexDirection: 'row' }}>
+                    {!loading && <button className='downloadbutton' onClick={async () => await this.downloadDaemons()}>Download services</button>}
+                    {!loading && <button className='downloadbutton' style={{ marginLeft: 20 }} onClick={async () => await this.checkServices()}>Check services</button>}
+                  </div>
+                  {loading && chunk === 0 && <div className='lds-roller'><div /><div /><div /><div /><div /><div /><div /><div /></div>}
                 </>
             }
             {
@@ -125,9 +153,8 @@ class Setup extends Component {
             {
               downloaded && !installed &&
                 <>
-                  <span>Please, before to continue click on the button below to check if the services are correctly installed.</span><br /><br />
-                  {!loading && <button className='downloadbutton' onClick={async () => await this.checkServices()}>Check services</button>}
-                  {loading && <div className='lds-roller'><div /><div /><div /><div /><div /><div /><div /><div /></div>}
+                  <span>Please, execute the daemons software so we could connect and let you log into the Elemento Cloud App.</span><br /><br />
+                  <div className='lds-roller'><div /><div /><div /><div /><div /><div /><div /><div /></div>
                 </>
             }
             {

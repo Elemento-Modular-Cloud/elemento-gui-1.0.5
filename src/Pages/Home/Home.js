@@ -32,6 +32,10 @@ class Home extends Component {
         swal('Error', 'Could not login to the services. Please, try again later.', 'error', {
           buttons: false,
           timer: 3000
+        }).then(async () => {
+          await this.setGlobal({ loggedIn: false }, persistState)
+          await clearState()
+          window.location.reload()
         })
       }
       console.log(res.ok ? 'Logged In' : 'Logged out')
@@ -91,7 +95,7 @@ class Home extends Component {
                 <span>Logout</span>
               </div>
 
-              <div className='btnhelp' onClick={() => this.logout()}>
+              <div className='btnhelp'>
                 <Help />
                 <span>Help</span>
               </div>

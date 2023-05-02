@@ -1,4 +1,5 @@
-const API_BASE_ADDR = 'http://10.164.0.3'
+const API_BASE_ADDR = 'http://127.0.0.1'
+// const API_BASE_ADDR = 'http://10.164.0.3'
 
 const Config = {
   API_INTERNALSVC: 'http://localhost:3456/',

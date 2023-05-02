@@ -3,9 +3,14 @@ const http = require('http')
 const socketIo = require('socket.io')
 const cors = require('cors')
 const apisauce = require('apisauce')
+const path = require('path')
+const fs = require('fs')
+const https = require('https')
+const os = require('os')
 
 const API_PORT = 3456
-const API_BASE_ADDR = 'http://10.164.0.3'
+// const API_BASE_ADDR = 'http://10.164.0.3'
+const API_BASE_ADDR = 'http://127.0.0.1'
 const API_URL_MATCHER = `${API_BASE_ADDR}:17777/`
 const API_URL_STORAGE = `${API_BASE_ADDR}:27777/`
 const API_URL_NETWORK = `${API_BASE_ADDR}:37777/`
@@ -46,10 +51,18 @@ io.on('connection', (socket) => {
 })
 
 app.get('/download', async (req, res) => {
-  const fs = require('fs')
-  const https = require('https')
-  const url = 'https://repo.elemento.cloud/app/Elemento_daemons.dmg'
-  const filepath = '/Users/francescochiapello/Downloads/Elemento_daemons.dmg'
+  let url
+  let filepath
+
+  if (os.type() === 'Windows_NT') {
+    url = 'https://repo.elemento.cloud/app/Elemento_daemons.zip'
+    filepath = path.join(os.homedir(), 'Downloads', 'Elemento_daemons.zip')
+  } else if (os.type() === 'Darwin') {
+    url = 'https://repo.elemento.cloud/app/Elemento_daemons.dmg'
+    filepath = path.join(os.homedir(), 'Downloads', 'Elemento_daemons.dmg')
+  } else {
+    return 'Error: operating system not supported'
+  }
 
   https.get(url, (response) => {
     if (response.statusCode !== 200) {
