@@ -38,7 +38,6 @@ class Home extends Component {
           window.location.reload()
         })
       }
-      console.log(res.ok ? 'Logged In' : 'Logged out')
     } catch (error) {
       swal('Error', 'Could not connect to remote services', 'error', {
         buttons: false,

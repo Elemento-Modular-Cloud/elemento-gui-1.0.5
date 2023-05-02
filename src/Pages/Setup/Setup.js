@@ -60,16 +60,13 @@ class Setup extends Component {
 
   async componentDidUpdate () {
     if (!socket) {
-      console.log('open socket')
       socket = io(Config.API_INTERNALSVC)
     }
   }
 
   async componentDidMount () {
     if (socket) {
-      socket.on('connect', () => {
-        console.log('connected to server')
-      })
+      socket.on('connect', () => {})
     }
     await this.checkServices()
   }
@@ -96,7 +93,14 @@ class Setup extends Component {
 
     Api.createClient(Config.API_INTERNALSVC)
     const res = await Api.get('/download')
-    console.log(res.ok)
+    if (!res.ok) {
+      swal('Error', 'Could not download the daemons executable. Please try again later.', 'error', {
+        buttons: false,
+        timer: 4000
+      }).then(() => {
+        this.setState({ loading: false })
+      })
+    }
   }
 
   async continue () {
