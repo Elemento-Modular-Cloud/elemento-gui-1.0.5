@@ -1,3 +1,5 @@
+process.env.DEBUG = ''
+
 const express = require('express')
 const http = require('http')
 const socketIo = require('socket.io')
@@ -23,24 +25,33 @@ const io = socketIo(server, { cors: { origin: '*' } })
 app.use(cors({ origin: '*' }))
 
 app.get('/services', async (req, res) => {
-  const client = apisauce.create({
-    timeout: 1000,
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  })
+  try {
+    const client = apisauce.create({
+      timeout: 1000,
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
 
-  const matcher = await client.get(API_URL_MATCHER)
-  const storage = await client.get(API_URL_STORAGE)
-  const network = await client.get(API_URL_NETWORK)
-  const authent = await client.get(API_URL_AUTHENT)
+    const matcher = await client.get(API_URL_MATCHER)
+    const storage = await client.get(API_URL_STORAGE)
+    const network = await client.get(API_URL_NETWORK)
+    const authent = await client.get(API_URL_AUTHENT)
 
-  res.send({
-    matcher: matcher.ok,
-    storage: storage.ok,
-    network: network.ok,
-    authent: authent.ok
-  })
+    res.send({
+      matcher: matcher.ok,
+      storage: storage.ok,
+      network: network.ok,
+      authent: authent.ok
+    })
+  } catch (error) {
+    res.send({
+      matcher: false,
+      storage: false,
+      network: false,
+      authent: false
+    })
+  }
 })
 
 io.on('connection', (socket) => {
@@ -89,20 +100,15 @@ app.get('/download', async (req, res) => {
     })
 
     file.on('error', (err) => {
-      console.error('File error:', err)
       return err
     })
 
     response.on('error', (err) => {
-      console.error('Response error:', err)
       return err
     })
   }).on('error', (err) => {
-    console.error('Request error:', err)
     return err
   })
 })
 
-server.listen(API_PORT, () => {
-  console.log(`Server started on port ${API_PORT}`)
-})
+server.listen(API_PORT, () => {})
