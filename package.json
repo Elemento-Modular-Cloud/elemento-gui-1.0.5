@@ -4,7 +4,8 @@
   "description": "Elemento Cloud App",
   "version": "0.1.0",
   "private": true,
-  "main": "public/electron",
+  "main": "public/electron.js",
+  "homepage": "./",
   "dependencies": {
     "@emotion/react": "^11.10.8",
     "@emotion/styled": "^11.10.8",
@@ -41,14 +42,43 @@
     "start": "react-scripts start",
     "lint": "standard --verbose | snazzy",
     "lint:fix": "standard --fix",
-    "build": "react-scripts build",
+    "build": "GENERATE_SOURCEMAP=false react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "electron:start": "electron .",
+    "electron:start": "yarn build && electron . --noDevServer",
     "electron:pack": "electron-builder --dir",
     "electron:post": "electron-builder install-app-deps",
-    "electron:dist": "electron-builder",
+    "electron:dist": "yarn build && electron-builder",
+    "electron:dist-windows": "yarn build && electron-builder --windows",
     "electron:dist-arm": "electron-builder --armv7l"
+  },
+  "build": {
+    "productName": "Elemento Cloud App",
+    "appId": "app.elemento.cloud",
+    "includeSubNodeModules": "true",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "./build/**/*",
+      "node_modules/**/*"
+    ],
+    "mac": {
+      "category": "app.elemento.cloud",
+      "icon": "build/icon.icns"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ],
+      "icon": "build/icon.ico"
+    }
   },
   "eslintConfig": {
     "extends": [
