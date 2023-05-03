@@ -41,8 +41,8 @@ class Storage extends Component {
     const res = await Api.get('/accessible')
 
     if (res.ok && res.data && res.data.length > 0) {
-      const personalStorages = res.data.filter(storage => storage.own)
-      const publicStorages = res.data.filter(storage => !storage.own)
+      const personalStorages = res.data ? res.data.filter(storage => storage.own) : []
+      const publicStorages = res.data ? res.data.filter(storage => !storage.own) : []
 
       this.setState({ personalStorages, publicStorages })
     }
@@ -177,7 +177,7 @@ class Storage extends Component {
                       <table className='stotable'>
                         <thead className='stotablehead'>
                           <tr>
-                            <td style={{ fontWeight: 'bold' }}>Name</td>
+                            <td>Name</td>
                             <td style={{ width: 80 }}>Bootable</td>
                             <td style={{ width: 80 }}>Private</td>
                             <td style={{ width: 80 }}>Read Only</td>
@@ -197,7 +197,7 @@ class Storage extends Component {
                             personalStorages && personalStorages.length > 0 && personalStorages.map((storage, i) => {
                               return (
                                 <tr key={i}>
-                                  <td>{storage.name}</td>
+                                  <td style={{ fontWeight: 'bold' }}>{storage.name}</td>
                                   <td style={{ width: 80 }}>{storage.bootable ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
                                   <td style={{ width: 80 }}>{storage.private ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
                                   <td style={{ width: 80 }}>{storage.readonly ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>

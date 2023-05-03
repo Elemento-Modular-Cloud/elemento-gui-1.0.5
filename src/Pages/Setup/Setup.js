@@ -60,15 +60,19 @@ class Setup extends Component {
 
   async componentDidUpdate () {
     if (!socket) {
-      socket = io(Config.API_INTERNALSVC)
+      try {
+        socket = io(Config.API_INTERNALSVC)
+      } catch (error) {}
     }
   }
 
   async componentDidMount () {
-    if (socket) {
-      socket.on('connect', () => {})
-    }
-    await this.checkServices()
+    try {
+      if (socket) {
+        socket.on('connect', () => {})
+      }
+      await this.checkServices()
+    } catch (error) {}
   }
 
   async downloadDaemons () {
@@ -92,15 +96,7 @@ class Setup extends Component {
     })
 
     Api.createClient(Config.API_INTERNALSVC)
-    const res = await Api.get('/download')
-    if (!res.ok) {
-      swal('Error', 'Could not download the daemons executable. Please try again later.', 'error', {
-        buttons: false,
-        timer: 4000
-      }).then(() => {
-        this.setState({ loading: false })
-      })
-    }
+    await Api.get('/download')
   }
 
   async continue () {

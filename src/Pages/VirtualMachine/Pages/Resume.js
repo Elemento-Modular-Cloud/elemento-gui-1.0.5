@@ -20,6 +20,7 @@ class Resume extends Component {
 
   render () {
     const { advancedSetup: x, loading } = this.state
+    const compactName = Utils.compactString(x.name)
 
     return (
       <div className='resbody'>
@@ -57,10 +58,10 @@ class Resume extends Component {
                 <span className='resitemtitle'>PCI</span><span className='resitemvalue'>{x.pci && x.pci.length > 0 ? x.pci.map(pci => `${pci.vendor} - ${pci.model}`).join(', ') : 'None'}</span>
               </div>
 
-              <div className='restoplogo' style={{ backgroundColor: Utils.toRGB(Utils.compactString(x.name)) }}>
+              <div className='restoplogo' style={{ backgroundColor: Utils.toRGB(compactName) }}>
                 <div className='reslogo'>
                   <div className='resspec'><span>{x.cores}C</span><span>{x.size}</span></div><br />
-                  <span className='resspectitle'>{Utils.compactString(x.name)}</span><br />
+                  <span className='resspectitle'>{compactName}</span><br />
                   <span className='resspecname'>{x.name}</span>
                 </div>
               </div>

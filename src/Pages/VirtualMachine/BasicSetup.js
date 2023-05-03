@@ -196,7 +196,7 @@ class BasicSetup extends Component {
                 <div className='basmachine'>
                   <span>Select a template:</span>
                   <CustomSelect
-                    options={templates.map(t => t.info.name)}
+                    options={templates ? templates.map(t => t.info.name) : []}
                     onChange={(event, template) => {
                       this.setState({ template: templates.filter(t => t.info.name === template)[0] })
                     }}
@@ -225,7 +225,7 @@ class BasicSetup extends Component {
               <div className='basstorage'>
                 <span className='bascaption'>Storage Selection</span>
                 <CustomSelect
-                  options={storages.map(s => s.name)}
+                  options={storages ? storages.map(s => s.name) : []}
                   onChange={(event, storageSelected) => {
                     if (storageSelected) {
                       const { storageSelected: stosel } = this.state

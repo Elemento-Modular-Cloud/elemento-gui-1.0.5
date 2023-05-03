@@ -101,7 +101,7 @@ class Storage extends Component {
 
         <div className='advstoselect'>
           <CustomSelect
-            options={storages.map(s => s.name)}
+            options={storages ? storages.map(s => s.name) : []}
             onChange={async (event, storageSelected) => {
               if (storageSelected) {
                 const selected = storages.filter(storage => storage.name === storageSelected)[0].volumeID

@@ -101,55 +101,37 @@ class AdvancedSetup extends Component {
   }
 
   async register () {
-    const {
-      name,
-      cpu: {
-        cores: slots,
-        overprovision,
-        archsList,
-        flags
-      },
-      allowSMT,
-      memory: {
-        size,
-        ecc: reqECC
-      },
-      os: {
-        os
-      },
-      volumeIds: {
-        volumeIds: volumes
-      },
-      pci: {
-        pci
-      }
-    } = this.state
-
-    const memories = getMemories()
-    const ramsize = memories.filter(memory => memory.label === size)[0].amount
-    const archs = archsList.map(arch => arch.value)
-
-    Api.createClient(Config.API_URL_MATCHER)
-    const res = await Api.post('/canallocate', {
-      slots,
-      overprovision,
-      allowSMT,
-      archs,
-      flags,
-      ramsize,
-      reqECC,
-      misc: {
-        os_family: os,
-        os_flavour: 'pop'
-      },
-      pci
-    })
-
-    if (res.ok) {
-      const ret = await Api.post('/register', {
-        info: {
-          vm_name: name
+    try {
+      const {
+        name,
+        cpu: {
+          cores: slots,
+          overprovision,
+          archsList,
+          flags
         },
+        allowSMT,
+        memory: {
+          size,
+          ecc: reqECC
+        },
+        os: {
+          os
+        },
+        volumeIds: {
+          volumeIds: volumes
+        },
+        pci: {
+          pci
+        }
+      } = this.state
+
+      const memories = getMemories()
+      const ramsize = memories.filter(memory => memory.label === size)[0].amount
+      const archs = archsList.map(arch => arch.value)
+
+      Api.createClient(Config.API_URL_MATCHER)
+      const res = await Api.post('/canallocate', {
         slots,
         overprovision,
         allowSMT,
@@ -161,27 +143,54 @@ class AdvancedSetup extends Component {
           os_family: os,
           os_flavour: 'pop'
         },
-        pci: [],
-        volumes
+        pci
       })
 
-      if (ret.ok) {
-        swal('Success', 'Virtual machine registered successfully!', 'success', {
-          buttons: false,
-          timer: 3000
-        }).then(() => {
-          window.location.href = '/vmlist'
+      if (res.ok) {
+        const ret = await Api.post('/register', {
+          info: {
+            vm_name: name
+          },
+          slots,
+          overprovision,
+          allowSMT,
+          archs,
+          flags,
+          ramsize,
+          reqECC,
+          misc: {
+            os_family: os,
+            os_flavour: 'pop'
+          },
+          pci: [],
+          volumes
         })
+
+        if (ret.ok) {
+          swal('Success', 'Virtual machine registered successfully!', 'success', {
+            buttons: false,
+            timer: 3000
+          }).then(() => {
+            window.location.href = '/vmlist'
+          })
+        } else {
+          swal('Error', 'Could not register the new virtual machine', 'error', {
+            buttons: false,
+            timer: 3000
+          }).then(() => {
+            window.location.href = '/newvm'
+          })
+        }
       } else {
-        swal('Error', 'Could not register the new virtual machine', 'error', {
+        swal('Error', 'Could not allocate the new virtual machine', 'error', {
           buttons: false,
           timer: 3000
         }).then(() => {
           window.location.href = '/newvm'
         })
       }
-    } else {
-      swal('Error', 'Could not allocate the new virtual machine', 'error', {
+    } catch (error) {
+      swal('Error', 'Could not register the new virtual machine. Please, try again later.', 'error', {
         buttons: false,
         timer: 3000
       }).then(() => {
