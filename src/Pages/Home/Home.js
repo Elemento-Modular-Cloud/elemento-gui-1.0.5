@@ -42,6 +42,10 @@ class Home extends Component {
       swal('Error', 'Could not connect to remote services', 'error', {
         buttons: false,
         timer: 3000
+      }).then(async () => {
+        await this.setGlobal({ loggedIn: false }, persistState)
+        await clearState()
+        window.location.reload()
       })
     }
   }
