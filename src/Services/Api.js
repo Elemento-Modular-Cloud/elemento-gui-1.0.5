@@ -73,23 +73,6 @@ Api.setJWT = jwt => {
   Api.jwt = `Bearer ${jwt}`
 }
 
-// Api.login = async (email, password) => {
-//   try {
-//     const res = await client.post('/authentication', { strategy: 'local', email, password })
-
-//     if (res.status === 201) {
-//       const jwt = res.data.accessToken
-//       const user = res.data.user
-//       Api.setJWT(jwt)
-//       client = getClient()
-//       return { user, jwt }
-//     }
-//   } catch (err) {
-//     return false
-//   }
-//   return false
-// }
-
 Api.upload = async file => {
   try {
     const files = new FormData()
@@ -99,6 +82,19 @@ Api.upload = async file => {
   } catch (err) {
     return false
   }
+}
+
+Api.servicesStatus = async () => {
+  Api.createClient(Config.API_URL_MATCHER_MAIN)
+  const matcher = await client.get('/')
+  Api.createClient(Config.API_URL_STORAGE_MAIN)
+  const storage = await client.get('/')
+  Api.createClient(Config.API_URL_NETWORK_MAIN)
+  const network = await client.get('/')
+  Api.createClient(Config.API_URL_AUTHENT_MAIN)
+  const authent = await client.get('/')
+
+  return matcher.ok && storage.ok && network.ok && authent.ok
 }
 
 export default Api

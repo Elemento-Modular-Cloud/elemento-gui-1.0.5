@@ -3,7 +3,6 @@ import LinearProgress from '@mui/material/LinearProgress'
 import onde from '../../Assets/onde.svg'
 import logobigwhite from '../../Assets/logobigwhite.svg'
 import { Api, persistState } from '../../Services'
-import { Config } from '../../Global'
 import './Setup.css'
 import { Background } from '../../Components'
 import swal from 'sweetalert'
@@ -23,11 +22,10 @@ class Setup extends Component {
     const refresh = setInterval(async () => {
       const running = await this.checkServicesClean()
       if (running) {
-        this.setState({ installed: true })
+        this.setState({ downloaded: true, loading: false, installed: true })
         clearInterval(refresh)
       }
-      await this.wait(2000)
-    }, 3000)
+    }, 5000)
 
     window.require('electron').ipcRenderer.on('download-progress', async (event, arg) => {
       const { chunk } = arg.data
@@ -45,17 +43,7 @@ class Setup extends Component {
 
   async checkServicesClean () {
     try {
-      console.log('clean')
-
-      Api.createClient(Config.API_INTERNALSVC)
-      const res = await Api.get('/services')
-      console.log(res.ok)
-
-      if (res.ok && res.data && res.data.matcher && res.data.storage && res.data.network && res.data.authent) {
-        return true
-      } else {
-        return false
-      }
+      return await Api.servicesStatus()
     } catch (error) {
       return false
     }
@@ -65,8 +53,7 @@ class Setup extends Component {
     this.setState({ loading: true })
     await this.wait(2000)
 
-    Api.createClient(Config.API_INTERNALSVC)
-    const res = await Api.get('/services')
+    const res = await this.checkServicesClean()
 
     if (
       res.ok && res.data &&
