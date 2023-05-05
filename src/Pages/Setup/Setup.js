@@ -1,5 +1,4 @@
 import React, { Component } from 'reactn'
-import io from 'socket.io-client'
 import LinearProgress from '@mui/material/LinearProgress'
 import onde from '../../Assets/onde.svg'
 import logobigwhite from '../../Assets/logobigwhite.svg'
@@ -8,8 +7,6 @@ import { Config } from '../../Global'
 import './Setup.css'
 import { Background } from '../../Components'
 import swal from 'sweetalert'
-
-let socket = null
 
 class Setup extends Component {
   constructor (props) {
@@ -22,17 +19,44 @@ class Setup extends Component {
     }
   }
 
+  async componentDidMount () {
+    const refresh = setInterval(async () => {
+      const running = await this.checkServicesClean()
+      if (running) {
+        this.setState({ installed: true })
+        clearInterval(refresh)
+      }
+      await this.wait(2000)
+    }, 3000)
+
+    window.require('electron').ipcRenderer.on('download-progress', async (event, arg) => {
+      const { chunk } = arg.data
+      this.setState({ chunk })
+
+      if (chunk === 100) {
+        this.setState({ downloaded: true, loading: false })
+      }
+    })
+  }
+
   wait (milliseconds) {
     return new Promise(resolve => setTimeout(resolve, milliseconds))
   }
 
   async checkServicesClean () {
-    Api.createClient(Config.API_INTERNALSVC)
-    const res = await Api.get('/services')
+    try {
+      console.log('clean')
 
-    if (res.ok && res.data && res.data.matcher && res.data.storage && res.data.network && res.data.authent) {
-      return true
-    } else {
+      Api.createClient(Config.API_INTERNALSVC)
+      const res = await Api.get('/services')
+      console.log(res.ok)
+
+      if (res.ok && res.data && res.data.matcher && res.data.storage && res.data.network && res.data.authent) {
+        return true
+      } else {
+        return false
+      }
+    } catch (error) {
       return false
     }
   }
@@ -58,45 +82,9 @@ class Setup extends Component {
     this.setState({ loading: false })
   }
 
-  async componentDidUpdate () {
-    if (!socket) {
-      try {
-        socket = io(Config.API_INTERNALSVC)
-      } catch (error) {}
-    }
-  }
-
-  async componentDidMount () {
-    try {
-      if (socket) {
-        socket.on('connect', () => {})
-      }
-      await this.checkServices()
-    } catch (error) {}
-  }
-
   async downloadDaemons () {
     this.setState({ loading: true })
-
-    socket.on('chunk', async (data) => {
-      const chunk = data.chunk
-      this.setState({ chunk })
-
-      if (chunk === 100) {
-        await this.wait(2000)
-        this.setState({ downloaded: true, loading: false })
-        const refresh = setInterval(async () => {
-          const running = await this.checkServicesClean()
-          if (running) {
-            this.setState({ installed: true })
-          }
-        }, 2000)
-        this.setState({ refresh })
-      }
-    })
-
-    Api.createClient(Config.API_INTERNALSVC)
-    await Api.get('/download')
+    window.require('electron').ipcRenderer.send('download-daemons', 'void')
   }
 
   async continue () {
@@ -137,7 +125,7 @@ class Setup extends Component {
                   <span>Before to use the Elemento app we must to setup some services useful to connect you to the Elemento Cloud services.</span><br />
                   <span>Please, click on Download button and next open the installer file. Then come here again and proceed to the next step!</span><br /><br />
                   <div style={{ display: 'flex', flexDirection: 'row' }}>
-                    {!loading && <button className='downloadbutton' onClick={async () => await this.downloadDaemons()}>Download services</button>}
+                    {!loading && <button className='downloadbutton' onClick={async () => await this.checkServicesClean()}>Download services</button>}
                     {!loading && <button className='downloadbutton' style={{ marginLeft: 20 }} onClick={async () => await this.checkServices()}>Check services</button>}
                   </div>
                   {loading && chunk === 0 && <div className='lds-roller'><div /><div /><div /><div /><div /><div /><div /><div /></div>}

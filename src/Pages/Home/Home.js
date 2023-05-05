@@ -62,6 +62,10 @@ class Home extends Component {
     }
   }
 
+  async openExternalLink () {
+    window.require('electron').ipcRenderer.send('open-external-link', 'https://github.com/elemento-Modular-Cloud/helpcenter')
+  }
+
   render () {
     return (
       <Background
@@ -94,7 +98,7 @@ class Home extends Component {
                 <span>Logout</span>
               </div>
 
-              <div className='btnhelp'>
+              <div className='btnhelp' onClick={() => this.openExternalLink()}>
                 <Help />
                 <span>Help</span>
               </div>

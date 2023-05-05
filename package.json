@@ -45,7 +45,7 @@
     "build": "GENERATE_SOURCEMAP=false react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "electron:start": "yarn build && electron . --noDevServer",
+    "electron:start": "electron .",
     "electron:pack": "electron-builder --dir",
     "electron:post": "electron-builder install-app-deps",
     "electron:dist": "yarn build && electron-builder",
@@ -63,6 +63,9 @@
       "./build/**/*",
       "node_modules/**/*"
     ],
+    "dmg": {
+      "background": "build/background.png"
+    },
     "mac": {
       "category": "app.elemento.cloud",
       "icon": "build/icon.icns"

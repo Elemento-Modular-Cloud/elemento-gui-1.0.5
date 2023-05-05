@@ -1,8 +1,9 @@
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, ipcMain, shell } = require('electron')
 const path = require('path')
 // const isDev = require('electron-is-dev')
-// const { spawn } = require('child_process')
 const os = require('os')
+const fs = require('fs')
+const https = require('https')
 
 let mainWindow
 
@@ -15,29 +16,78 @@ function createWindow () {
   }
 
   mainWindow = new BrowserWindow({
+    icon,
     autoHideMenuBar: true,
-    icon
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false
+    }
   })
   // mainWindow.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`)
   mainWindow.loadURL(`file://${path.join(__dirname, '../build/index.html')}`)
   mainWindow.on('closed', () => { mainWindow = null })
   mainWindow.setSize(1280, 720, true)
   mainWindow.setMinimumSize(800, 600)
-  // mainWindow.webContents.openDevTools()
-
-  // try {
-  //   const apiPath = path.join(__dirname, 'api', 'server.js')
-  //   const child = spawn(process.execPath, [apiPath], { stdio: ['ignore', 'ignore', 'ignore'] })
-  //   child.stderr.on('data', (data) => {
-  //     console.error(`Error from child process: ${data}`)
-  //   })
-  //   child.on('close', (code) => {
-  //     console.log(`Child process exited with code ${code}`)
-  //   })
-  // } catch (error) {}
+  mainWindow.webContents.openDevTools()
 }
 
-app.on('ready', createWindow)
+app.on('ready', () => {
+  createWindow()
+
+  ipcMain.on('open-external-link', (event, url) => {
+    shell.openExternal(url)
+  })
+
+  ipcMain.on('download-daemons', () => {
+    let url
+    let filepath
+
+    if (os.type() === 'Windows_NT') {
+      url = 'https://repo.elemento.cloud/app/Elemento_daemons.zip'
+      filepath = path.join(os.homedir(), 'Downloads', 'Elemento_daemons.zip')
+    } else if (os.type() === 'Darwin') {
+      url = 'https://repo.elemento.cloud/app/Elemento_daemons.dmg'
+      filepath = path.join(os.homedir(), 'Downloads', 'Elemento_daemons.dmg')
+    } else {
+      return 'Error: operating system not supported'
+    }
+
+    https.get(url, (response) => {
+      if (response.statusCode !== 200) {
+        return `Failed to download file: HTTP status code ${response.statusCode}`
+      }
+
+      const totalSize = parseInt(response.headers['content-length'], 10)
+
+      const file = fs.createWriteStream(filepath)
+      response.pipe(file)
+
+      let chunks = 0
+
+      response.on('data', (chunk) => {
+        chunks += chunk.length
+        mainWindow.webContents.send('download-progress', { message: 'chunk', data: { chunk: Math.round((chunks / totalSize) * 100) } })
+      })
+
+      file.on('finish', () => {
+        file.close()
+        return filepath
+      })
+
+      file.on('error', (err) => {
+        return err
+      })
+
+      response.on('error', (err) => {
+        return err
+      })
+    })
+  })
+
+  setTimeout(() => {
+    mainWindow.webContents.send('some-event-reply', { message: 'Hello, world!', data: { ciao: true } })
+  }, 3000)
+})
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {

@@ -3,7 +3,7 @@ import { HashRouter, Routes, Route } from 'react-router-dom'
 import { restoreState } from './Services'
 import {
   Home, Licences, Login, Network,
-  Storage, BasicSetup, AdvancedSetup, // Setup,
+  Storage, BasicSetup, AdvancedSetup, Setup,
   VirtualMachineList, VirtualMachineNew
 } from './Pages'
 
@@ -39,24 +39,24 @@ export default class App extends Component {
     )
   }
 
-  render () {
-    const { loggedIn } = this.state
-    return (
-      loggedIn
-        ? this.renderApp()
-        : <Login postLogin={() => this.setState({ loggedIn: true })} />
-    )
-  }
   // render () {
-  //   const { setup, loggedIn } = this.state
+  //   const { loggedIn } = this.state
   //   return (
-  //     !setup
-  //       ? <Setup postSetup={() => this.setState({ setup: true })} />
-  //       : (
-  //           loggedIn
-  //             ? this.renderApp()
-  //             : <Login postLogin={() => this.setState({ loggedIn: true })} />
-  //         )
+  //     loggedIn
+  //       ? this.renderApp()
+  //       : <Login postLogin={() => this.setState({ loggedIn: true })} />
   //   )
   // }
+  render () {
+    const { setup, loggedIn } = this.state
+    return (
+      !setup
+        ? <Setup postSetup={() => this.setState({ setup: true })} />
+        : (
+            loggedIn
+              ? this.renderApp()
+              : <Login postLogin={() => this.setState({ loggedIn: true })} />
+          )
+    )
+  }
 }
