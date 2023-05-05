@@ -87,7 +87,7 @@ class Licences extends Component {
                   <td>Activated</td>
                   <td>Expire Date</td>
                   <td>Expire</td>
-                  <td>Arm License</td>
+                  <td>Activate License</td>
                   <td>Delete License</td>
                 </tr>
               </thead>
@@ -109,7 +109,7 @@ class Licences extends Component {
                             <td>{license.expire_date}</td>
                             <td>{new Date(license.expire * 1000).toDateString()}</td>
                             <td>
-                              <button className='bn632-hover bn22' disabled={license.is_armed} onClick={async () => await this.armLicense(license.license_key)}>Arm</button>
+                              <button className='bn632-hover bn22' disabled={license.is_armed} onClick={async () => await this.armLicense(license.license_key)}>Activate</button>
                             </td>
                             <td>
                               <button className='bn632-hover bn28' onClick={async () => await this.deleteLicense(license.license_key)}>Delete</button>

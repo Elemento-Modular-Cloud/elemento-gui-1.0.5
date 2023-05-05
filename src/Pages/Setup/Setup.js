@@ -5,7 +5,6 @@ import logobigwhite from '../../Assets/logobigwhite.svg'
 import { Api, persistState } from '../../Services'
 import './Setup.css'
 import { Background } from '../../Components'
-import swal from 'sweetalert'
 
 class Setup extends Component {
   constructor (props) {
@@ -20,12 +19,13 @@ class Setup extends Component {
 
   async componentDidMount () {
     const refresh = setInterval(async () => {
-      const running = await this.checkServicesClean()
+      const running = await this.checkServices()
       if (running) {
         this.setState({ downloaded: true, loading: false, installed: true })
         clearInterval(refresh)
       }
     }, 5000)
+    this.setState({ refresh })
 
     window.require('electron').ipcRenderer.on('download-progress', async (event, arg) => {
       const { chunk } = arg.data
@@ -41,7 +41,7 @@ class Setup extends Component {
     return new Promise(resolve => setTimeout(resolve, milliseconds))
   }
 
-  async checkServicesClean () {
+  async checkServices () {
     try {
       return await Api.servicesStatus()
     } catch (error) {
@@ -49,24 +49,8 @@ class Setup extends Component {
     }
   }
 
-  async checkServices () {
-    this.setState({ loading: true })
-    await this.wait(2000)
-
-    const res = await this.checkServicesClean()
-
-    if (
-      res.ok && res.data &&
-      res.data.matcher && res.data.storage && res.data.network && res.data.authent
-    ) {
-      this.setState({ downloaded: true, installed: true })
-    } else {
-      swal('Info', 'Services are not reachable. Please, check that the daemons are running and try again later.', 'info', {
-        buttons: false,
-        timer: 4000
-      })
-    }
-    this.setState({ loading: false })
+  async gotoServices () {
+    this.setState({ loading: true, downloaded: true, installed: false })
   }
 
   async downloadDaemons () {

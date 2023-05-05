@@ -6,7 +6,8 @@ import { CustomSelect, Sidebar } from '../../Components'
 import { models, vendors } from '../../Global/Model'
 import { ReactComponent as Windows } from '../../Assets/os/windows.svg'
 import { ReactComponent as Linux } from '../../Assets/os/linux.svg'
-// import { ReactComponent as Apple } from '../../Assets/os/apple.svg'
+import { ReactComponent as CheckGreen } from '../../Assets/utils/checkgreen.svg'
+import { ReactComponent as CheckRed } from '../../Assets/utils/checkred.svg'
 import swal from 'sweetalert'
 
 class BasicSetup extends Component {
@@ -26,7 +27,8 @@ class BasicSetup extends Component {
       visibility: false,
       ownership: false,
       volumeIds: [],
-      storageSelected: []
+      storageSelected: '',
+      storagesSelected: []
     }
   }
 
@@ -159,17 +161,29 @@ class BasicSetup extends Component {
     }
   }
 
+  addStorage () {
+    const { storageSelected, storagesSelected, storages } = this.state
+    const exists = storagesSelected.filter(s => s.name === storageSelected)
+
+    exists.length === 0 && this.setState({
+      storagesSelected: [...storagesSelected, storages.filter(s => s.name === storageSelected)[0]],
+      storageSelected: null
+    })
+  }
+
   removeStorage (name) {
-    const { storageSelected } = this.state
-    const removed = storageSelected.filter(s => s.name !== name)
-    this.setState({ storageSelected: [...removed] })
+    try {
+      const { storagesSelected } = this.state
+      const removed = storagesSelected.filter(s => s.name !== name)
+      this.setState({ storagesSelected: [...removed], storageSelected: null })
+    } catch (error) {}
   }
 
   render () {
     const {
       templates, template, storages, storageServer,
       bootable, writable, shareable, visibility, ownership,
-      storage, osFamily, storageSelected // volumeIds
+      storage, osFamily, storagesSelected, storageSelected // volumeIds
     } = this.state
 
     return (
@@ -224,46 +238,45 @@ class BasicSetup extends Component {
 
               <div className='basstorage'>
                 <span className='bascaption'>Storage Selection</span>
-                <CustomSelect
-                  options={storages ? storages.map(s => s.name) : []}
-                  onChange={(event, storageSelected) => {
-                    if (storageSelected) {
-                      const { storageSelected: stosel } = this.state
-                      const exists = stosel.filter(s => s.name === storageSelected)
-
-                      exists.length === 0 && this.setState({
-                        storageSelected: [...stosel, storages.filter(s => s.name === storageSelected)[0]]
-                      })
-                    }
-                  }}
-                />
+                <div style={{ display: 'flex', flexDirection: 'row' }}>
+                  <CustomSelect
+                    options={storages ? storages.map(s => s.name) : []}
+                    onChange={(event, storageSelected) => {
+                      if (storageSelected) {
+                        console.log(storageSelected)
+                        this.setState({ storageSelected })
+                      }
+                    }}
+                  />
+                  {storageSelected && <button className='bn632-hover bn22' onClick={() => this.addStorage()}>Mount</button>}
+                </div>
 
                 {
-                  storageSelected.length > 0 &&
-                    <table style={{ marginTop: 20 }}>
+                  storagesSelected.length > 0 &&
+                    <table style={{ width: '100%', marginTop: 20, overflow: 'scroll' }}>
                       <thead>
                         <tr>
                           <td>Name</td>
-                          <td>Bootable</td>
-                          <td>Read Only</td>
-                          <td>Shareable</td>
-                          <td>Private</td>
-                          <td>Own</td>
-                          <td>Remove</td>
+                          <td style={{ minWidth: 80 }}>Bootable</td>
+                          <td style={{ minWidth: 80 }}>Read Only</td>
+                          <td style={{ minWidth: 80 }}>Shareable</td>
+                          <td style={{ minWidth: 80 }}>Private</td>
+                          <td style={{ minWidth: 80 }}>Own</td>
+                          <td>Unmount</td>
                         </tr>
                       </thead>
                       <tbody>
                         {
-                          storageSelected.length > 0 && storageSelected.map((storage, i) => {
+                          storagesSelected.length > 0 && storagesSelected.map((storage, i) => {
                             return (
                               <tr key={i}>
                                 <td>{storage.name}</td>
-                                <td><input type='checkbox' checked={storage.bootable} disabled /></td>
-                                <td><input type='checkbox' checked={storage.readonly} disabled /></td>
-                                <td><input type='checkbox' checked={storage.shareable} disabled /></td>
-                                <td><input type='checkbox' checked={storage.private} disabled /></td>
-                                <td><input type='checkbox' checked={storage.own} disabled /></td>
-                                <td><button className='bn632-hover bn28' onClick={async () => await this.removeStorage(storage.name)}>Remove</button></td>
+                                <td style={{ minWidth: 80 }}>{storage.bootable ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
+                                <td style={{ minWidth: 80 }}>{storage.readonly ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
+                                <td style={{ minWidth: 80 }}>{storage.shareable ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
+                                <td style={{ minWidth: 80 }}>{storage.private ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
+                                <td style={{ minWidth: 80 }}>{storage.own ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
+                                <td><button className='bn632-hover bn28' onClick={() => this.removeStorage(storage.name)}>Unmount</button></td>
                               </tr>
                             )
                           })

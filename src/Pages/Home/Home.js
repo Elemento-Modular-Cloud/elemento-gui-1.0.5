@@ -19,8 +19,8 @@ class Home extends Component {
     this.props.history.push('/calendar')
   }
 
-  componentDidMount () {
-    this.checkLoggedIn()
+  async componentDidMount () {
+    await this.checkLoggedIn()
   }
 
   async checkLoggedIn () {
@@ -33,7 +33,7 @@ class Home extends Component {
           buttons: false,
           timer: 3000
         }).then(async () => {
-          await this.setGlobal({ loggedIn: false }, persistState)
+          await this.setGlobal({ loggedIn: false, setup: false }, persistState)
           await clearState()
           window.location.reload()
         })
@@ -43,7 +43,7 @@ class Home extends Component {
         buttons: false,
         timer: 3000
       }).then(async () => {
-        await this.setGlobal({ loggedIn: false }, persistState)
+        await this.setGlobal({ loggedIn: false, setup: false }, persistState)
         await clearState()
         window.location.reload()
       })
