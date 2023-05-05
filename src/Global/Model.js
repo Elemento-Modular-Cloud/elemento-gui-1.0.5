@@ -151,7 +151,8 @@ export function getMemories () {
 }
 
 export function getArchs () {
-  return ['X86_32', 'X86_64', 'ARM_7', 'ARM_8', 'PPC_64', 'S390X']
+  return ['X86_32', 'X86_64']
+  // return ['X86_32', 'X86_64', 'ARM_7', 'ARM_8', 'PPC_64', 'S390X']
 }
 
 export function getDefaultArchs () {
