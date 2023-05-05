@@ -187,7 +187,7 @@ class Storage extends Component {
                       <td>Destroy</td>
                     </tr>
                   </thead>
-                  {loading && <div className='lds-roller'><div /><div /><div /><div /><div /><div /><div /><div /></div>}
+                  {loading && <div className='loaderbox'><span className='loader' /></div>}
                   {
                     !loading &&
                       <tbody className='stotablebody'>
@@ -239,7 +239,7 @@ class Storage extends Component {
                       <td>Destroy</td>
                     </tr>
                   </thead>
-                  {loading && <div className='lds-roller'><div /><div /><div /><div /><div /><div /><div /><div /></div>}
+                  {loading && <div className='loaderbox'><span className='loader' /></div>}
                   {
                     !loading &&
                       <tbody className='stotablebody'>
@@ -331,7 +331,7 @@ class Storage extends Component {
                   <span>Create Storage</span>
                 </div>
             }
-            {loadingNewStorage && <div className='lds-roller'><div /><div /><div /><div /><div /><div /><div /><div /></div>}
+            {loadingNewStorage && <div className='loaderbox'><span className='loader' /></div>}
           </Modal>
         </div>
       </div>

@@ -22,6 +22,14 @@ class Login extends Component {
     }
   }
 
+  async componentDidMount () {
+    const status = await this.checkServices()
+    if (!status) {
+      await this.setGlobal({ setup: false }, persistState)
+      window.location.reload()
+    }
+  }
+
   async login () {
     this.setState({ disableLogin: true })
     const { username, password } = this.state
@@ -69,6 +77,14 @@ class Login extends Component {
     }
   }
 
+  async checkServices () {
+    try {
+      return await Api.servicesStatus()
+    } catch (error) {
+      return false
+    }
+  }
+
   async handleKeyDown (event) {
     if (event.keyCode === 13) {
       await this.login()
@@ -108,12 +124,13 @@ class Login extends Component {
                   !disableLogin &&
                     <div
                       className='loginbutton'
+                      style={{ marginBottom: 15 }}
                       onClick={async () => await this.login()} disabled={disableLogin}
                     >
                       <span>LOGIN</span>
                     </div>
                 }
-                {disableLogin && <div className='lds-roller'><div /><div /><div /><div /><div /><div /><div /><div /></div>}
+                {disableLogin && <div className='loaderbox' style={{ marginRight: 80, marginBottom: 60 }}><span className='loader' /></div>}
                 <p className='loginregister' onClick={() => this.setState({ register: !register })}>CREATE AN ACCOUNT</p>
               </div>
           }
@@ -146,16 +163,18 @@ class Login extends Component {
                 {!disableLogin &&
                   <div
                     className='registerbutton'
+                    style={{ marginBottom: 15 }}
                     onClick={async () => await this.register()}
                   >
                     <span>REGISTER</span>
                   </div>}
-                {disableLogin && <div className='lds-roller'><div /><div /><div /><div /><div /><div /><div /><div /></div>}
+                {disableLogin && <div className='loaderbox' style={{ marginRight: 80, marginBottom: 60 }}><span className='loader' /></div>}
 
                 <p className='loginregister' onClick={() => this.setState({ register: !register })}>LOGIN</p>
               </div>
             }
         </div>
+        <p className='loginversion'>v{Config.appVersion}</p>
       </Background>
     )
   }

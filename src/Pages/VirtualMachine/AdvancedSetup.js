@@ -178,7 +178,7 @@ class AdvancedSetup extends Component {
             buttons: false,
             timer: 3000
           }).then(() => {
-            window.location.href = '/newvm'
+            // window.location.href = '/vmlist'
           })
         }
       } else {
@@ -186,7 +186,7 @@ class AdvancedSetup extends Component {
           buttons: false,
           timer: 3000
         }).then(() => {
-          window.location.href = '/newvm'
+          // window.location.href = '/vmlist'
         })
       }
     } catch (error) {
@@ -194,7 +194,7 @@ class AdvancedSetup extends Component {
         buttons: false,
         timer: 3000
       }).then(() => {
-        window.location.href = '/newvm'
+        // window.location.href = '/vmlist'
       })
     }
   }

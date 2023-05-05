@@ -45,6 +45,13 @@
   color: #F28E00;
   font-size: 14px;
 }
+.loginversion {
+  color: #fff;
+  font-size: 14px;
+  position: fixed;
+  bottom: 0px;
+  right: 20px;
+}
 
 
 .registercard {

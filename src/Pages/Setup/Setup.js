@@ -18,14 +18,7 @@ class Setup extends Component {
   }
 
   async componentDidMount () {
-    const refresh = setInterval(async () => {
-      const running = await this.checkServices()
-      if (running) {
-        this.setState({ downloaded: true, loading: false, installed: true })
-        clearInterval(refresh)
-      }
-    }, 5000)
-    this.setState({ refresh })
+    this.intervalServices()
 
     window.require('electron').ipcRenderer.on('download-progress', async (event, arg) => {
       const { chunk } = arg.data
@@ -37,13 +30,29 @@ class Setup extends Component {
     })
   }
 
+  async intervalServices () {
+    while (true) {
+      const running = await this.checkServices()
+      if (running) {
+        this.setState({ downloaded: true, loading: false, installed: true })
+        break
+      } else {
+        await this.wait(2000)
+      }
+    }
+  }
+
   wait (milliseconds) {
     return new Promise(resolve => setTimeout(resolve, milliseconds))
   }
 
-  async checkServices () {
+  async checkServices (goto) {
     try {
-      return await Api.servicesStatus()
+      if (goto) {
+        this.gotoServices()
+      }
+      const status = await Api.servicesStatus()
+      return status
     } catch (error) {
       return false
     }
@@ -59,7 +68,7 @@ class Setup extends Component {
   }
 
   async continue () {
-    const { refresh } = this.state
+    const { refresh } = this.global
     clearInterval(refresh)
 
     this.setState({ loading: true })
@@ -97,9 +106,9 @@ class Setup extends Component {
                   <span>Please, click on Download button and next open the installer file. Then come here again and proceed to the next step!</span><br /><br />
                   <div style={{ display: 'flex', flexDirection: 'row' }}>
                     {!loading && <button className='downloadbutton' onClick={async () => await this.downloadDaemons()}>Download services</button>}
-                    {!loading && <button className='downloadbutton' style={{ marginLeft: 20 }} onClick={async () => await this.checkServices()}>Check services</button>}
+                    {!loading && <button className='downloadbutton' style={{ marginLeft: 20 }} onClick={async () => await this.checkServices(true)}>Check services</button>}
                   </div>
-                  {loading && chunk === 0 && <div className='lds-roller'><div /><div /><div /><div /><div /><div /><div /><div /></div>}
+                  {loading && chunk === 0 && <div className='loaderbox'><span className='loader' /></div>}
                 </>
             }
             {
@@ -113,7 +122,7 @@ class Setup extends Component {
               downloaded && !installed &&
                 <>
                   <span>Please, execute the daemons software so we could connect and let you log into the Elemento Cloud App.</span><br /><br />
-                  <div className='lds-roller'><div /><div /><div /><div /><div /><div /><div /><div /></div>
+                  <div className='loaderbox'><span className='loader' /></div>
                 </>
             }
             {
@@ -121,7 +130,7 @@ class Setup extends Component {
                 <>
                   <span>Great, all the services are installed and ready!</span><span style={{ marginLeft: 20, fontSize: 50 }}>🎉</span><br /><br />
                   {!loading && <button className='downloadbutton' onClick={async () => await this.continue()}>Continue</button>}
-                  {loading && <div className='lds-roller'><div /><div /><div /><div /><div /><div /><div /><div /></div>}
+                  {loading && <div className='loaderbox'><span className='loader' /></div>}
                 </>
             }
           </div>

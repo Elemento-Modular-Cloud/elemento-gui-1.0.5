@@ -9,18 +9,19 @@ class Resume extends Component {
     super(props)
     this.state = {
       advancedSetup: null,
+      compactName: '',
       loading: false
     }
   }
 
   componentDidMount () {
     const { advancedSetup } = this.global
-    this.setState({ advancedSetup })
+    const compactName = Utils.compactString(advancedSetup.name)
+    this.setState({ advancedSetup, compactName })
   }
 
   render () {
-    const { advancedSetup: x, loading } = this.state
-    const compactName = Utils.compactString(x.name)
+    const { advancedSetup: x, compactName, loading } = this.state
 
     return (
       <div className='resbody'>
@@ -68,17 +69,20 @@ class Resume extends Component {
             </div>
         }
 
-        {!loading &&
-          <button
-            className='btnregister'
-            onClick={async () => {
-              this.setState({ loading: true })
-              await this.props.register()
-            }}
-          >
-            Register
-          </button>}
-        {loading && <div className='lds-roller'><div /><div /><div /><div /><div /><div /><div /><div /></div>}
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          {!loading &&
+            <button
+              className='btnregister'
+              onClick={async () => {
+                this.setState({ loading: true })
+                await this.props.register()
+                this.setState({ loading: false })
+              }}
+            >
+              Register
+            </button>}
+          {loading && <div className='loaderbox'><span className='loader' /></div>}
+        </div>
       </div>
     )
   }

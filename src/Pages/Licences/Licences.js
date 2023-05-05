@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component } from 'reactn'
 import { Api } from '../../Services'
 import { Config } from '../../Global'
 import { Sidebar } from '../../Components'
@@ -10,12 +10,17 @@ class Licences extends Component {
     super(props)
     this.state = {
       loading: true,
+      lock: false,
       licenses: []
     }
   }
 
   async componentDidMount () {
-    this.setState({ loading: true })
+    await this.refreshData()
+  }
+
+  async refreshData () {
+    this.setState({ loading: true, lock: true })
 
     Api.createClient(Config.API_URL_AUTHENT)
     const res = await Api.get('/license/list')
@@ -23,7 +28,7 @@ class Licences extends Component {
     if (res.ok) {
       this.setState({ licenses: res.data.licenses })
     }
-    this.setState({ loading: false })
+    this.setState({ loading: false, lock: false })
   }
 
   async armLicense (licenseKey) {
@@ -37,6 +42,7 @@ class Licences extends Component {
         buttons: false,
         timer: 3000
       })
+      await this.refreshData()
     } else {
       swal('Error', 'Could not arm the selected license', 'error', {
         buttons: false,
@@ -47,15 +53,16 @@ class Licences extends Component {
 
   async deleteLicense (licenseKey) {
     Api.createClient(Config.API_URL_AUTHENT)
-    const res = await Api.post('/license/delete', {
+    const res = await Api.delete('/license/delete', {
       license_key: licenseKey
     })
 
     if (res.ok) {
-      swal('Success!', 'Licese deleted successfully', 'success', {
+      swal('Success!', 'License deleted successfully', 'success', {
         buttons: false,
         timer: 3000
       })
+      await this.refreshData()
     } else {
       swal('Error', 'Could not delete the selected license', 'error', {
         buttons: false,
@@ -65,7 +72,7 @@ class Licences extends Component {
   }
 
   render () {
-    const { loading, licenses } = this.state
+    const { loading, licenses, lock } = this.state
 
     return (
       <div className='licpage'>
@@ -91,7 +98,6 @@ class Licences extends Component {
                   <td>Delete License</td>
                 </tr>
               </thead>
-              {loading && <div className='lds-roller'><div /><div /><div /><div /><div /><div /><div /><div /></div>}
               {
                 !loading &&
                   <tbody className='lictablebody'>
@@ -107,12 +113,12 @@ class Licences extends Component {
                               </div>
                             </td>
                             <td>{license.expire_date}</td>
-                            <td>{new Date(license.expire * 1000).toDateString()}</td>
+                            <td>{license.expire === null ? 'N/A' : new Date(license.expire * 1000).toDateString()}</td>
                             <td>
-                              <button className='bn632-hover bn22' disabled={license.is_armed} onClick={async () => await this.armLicense(license.license_key)}>Activate</button>
+                              <button className='bn632-hover bn22' disabled={license.is_armed || lock} onClick={async () => await this.armLicense(license.license_key)}>Activate</button>
                             </td>
                             <td>
-                              <button className='bn632-hover bn28' onClick={async () => await this.deleteLicense(license.license_key)}>Delete</button>
+                              <button className='bn632-hover bn28' disabled={lock} onClick={async () => await this.deleteLicense(license.license_key)}>Delete</button>
                             </td>
                           </tr>
                         )
@@ -121,6 +127,7 @@ class Licences extends Component {
                   </tbody>
               }
             </table>
+            {loading && <div className='loaderbox'><span className='loader' /></div>}
           </div>
         </div>
       </div>

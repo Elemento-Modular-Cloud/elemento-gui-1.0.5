@@ -243,7 +243,6 @@ class BasicSetup extends Component {
                     options={storages ? storages.map(s => s.name) : []}
                     onChange={(event, storageSelected) => {
                       if (storageSelected) {
-                        console.log(storageSelected)
                         this.setState({ storageSelected })
                       }
                     }}

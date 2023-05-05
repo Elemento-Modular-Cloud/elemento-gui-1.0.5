@@ -103,7 +103,7 @@ class VirtualMachineList extends Component {
                   <td>Delete</td>
                 </tr>
               </thead>
-              {loading && <div className='lds-roller'><div /><div /><div /><div /><div /><div /><div /><div /></div>}
+              {loading && <div className='loaderbox'><span className='loader' /></div>}
               {
                 !loading &&
                   <tbody className='vmltablebody'>

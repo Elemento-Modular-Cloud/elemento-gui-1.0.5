@@ -71,7 +71,7 @@ class Network extends Component {
             <a href='/'>Back</a>
           </div>
 
-          {loading && <div className='lds-roller'><div /><div /><div /><div /><div /><div /><div /><div /></div>}
+          {loading && <div className='loaderbox'><span className='loader' /></div>}
 
           {
             !loading &&
