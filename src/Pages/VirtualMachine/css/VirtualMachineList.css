@@ -59,6 +59,9 @@
   background-color: white;
   color: #f28e00;
   border: solid 1px #f28e00;
+  -webkit-box-shadow: 10px 10px 40px 3px #f28e00aa;
+  -moz-box-shadow: 10px 10px 40px 3px #f28e00aa;
+  box-shadow: 10px 10px 40px 3px #f28e00aa;
 }
 .vmlbtncontainer > svg {
   rotate: 180deg;

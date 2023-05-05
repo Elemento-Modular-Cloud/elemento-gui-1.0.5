@@ -144,132 +144,133 @@ class Storage extends Component {
             <a href='/'>Back</a>
           </div>
 
-          {loading && <div className='lds-roller'><div /><div /><div /><div /><div /><div /><div /><div /></div>}
+          <div className='stobtnnew' onClick={() => this.setState({ showModal: true })}>
+            <div className='stobtncontainer'>
+              <span>CREATE NEW STORAGE</span>
+              <Arrow />
+            </div>
+          </div>
 
-          {
-            !loading &&
-              <>
-                <div className='stobtnnew' onClick={() => this.setState({ showModal: true })}>
-                  <div className='stobtncontainer'>
-                    <span>CREATE NEW STORAGE</span>
-                    <Arrow />
-                  </div>
-                </div>
+          <div className='stoselector'>
+            <span
+              style={{ color: selector === 'personal' ? '#f28e00' : '#898C8A', textDecorationLine: selector === 'personal' ? 'underline' : 'none' }}
+              onClick={() => this.setState({ selector: 'personal' })}
+            >
+              Personal Volumes
+            </span>
+            <span
+              style={{ marginLeft: 20, color: selector === 'public' ? '#f28e00' : '#898C8A', textDecorationLine: selector === 'public' ? 'underline' : 'none' }}
+              onClick={() => this.setState({ selector: 'public' })}
+            >
+              Public Volumes
+            </span>
+          </div>
 
-                <div className='stoselector'>
-                  <span
-                    style={{ color: selector === 'personal' ? '#f28e00' : '#898C8A', textDecorationLine: selector === 'personal' ? 'underline' : 'none' }}
-                    onClick={() => this.setState({ selector: 'personal' })}
-                  >
-                    Personal Storages
-                  </span>
-                  <span
-                    style={{ marginLeft: 20, color: selector === 'public' ? '#f28e00' : '#898C8A', textDecorationLine: selector === 'public' ? 'underline' : 'none' }}
-                    onClick={() => this.setState({ selector: 'public' })}
-                  >
-                    Public Storages
-                  </span>
-                </div>
-
-                <div className='stotables'>
+          <div className='stotables'>
+            {
+              selector === 'personal' &&
+                <table className='stotable'>
+                  <thead className='stotablehead'>
+                    <tr>
+                      <td>Name</td>
+                      <td style={{ width: 80 }}>Bootable</td>
+                      <td style={{ width: 80 }}>Private</td>
+                      <td style={{ width: 80 }}>Read Only</td>
+                      <td style={{ width: 80 }}>Shareable</td>
+                      <td style={{ width: 80 }}>Own</td>
+                      <td style={{ width: 80 }}>Size</td>
+                      <td style={{ maxWidth: 200 }}>Volume ID</td>
+                      <td style={{ display: 'none' }}>Server URL</td>
+                      <td>Server</td>
+                      <td>Servers N.</td>
+                      <td style={{ display: 'none' }}>Servers</td>
+                      <td>Destroy</td>
+                    </tr>
+                  </thead>
+                  {loading && <div className='lds-roller'><div /><div /><div /><div /><div /><div /><div /><div /></div>}
                   {
-                    selector === 'personal' &&
-                      <table className='stotable'>
-                        <thead className='stotablehead'>
-                          <tr>
-                            <td>Name</td>
-                            <td style={{ width: 80 }}>Bootable</td>
-                            <td style={{ width: 80 }}>Private</td>
-                            <td style={{ width: 80 }}>Read Only</td>
-                            <td style={{ width: 80 }}>Shareable</td>
-                            <td style={{ width: 80 }}>Own</td>
-                            <td style={{ width: 80 }}>Size</td>
-                            <td style={{ maxWidth: 200 }}>Volume ID</td>
-                            <td style={{ display: 'none' }}>Server URL</td>
-                            <td>Server</td>
-                            <td>Servers N.</td>
-                            <td style={{ display: 'none' }}>Servers</td>
-                            <td>Destroy</td>
-                          </tr>
-                        </thead>
-                        <tbody className='stotablebody'>
-                          {
-                            personalStorages && personalStorages.length > 0 && personalStorages.map((storage, i) => {
-                              return (
-                                <tr key={i}>
-                                  <td style={{ fontWeight: 'bold' }}>{storage.name}</td>
-                                  <td style={{ width: 80 }}>{storage.bootable ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
-                                  <td style={{ width: 80 }}>{storage.private ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
-                                  <td style={{ width: 80 }}>{storage.readonly ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
-                                  <td style={{ width: 80 }}>{storage.shareable ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
-                                  <td style={{ width: 80 }}>{storage.own ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
-                                  <td style={{ width: 80 }}>{Utils.formatBytes(storage.size)}</td>
-                                  <td style={{ maxWidth: 200, overflow: 'scroll' }}>{storage.volumeID}</td>
-                                  <td style={{ display: 'none' }}>{storage.serverurl}</td>
-                                  <td>{storage.server}</td>
-                                  <td>{storage.nservers}</td>
-                                  <td style={{ display: 'none' }}>{storage.servers.join(' - ')}</td>
-                                  <td>
-                                    <button className='bn632-hover bn28' onClick={async () => await this.destroyStorage(storage.volumeID)}>Destroy</button>
-                                  </td>
-                                </tr>
-                              )
-                            })
-                          }
-                        </tbody>
-                      </table>
+                    !loading &&
+                      <tbody className='stotablebody'>
+                        {
+                          personalStorages && personalStorages.length > 0 && personalStorages.map((storage, i) => {
+                            return (
+                              <tr key={i}>
+                                <td style={{ fontWeight: 'bold' }}>{storage.name}</td>
+                                <td style={{ width: 80 }}>{storage.bootable ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
+                                <td style={{ width: 80 }}>{storage.private ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
+                                <td style={{ width: 80 }}>{storage.readonly ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
+                                <td style={{ width: 80 }}>{storage.shareable ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
+                                <td style={{ width: 80 }}>{storage.own ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
+                                <td style={{ width: 80 }}>{Utils.formatBytes(storage.size)}</td>
+                                <td style={{ maxWidth: 200, overflow: 'scroll' }}>{storage.volumeID}</td>
+                                <td style={{ display: 'none' }}>{storage.serverurl}</td>
+                                <td>{storage.server}</td>
+                                <td>{storage.nservers}</td>
+                                <td style={{ display: 'none' }}>{storage.servers.join(' - ')}</td>
+                                <td>
+                                  <button className='bn632-hover bn28' onClick={async () => await this.destroyStorage(storage.volumeID)}>Destroy</button>
+                                </td>
+                              </tr>
+                            )
+                          })
+                        }
+                      </tbody>
                   }
+                </table>
+            }
 
+            {
+              selector === 'public' &&
+                <table className='stotable'>
+                  <thead className='stotablehead'>
+                    <tr>
+                      <td>Name</td>
+                      <td style={{ width: 80 }}>Bootable</td>
+                      <td style={{ width: 80 }}>Private</td>
+                      <td style={{ width: 80 }}>Read Only</td>
+                      <td style={{ width: 80 }}>Shareable</td>
+                      <td style={{ width: 80 }}>Own</td>
+                      <td style={{ width: 80 }}>Size</td>
+                      <td style={{ maxWidth: 200 }}>Volume ID</td>
+                      <td style={{ display: 'none' }}>Server URL</td>
+                      <td>Server</td>
+                      <td>Servers N.</td>
+                      <td style={{ display: 'none' }}>Servers</td>
+                      <td>Destroy</td>
+                    </tr>
+                  </thead>
+                  {loading && <div className='lds-roller'><div /><div /><div /><div /><div /><div /><div /><div /></div>}
                   {
-                    selector === 'public' &&
-                      <table className='stotable'>
-                        <thead className='stotablehead'>
-                          <tr>
-                            <td>Name</td>
-                            <td style={{ width: 80 }}>Bootable</td>
-                            <td style={{ width: 80 }}>Private</td>
-                            <td style={{ width: 80 }}>Read Only</td>
-                            <td style={{ width: 80 }}>Shareable</td>
-                            <td style={{ width: 80 }}>Own</td>
-                            <td style={{ width: 80 }}>Size</td>
-                            <td style={{ maxWidth: 200 }}>Volume ID</td>
-                            <td style={{ display: 'none' }}>Server URL</td>
-                            <td>Server</td>
-                            <td>Servers N.</td>
-                            <td style={{ display: 'none' }}>Servers</td>
-                            <td>Destroy</td>
-                          </tr>
-                        </thead>
-                        <tbody className='stotablebody'>
-                          {
-                            publicStorages && publicStorages.length > 0 && publicStorages.map((storage, i) => {
-                              return (
-                                <tr key={i}>
-                                  <td style={{ fontWeight: 'bold' }}>{storage.name}</td>
-                                  <td style={{ width: 80 }}>{storage.bootable ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
-                                  <td style={{ width: 80 }}>{storage.private ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
-                                  <td style={{ width: 80 }}>{storage.readonly ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
-                                  <td style={{ width: 80 }}>{storage.shareable ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
-                                  <td style={{ width: 80 }}>{storage.own ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
-                                  <td style={{ width: 80 }}>{Utils.formatBytes(storage.size)}</td>
-                                  <td style={{ maxWidth: 200, overflow: 'scroll' }}>{storage.volumeID}</td>
-                                  <td style={{ display: 'none' }}>{storage.serverurl}</td>
-                                  <td>{storage.server}</td>
-                                  <td>{storage.nservers}</td>
-                                  <td style={{ display: 'none' }}>{storage.servers.join(' - ')}</td>
-                                  <td>
-                                    <button className='bn632-hover bn28' onClick={async () => await this.destroyStorage(storage.volumeID)}>Destroy</button>
-                                  </td>
-                                </tr>
-                              )
-                            })
-                          }
-                        </tbody>
-                      </table>
+                    !loading &&
+                      <tbody className='stotablebody'>
+                        {
+                          publicStorages && publicStorages.length > 0 && publicStorages.map((storage, i) => {
+                            return (
+                              <tr key={i}>
+                                <td style={{ fontWeight: 'bold' }}>{storage.name}</td>
+                                <td style={{ width: 80 }}>{storage.bootable ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
+                                <td style={{ width: 80 }}>{storage.private ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
+                                <td style={{ width: 80 }}>{storage.readonly ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
+                                <td style={{ width: 80 }}>{storage.shareable ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
+                                <td style={{ width: 80 }}>{storage.own ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
+                                <td style={{ width: 80 }}>{Utils.formatBytes(storage.size)}</td>
+                                <td style={{ maxWidth: 200, overflow: 'scroll' }}>{storage.volumeID}</td>
+                                <td style={{ display: 'none' }}>{storage.serverurl}</td>
+                                <td>{storage.server}</td>
+                                <td>{storage.nservers}</td>
+                                <td style={{ display: 'none' }}>{storage.servers.join(' - ')}</td>
+                                <td>
+                                  <button className='bn632-hover bn28' onClick={async () => await this.destroyStorage(storage.volumeID)}>Destroy</button>
+                                </td>
+                              </tr>
+                            )
+                          })
+                        }
+                      </tbody>
                   }
-                </div>
-              </>
-          }
+                </table>
+            }
+          </div>
 
           <Modal
             isOpen={showModal}

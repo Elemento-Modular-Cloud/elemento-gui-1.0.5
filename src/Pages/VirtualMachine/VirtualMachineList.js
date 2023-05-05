@@ -73,75 +73,72 @@ class VirtualMachineList extends Component {
             <a href='/'>Back</a>
           </div>
 
-          {loading && <div className='lds-roller'><div /><div /><div /><div /><div /><div /><div /><div /></div>}
+          <Navigate className='stobtnnew' page='/newvm'>
+            <div className='vmlbtncontainer'>
+              <span>CREATE NEW VIRTUAL MACHINE</span>
+              <Arrow />
+            </div>
+          </Navigate>
 
-          {
-            !loading &&
-              <>
-                <Navigate className='stobtnnew' page='/newvm'>
-                  <div className='vmlbtncontainer'>
-                    <span>CREATE NEW VIRTUAL MACHINE</span>
-                    <Arrow />
-                  </div>
-                </Navigate>
+          <div className='vmltables'>
+            <table className='vmltable'>
+              <thead className='vmltablehead'>
+                <tr>
+                  <td>Name</td>
+                  <td>Architecture</td>
+                  <td>CPU Slots</td>
+                  <td>Overprovision</td>
+                  <td>SMT</td>
+                  {/* <td>Flags</td> */}
+                  <td>RAM size</td>
+                  <td>ECC</td>
+                  <td>Volumes</td>
+                  {/* <td>PCI devices</td> */}
+                  {/* <td>NET devices</td> */}
+                  <td>OS Family</td>
+                  <td>OS Falvour</td>
+                  <td>Date</td>
+                  {/* <td>Network</td> */}
+                  <td>Viewer</td>
+                  <td>Delete</td>
+                </tr>
+              </thead>
+              {loading && <div className='lds-roller'><div /><div /><div /><div /><div /><div /><div /><div /></div>}
+              {
+                !loading &&
+                  <tbody className='vmltablebody'>
+                    {
+                      vms && vms.length > 0 && vms.map((vm, i) => {
+                        const uniqueID = vm.uniqueID
+                        const detail = vm.req_json
 
-                <div className='vmltables'>
-                  <table className='vmltable'>
-                    <thead className='vmltablehead'>
-                      <tr>
-                        <td>Name</td>
-                        <td>Architecture</td>
-                        <td>CPU Slots</td>
-                        <td>Overprovision</td>
-                        <td>SMT</td>
-                        {/* <td>Flags</td> */}
-                        <td>RAM size</td>
-                        <td>ECC</td>
-                        <td>Volumes</td>
-                        {/* <td>PCI devices</td> */}
-                        {/* <td>NET devices</td> */}
-                        <td>OS Family</td>
-                        <td>OS Falvour</td>
-                        <td>Date</td>
-                        {/* <td>Network</td> */}
-                        <td>Viewer</td>
-                        <td>Delete</td>
-                      </tr>
-                    </thead>
-                    <tbody className='vmltablebody'>
-                      {
-                        vms && vms.length > 0 && vms.map((vm, i) => {
-                          const uniqueID = vm.uniqueID
-                          const detail = vm.req_json
-
-                          return (
-                            <tr key={i}>
-                              <td>{detail.vm_name}</td>
-                              <td>{detail.arch}</td>
-                              <td>{detail.slots}</td>
-                              <td>{detail.overprovision}</td>
-                              <td>{detail.allowSMT ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
-                              {/* <td>{JSON.stringify(detail.flags)}</td> */}
-                              <td>{Utils.formatBytes(detail.ramsize * 1000000000)}</td>
-                              <td>{detail.reqECC ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
-                              <td>{detail.volumes.map(volume => volume.name).join(',')}</td>
-                              {/* <td>{JSON.stringify(detail.pcidevs)}</td> */}
-                              {/* <td>{JSON.stringify(detail.netdevs)}</td> */}
-                              <td>{detail.os_family}</td>
-                              <td>{detail.os_flavour}</td>
-                              <td>{detail.creation_date}</td>
-                              {/* <td>{JSON.stringify(detail.network_config)}</td> */}
-                              <td><button className='bn632-hover bn22' onClick={async () => window.open(detail.viewer, '_blank')}>Viewer</button></td>
-                              <td><button className='bn632-hover bn28' onClick={async () => await this.deleteVirtualMachine(uniqueID)}>Delete</button></td>
-                            </tr>
-                          )
-                        })
-                      }
-                    </tbody>
-                  </table>
-                </div>
-              </>
-          }
+                        return (
+                          <tr key={i}>
+                            <td>{detail.vm_name}</td>
+                            <td>{detail.arch}</td>
+                            <td>{detail.slots}</td>
+                            <td>{detail.overprovision}</td>
+                            <td>{detail.allowSMT ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
+                            {/* <td>{JSON.stringify(detail.flags)}</td> */}
+                            <td>{Utils.formatBytes(detail.ramsize * 1000000000)}</td>
+                            <td>{detail.reqECC ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
+                            <td>{detail.volumes.map(volume => volume.name).join(',')}</td>
+                            {/* <td>{JSON.stringify(detail.pcidevs)}</td> */}
+                            {/* <td>{JSON.stringify(detail.netdevs)}</td> */}
+                            <td>{detail.os_family}</td>
+                            <td>{detail.os_flavour}</td>
+                            <td>{detail.creation_date}</td>
+                            {/* <td>{JSON.stringify(detail.network_config)}</td> */}
+                            <td><button className='bn632-hover bn22' onClick={async () => window.open(detail.viewer, '_blank')}>Viewer</button></td>
+                            <td><button className='bn632-hover bn28' onClick={async () => await this.deleteVirtualMachine(uniqueID)}>Delete</button></td>
+                          </tr>
+                        )
+                      })
+                    }
+                  </tbody>
+              }
+            </table>
+          </div>
         </div>
       </div>
     )
