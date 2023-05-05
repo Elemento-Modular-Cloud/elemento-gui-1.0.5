@@ -98,7 +98,7 @@ class VirtualMachineList extends Component {
                   <td>OS Family</td>
                   <td>OS Falvour</td>
                   <td>Date</td>
-                  {/* <td>Network</td> */}
+                  <td>Network</td>
                   <td>Viewer</td>
                   <td>Delete</td>
                 </tr>
@@ -128,7 +128,7 @@ class VirtualMachineList extends Component {
                             <td>{detail.os_family}</td>
                             <td>{detail.os_flavour}</td>
                             <td>{detail.creation_date}</td>
-                            {/* <td>{JSON.stringify(detail.network_config)}</td> */}
+                            <td>{JSON.stringify(detail.network_config?.ipv4)}</td>
                             <td><button className='bn632-hover bn22' onClick={async () => window.open(detail.viewer, '_blank')}>Viewer</button></td>
                             <td><button className='bn632-hover bn28' onClick={async () => await this.deleteVirtualMachine(uniqueID)}>Delete</button></td>
                           </tr>
