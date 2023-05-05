@@ -45,7 +45,7 @@ const Button = ({ Icon, page, name, text }) => {
     }
 
     // Loop the animation
-    setInterval(draw, 100)
+    setInterval(draw, 80)
   }, [])
 
   return (
