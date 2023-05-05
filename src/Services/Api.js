@@ -11,7 +11,7 @@ let client = null
 Api.createClient = (baseURL) => {
   client = apisauce.create({
     baseURL,
-    timeout: 5000,
+    timeout: 3000,
     headers: {
       'Content-Type': 'application/json',
       Authorization: Api.jwt
@@ -37,9 +37,9 @@ Api.patch = async (url, data) => {
   }
 }
 
-Api.delete = async (url) => {
+Api.delete = async (url, data) => {
   try {
-    return await client.delete(url)
+    return await client.delete(url, {}, { data })
   } catch (err) {
     return { ok: false, error: err }
   }

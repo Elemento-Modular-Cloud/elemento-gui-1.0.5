@@ -1,4 +1,4 @@
-import { setGlobal, resetGlobal } from 'reactn'
+import { getGlobal, setGlobal, resetGlobal } from 'reactn'
 import jwtDecode from 'jwt-decode'
 import moment from 'moment'
 import { LocalStorage } from '.'
@@ -30,9 +30,10 @@ const restoreState = async () => {
 const persistState = async state => { LocalStorage.set(Config.STORAGE_KEY, state) }
 
 const clearState = async () => {
+  const { setup } = getGlobal()
   resetGlobal()
   LocalStorage.clear()
-  await setGlobal(DEFAULT_STATE)
+  await setGlobal({ ...DEFAULT_STATE, setup }, persistState)
 }
 
 const isJWTValid = (jwt) => {
