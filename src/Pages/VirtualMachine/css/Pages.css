@@ -42,7 +42,14 @@
   font-size: 20px;
 }
 .memecc {
-  width: 100px;
+  width: 100%;
+}
+.memecc input {
+  width: 20px;
+  height: 20px;
+}
+.memecc span {
+  margin-left: 20px;
 }
 
 /* Os */

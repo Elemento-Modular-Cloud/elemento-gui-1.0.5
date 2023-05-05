@@ -73,6 +73,7 @@ class Cpu extends Component {
               this.updateState(size, e.target.checked)
             }}
           />
+          <span>Select this to enable ECC (Error-Correcting Code) memory. This particular kind of memory detects and corrects errors in data stored in computer memory to prevent data corruption.</span>
         </div>
       </div>
     )
