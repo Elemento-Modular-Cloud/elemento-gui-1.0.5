@@ -1,4 +1,5 @@
 import Background from './Background'
+import Back from './Back'
 import Button from './Button'
 import ButtonOrange from './ButtonOrange'
 import ButtonBlack from './ButtonBlack'
@@ -10,6 +11,7 @@ import Sidebar from './Sidebar'
 
 export {
   Background,
+  Back,
   Button,
   ButtonOrange,
   ButtonBlack,

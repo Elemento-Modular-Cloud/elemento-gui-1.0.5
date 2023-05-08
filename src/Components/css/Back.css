@@ -1,0 +1,6 @@
+.backbtn > span {
+  font-size: 20px;
+  color: #f28e00;
+  text-decoration-line: underline;
+  cursor: pointer;
+}

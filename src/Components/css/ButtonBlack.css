@@ -12,7 +12,7 @@
   box-shadow: 10px 10px 40px 3px rgba(95, 95, 95, 0.75);
 }
 .btncardblack:hover {
-  cursor: grab;
+  cursor: pointer;
   -webkit-box-shadow: 10px 10px 40px 3px rgb(0,180,40);
   -moz-box-shadow: 10px 10px 40px 3px rgb(0,180,40);
   box-shadow: 10px 10px 40px 3px rgb(0,180,40);

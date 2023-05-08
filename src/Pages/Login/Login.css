@@ -37,10 +37,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: grab;
+  cursor: pointer;
 }
 .loginregister {
-  cursor: grab;
+  cursor: pointer;
   text-decoration-line: underline;
   color: #F28E00;
   font-size: 14px;

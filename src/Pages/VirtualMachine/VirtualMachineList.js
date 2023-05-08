@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Api } from '../../Services'
 import { Config, Utils } from '../../Global'
 import './css/VirtualMachineList.css'
-import { Sidebar, Navigate } from '../../Components'
+import { Sidebar, Navigate, Back } from '../../Components'
 import { ReactComponent as Arrow } from '../../Assets/utils/arrow.svg'
 import swal from 'sweetalert'
 import { ReactComponent as CheckGreen } from '../../Assets/utils/checkgreen.svg'
@@ -70,7 +70,7 @@ class VirtualMachineList extends Component {
 
           <div className='vmlheader'>
             <span>Virtual Machines</span>
-            <a href='/'>Back</a>
+            <Back page='/' />
           </div>
 
           <Navigate className='stobtnnew' page='/newvm'>

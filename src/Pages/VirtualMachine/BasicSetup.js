@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Api } from '../../Services'
 import { Config, Utils } from '../../Global'
 import './css/BasicSetup.css'
-import { CustomSelect, Sidebar } from '../../Components'
+import { Back, CustomSelect, Sidebar } from '../../Components'
 import { models, vendors } from '../../Global/Model'
 import { ReactComponent as Windows } from '../../Assets/os/windows.svg'
 import { ReactComponent as Linux } from '../../Assets/os/linux.svg'
@@ -194,7 +194,7 @@ class BasicSetup extends Component {
 
           <div className='basheader'>
             <span>Create new Virtual Machine</span>
-            <a href='/newvm'>Back</a>
+            <Back page='/newvm' />
           </div>
 
           <span className='bassubtitle'>BASIC SETUP</span>

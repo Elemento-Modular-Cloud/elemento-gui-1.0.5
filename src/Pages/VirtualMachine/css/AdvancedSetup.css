@@ -60,7 +60,7 @@
 }
 .advnext {
   border: none;
-  cursor: grab;
+  cursor: pointer;
   width: 200px;
   height: 45px;
   margin-top: 20px;
@@ -82,7 +82,7 @@
 }
 .advprevious {
   border: solid 1px #f28e00;
-  cursor: grab;
+  cursor: pointer;
   width: 200px;
   height: 45px;
   margin-top: 20px;

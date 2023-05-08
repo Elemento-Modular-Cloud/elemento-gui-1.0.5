@@ -4,7 +4,7 @@ import { Cpu, Memory, Name, Os, Pci, Resume, Storage } from './Pages'
 import { Config } from '../../Global'
 import { getMemories } from '../../Global/Model'
 import './css/AdvancedSetup.css'
-import { Sidebar } from '../../Components'
+import { Back, Sidebar } from '../../Components'
 import swal from 'sweetalert'
 
 const NAME_PAGE = 1
@@ -210,7 +210,7 @@ class AdvancedSetup extends Component {
 
           <div className='advheader'>
             <span>Create new Virtual Machine</span>
-            <a href='/newvm'>Back</a>
+            <Back page='/newvm' />
           </div>
 
           <span className='advsubtitle'>ADVANCED SETUP</span>

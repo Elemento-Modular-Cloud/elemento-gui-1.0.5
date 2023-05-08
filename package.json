@@ -2,7 +2,7 @@
   "name": "elemento-gui-v2",
   "author": "Elemento Cloud",
   "description": "Elemento Cloud App",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "main": "public/electron.js",
   "homepage": "./",
@@ -48,8 +48,10 @@
     "electron:start": "electron .",
     "electron:pack": "electron-builder --dir",
     "electron:post": "electron-builder install-app-deps",
-    "electron:dist": "yarn build && electron-builder",
-    "electron:dist-windows": "yarn build && electron-builder --windows",
+    "electron:dist-mac-arm": "electron-builder --mac --arm64",
+    "electron:dist-mac-x64": "electron-builder --mac --x64",
+    "electron:dist-windows": "electron-builder --win",
+    "electron:dist-linux": "electron-builder --linux",
     "electron:dist-arm": "electron-builder --armv7l"
   },
   "build": {
@@ -68,7 +70,16 @@
     },
     "mac": {
       "category": "app.elemento.cloud",
-      "icon": "build/icon.icns"
+      "icon": "build/icon.icns",
+      "target": [
+        "dmg"
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ]
     },
     "win": {
       "target": [
@@ -76,7 +87,8 @@
           "target": "nsis",
           "arch": [
             "x64",
-            "ia32"
+            "ia32",
+            "arm64"
           ]
         }
       ],

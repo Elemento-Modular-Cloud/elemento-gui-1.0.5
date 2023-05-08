@@ -128,7 +128,7 @@ class Setup extends Component {
             {
               installed &&
                 <>
-                  <span>Great, all the services are installed and ready!</span><span style={{ marginLeft: 20, fontSize: 50 }}>🎉</span><br /><br />
+                  <span>Great, all the services are installed correctly!</span><span style={{ marginLeft: 20, fontSize: 40, marginTop: 40 }}>Ready. Set. Cloud. 🏁🚀☁️</span><br /><br />
                   {!loading && <button className='downloadbutton' onClick={async () => await this.continue()}>Continue</button>}
                   {loading && <div className='loaderbox'><span className='loader' /></div>}
                 </>

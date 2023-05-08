@@ -121,7 +121,7 @@ class Pci extends Component {
                   <td>Vedor</td>
                   <td>Model ID</td>
                   <td>Model</td>
-                  <td>Delete</td>
+                  <td>Remove</td>
                 </tr>
               </thead>
               <tbody>
@@ -134,7 +134,7 @@ class Pci extends Component {
                         <td>{item.modelId}</td>
                         <td>{item.model}</td>
                         <td>
-                          <button className='bn632-hover bn28' onClick={() => this.removePci(item.modelId)}>Delete</button>
+                          <button className='bn632-hover bn28' onClick={() => this.removePci(item.modelId)}>Remove</button>
                         </td>
                       </tr>
                     )

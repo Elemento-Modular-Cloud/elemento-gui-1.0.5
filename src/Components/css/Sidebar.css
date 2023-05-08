@@ -33,10 +33,10 @@
   margin: 10px;
   padding: 10px;
   border-radius: 10px;
-  cursor: grab;
+  cursor: pointer;
 }
 .sideitemboxselected {
-  cursor: grab;
+  cursor: pointer;
   color: white;
   display: flex;
   flex-direction: row;
@@ -69,7 +69,7 @@
   width: 100%;
   position: absolute;
   bottom: 0px;
-  cursor: grab;
+  cursor: pointer;
 }
 .sidefooterlogout {
   display: flex;

@@ -83,7 +83,7 @@
 }
 .advstoaddbtn {
   border: none;
-  cursor: grab;
+  cursor: pointer;
   margin-left: 30px;
   width: 220px;
   height: 45px;

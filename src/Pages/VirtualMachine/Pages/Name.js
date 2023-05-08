@@ -39,7 +39,6 @@ class componentName extends Component {
           }}
         />
         <p>Only letters, number,_,- are permitted.</p>
-        <div className='loaderbox'><span className='loader' /></div>
       </div>
     )
   }

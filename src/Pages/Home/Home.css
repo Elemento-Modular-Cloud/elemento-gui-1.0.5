@@ -55,14 +55,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: grab;
+  cursor: pointer;
 }
 .btnlogout svg {
   width: 15px;
   margin-right: 5px;
 }
 .btnhelp {
-  cursor: grab;
+  cursor: pointer;
   width: 100px;
   height: 30px;
   background-color: transparent;

@@ -1,7 +1,7 @@
 import React, { Component } from 'reactn'
 import { Api } from '../../Services'
 import { Config } from '../../Global'
-import { Sidebar } from '../../Components'
+import { Back, Sidebar } from '../../Components'
 import './Licences.css'
 import swal from 'sweetalert'
 
@@ -82,7 +82,7 @@ class Licences extends Component {
 
           <div className='licheader'>
             <span>Licences</span>
-            <a href='/'>Back</a>
+            <Back page='/' />
           </div>
 
           <div className='lictables'>

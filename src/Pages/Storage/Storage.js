@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Modal from 'react-modal'
 import { Api } from '../../Services'
 import { Config, Utils } from '../../Global'
-import { Sidebar } from '../../Components'
+import { Back, Sidebar } from '../../Components'
 import './Storage.css'
 import { ReactComponent as Arrow } from '../../Assets/utils/arrow.svg'
 import { ReactComponent as CheckGreen } from '../../Assets/utils/checkgreen.svg'
@@ -141,7 +141,7 @@ class Storage extends Component {
 
           <div className='stoheader'>
             <span>Storage</span>
-            <a href='/'>Back</a>
+            <Back page='/' />
           </div>
 
           <div className='stobtnnew' onClick={() => this.setState({ showModal: true })}>

@@ -42,7 +42,7 @@
   white-space: nowrap;
 }
 .vmlbtncontainer {
-  cursor: grab;
+  cursor: pointer;
   width: 330px;
   display: flex;
   flex-direction: row;
