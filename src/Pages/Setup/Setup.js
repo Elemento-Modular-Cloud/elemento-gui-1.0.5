@@ -121,14 +121,15 @@ class Setup extends Component {
             {
               downloaded && !installed &&
                 <>
-                  <span>Please, execute the daemons software so we could connect and let you log into the Elemento Cloud App.</span><br /><br />
+                  <span>Please, execute the daemons software from your Downloads folder so we could connect and let you log into the Elemento Cloud App.</span><br /><br />
                   <div className='loaderbox'><span className='loader' /></div>
                 </>
             }
             {
               installed &&
                 <>
-                  <span>Great, all the services are installed correctly!</span><span style={{ marginLeft: 20, fontSize: 40, marginTop: 40 }}>Ready. Set. Cloud. 🏁🚀☁️</span><br /><br />
+                  <span>Great, all the services are installed correctly!</span><br />
+                  <span style={{ marginLeft: 20, fontSize: 40, marginTop: 40 }}>Ready. Set. Cloud. 🏁🚀☁️</span><br /><br />
                   {!loading && <button className='downloadbutton' onClick={async () => await this.continue()}>Continue</button>}
                   {loading && <div className='loaderbox'><span className='loader' /></div>}
                 </>

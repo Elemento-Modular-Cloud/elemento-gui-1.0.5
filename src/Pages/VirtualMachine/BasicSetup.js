@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Api } from '../../Services'
 import { Config, Utils } from '../../Global'
 import './css/BasicSetup.css'
-import { Back, CustomSelect, Sidebar } from '../../Components'
+import { Back, CustomSelect, Sidebar, WithRouter } from '../../Components'
 import { models, vendors } from '../../Global/Model'
 import { ReactComponent as Windows } from '../../Assets/os/windows.svg'
 import { ReactComponent as Linux } from '../../Assets/os/linux.svg'
@@ -14,6 +14,7 @@ class BasicSetup extends Component {
   constructor (props) {
     super(props)
     this.state = {
+      loading: false,
       name: '',
       templates: [],
       template: null,
@@ -65,12 +66,13 @@ class BasicSetup extends Component {
     }
   }
 
-  async registerVirutalMachine () {
+  async registerVirtualMachine () {
+    this.setState({ loading: true })
     const {
       name,
       template,
       osFamily,
-      storageSelected
+      storagesSelected
     } = this.state
 
     if (!name || name === '') {
@@ -102,7 +104,7 @@ class BasicSetup extends Component {
     const flags = template.cpu.flags
     const ramsize = template.ram.ramsize
     const reqECC = template.ram.reqECC
-    const volumeIds = storageSelected.map(storage => { return { vid: storage.volumeID } })
+    const volumeIds = storagesSelected.map(storage => { return { vid: storage.volumeID } })
 
     Api.createClient(Config.API_URL_MATCHER)
     const res = await Api.post('/canallocate', {
@@ -145,7 +147,7 @@ class BasicSetup extends Component {
           buttons: false,
           timer: 3000
         }).then(() => {
-          window.location.href = '/vmlist'
+          this.props.navigate('/vmlist')
         })
       } else {
         swal('Error', 'Could not register the new virtual machine', 'error', {
@@ -159,6 +161,7 @@ class BasicSetup extends Component {
         timer: 3000
       })
     }
+    this.setState({ loading: false })
   }
 
   addStorage () {
@@ -181,7 +184,7 @@ class BasicSetup extends Component {
 
   render () {
     const {
-      templates, template, storages, storageServer,
+      loading, templates, template, storages, storageServer,
       bootable, writable, shareable, visibility, ownership,
       storage, osFamily, storagesSelected, storageSelected // volumeIds
     } = this.state
@@ -357,11 +360,12 @@ class BasicSetup extends Component {
               }
             </div>
           </div>
-          <button className='basbutton' onClick={() => this.registerVirutalMachine()}>CONFIRM AND CREATE</button>
+          {loading && <div className='loaderbox'><span className='loader' /></div>}
+          {!loading && <button className='basbutton' onClick={async () => await this.registerVirtualMachine()}>CONFIRM AND CREATE</button>}
         </div>
       </div>
     )
   }
 }
 
-export default BasicSetup
+export default WithRouter(BasicSetup)

@@ -1,0 +1,28 @@
+.bn40 {
+  width: 120px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  margin: 5px;
+  height: 35px;
+  text-align:center;
+  border: none;
+  background-size: 300% 100%;
+  border-radius: 50px;
+  -moz-transition: all .4s ease-in-out;
+  -o-transition: all .4s ease-in-out;
+  -webkit-transition: all .4s ease-in-out;
+  transition: all .4s ease-in-out;
+
+  background-image: linear-gradient(
+    to right,
+    #6e6e6e,
+    #515151,
+    #454545,
+    #d4d0d0
+    );
+}
+.bn40:hover {
+  box-shadow: 0 5px 15px rgba(200, 200, 200, 0.4);
+}
