@@ -1,6 +1,9 @@
 {
-  "name": "elemento-gui-v2",
-  "author": "Elemento Cloud",
+  "name": "elemento-cloud-app",
+  "author": {
+    "name": "Elemento Cloud",
+    "email": "hello@elemento.cloud"
+  },
   "description": "Elemento Cloud App",
   "version": "0.2.0",
   "private": true,
@@ -52,7 +55,8 @@
     "electron:dist-mac-x64": "electron-builder --mac --x64",
     "electron:dist-windows": "electron-builder --win",
     "electron:dist-linux": "electron-builder --linux",
-    "electron:dist-arm": "electron-builder --armv7l"
+    "electron:dist-arm": "electron-builder --armv7l",
+    "electron:--dist--all--os--": "yarn build && electron-builder --mac --arm64 && electron-builder --mac --x64 && electron-builder --win && electron-builder --linux"
   },
   "build": {
     "productName": "Elemento Cloud App",
