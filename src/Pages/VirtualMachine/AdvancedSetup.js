@@ -4,7 +4,7 @@ import { Cpu, Memory, Name, Os, Pci, Resume, Storage } from './Pages'
 import { Config } from '../../Global'
 import { getMemories } from '../../Global/Model'
 import './css/AdvancedSetup.css'
-import { Back, Sidebar } from '../../Components'
+import { Back, Sidebar, WithRouter } from '../../Components'
 import swal from 'sweetalert'
 
 const NAME_PAGE = 1
@@ -171,30 +171,24 @@ class AdvancedSetup extends Component {
             buttons: false,
             timer: 3000
           }).then(() => {
-            window.location.href = '/vmlist'
+            this.props.navigate('/vmlist')
           })
         } else {
           swal('Error', 'Could not register the new virtual machine', 'error', {
             buttons: false,
             timer: 3000
-          }).then(() => {
-            // window.location.href = '/vmlist'
           })
         }
       } else {
         swal('Error', 'Could not allocate the new virtual machine', 'error', {
           buttons: false,
           timer: 3000
-        }).then(() => {
-          // window.location.href = '/vmlist'
         })
       }
     } catch (error) {
       swal('Error', 'Could not register the new virtual machine. Please, try again later.', 'error', {
         buttons: false,
         timer: 3000
-      }).then(() => {
-        // window.location.href = '/vmlist'
       })
     }
   }
@@ -253,4 +247,4 @@ class AdvancedSetup extends Component {
   }
 }
 
-export default AdvancedSetup
+export default WithRouter(AdvancedSetup)
