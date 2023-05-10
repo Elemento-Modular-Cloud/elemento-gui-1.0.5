@@ -94,7 +94,13 @@ Api.servicesStatus = async () => {
   Api.createClient(Config.API_URL_AUTHENT_MAIN)
   const authent = await client.get('/')
 
-  return matcher.ok && storage.ok && network.ok && authent.ok
+  return {
+    success: matcher.ok && storage.ok && network.ok && authent.ok,
+    matcher: matcher.ok,
+    storage: storage.ok,
+    network: network.ok,
+    authent: authent.ok
+  }
 }
 
 export default Api

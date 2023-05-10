@@ -51,8 +51,7 @@ class Setup extends Component {
       if (goto) {
         this.gotoServices()
       }
-      const status = await Api.servicesStatus()
-      return status
+      return (await Api.servicesStatus()).success
     } catch (error) {
       return false
     }

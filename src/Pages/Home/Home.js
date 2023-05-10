@@ -1,7 +1,7 @@
 import React, { Component } from 'reactn'
 import { Api, clearState, persistState } from '../../Services'
 import { Config } from '../../Global'
-import { Background, Button } from '../../Components'
+import { Background, Button, Daemons } from '../../Components'
 import onde from '../../Assets/onde.svg'
 import logobigwhite from '../../Assets/logobigwhite.svg'
 import './Home.css'
@@ -109,6 +109,7 @@ class Home extends Component {
             </div>
           </div>
 
+          <Daemons />
         </div>
       </Background>
     )

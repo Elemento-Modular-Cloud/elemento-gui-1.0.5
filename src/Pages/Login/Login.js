@@ -1,7 +1,7 @@
 import React, { Component } from 'reactn'
 import { Api, persistState } from '../../Services'
 import { Config } from '../../Global'
-import { Background } from '../../Components'
+import { Background, Daemons } from '../../Components'
 import onde from '../../Assets/onde.svg'
 import logoinline from '../../Assets/logoinline.svg'
 import './Login.css'
@@ -79,7 +79,7 @@ class Login extends Component {
 
   async checkServices () {
     try {
-      return await Api.servicesStatus()
+      return (await Api.servicesStatus()).success
     } catch (error) {
       return false
     }
@@ -174,6 +174,7 @@ class Login extends Component {
               </div>
             }
         </div>
+        <Daemons />
         <p className='loginversion'>v{Config.appVersion}</p>
       </Background>
     )
