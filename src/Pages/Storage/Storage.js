@@ -31,12 +31,11 @@ class Storage extends Component {
   }
 
   async componentDidMount () {
-    this.setState({ loading: true })
     await this.getAccessibleStorages()
-    this.setState({ loading: false })
   }
 
   async getAccessibleStorages () {
+    this.setState({ loading: true })
     Api.createClient(Config.API_URL_STORAGE)
     const res = await Api.get('/accessible')
 
@@ -46,6 +45,7 @@ class Storage extends Component {
 
       this.setState({ personalStorages, publicStorages })
     }
+    this.setState({ loading: false })
   }
 
   async createStorage () {
@@ -82,8 +82,9 @@ class Storage extends Component {
         swal('Success!', 'The new storage has been created', 'success', {
           buttons: false,
           timer: 3000
+        }).then(async () => {
+          await this.getAccessibleStorages()
         })
-        await this.getAccessibleStorages()
       } else {
         swal('Error', 'Could not create the new storage', 'error', {
           buttons: false,
@@ -141,7 +142,7 @@ class Storage extends Component {
 
           <div className='stoheader'>
             <span>Storage</span>
-            <Back page='/' />
+            <Back page='/' refresh={async () => await this.getAccessibleStorages()} />
           </div>
 
           <div className='stobtnnew' onClick={() => this.setState({ showModal: true })}>

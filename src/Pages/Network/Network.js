@@ -20,18 +20,18 @@ class Network extends Component {
   }
 
   async componentDidMount () {
-    this.setState({ loading: true })
     await this.getNetworkList()
-    this.setState({ loading: false })
   }
 
   async getNetworkList () {
+    this.setState({ loading: true })
     Api.createClient(Config.API_URL_NETWORK)
     const res = await Api.post('/list', {})
 
     if (res.ok) {
       this.setState({ networks: res.data })
     }
+    this.setState({ loading: false })
   }
 
   async createNewNetwork () {
@@ -68,7 +68,7 @@ class Network extends Component {
 
           <div className='netheader'>
             <span>Network</span>
-            <Back page='/' />
+            <Back page='/' refresh={async () => await this.getNetworkList()} />
           </div>
 
           {loading && <div className='loaderbox'><span className='loader' /></div>}

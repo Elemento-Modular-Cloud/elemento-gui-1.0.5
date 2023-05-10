@@ -70,7 +70,7 @@ class VirtualMachineList extends Component {
 
           <div className='vmlheader'>
             <span>Virtual Machines</span>
-            <Back page='/' />
+            <Back page='/' refresh={async () => await this.getStatus()} />
           </div>
 
           <Navigate className='stobtnnew' page='/newvm'>

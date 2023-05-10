@@ -11,7 +11,8 @@ class Licences extends Component {
     this.state = {
       loading: false,
       lock: false,
-      licenses: []
+      licenses: [],
+      file: null
     }
   }
 
@@ -32,6 +33,7 @@ class Licences extends Component {
   }
 
   async armLicense (licenseKey) {
+    this.setState({ loading: true })
     Api.createClient(Config.API_URL_AUTHENT)
     const res = await Api.post('/license/arm', {
       license_key: licenseKey
@@ -41,6 +43,9 @@ class Licences extends Component {
       swal('Success!', 'Licese armed successfully', 'success', {
         buttons: false,
         timer: 3000
+      }).then(() => {
+        const file = res.data && res.data.license ? res.data.license.file : ''
+        this.setState({ file })
       })
       await this.refreshData()
     } else {
@@ -49,9 +54,11 @@ class Licences extends Component {
         timer: 3000
       })
     }
+    this.setState({ loading: false })
   }
 
   async deleteLicense (licenseKey) {
+    this.setState({ loading: true })
     Api.createClient(Config.API_URL_AUTHENT)
     const res = await Api.delete('/license/delete', {
       license_key: licenseKey
@@ -69,10 +76,11 @@ class Licences extends Component {
         timer: 3000
       })
     }
+    this.setState({ loading: false })
   }
 
   render () {
-    const { loading, licenses, lock } = this.state
+    const { loading, licenses, lock, file } = this.state
 
     return (
       <div className='licpage'>
@@ -82,7 +90,7 @@ class Licences extends Component {
 
           <div className='licheader'>
             <span>Licences</span>
-            <Back page='/' />
+            <Back page='/' refresh={async () => await this.refreshData()} />
           </div>
 
           <div className='lictables'>
@@ -128,6 +136,16 @@ class Licences extends Component {
               }
             </table>
             {loading && <div className='loaderbox'><span className='loader' /></div>}
+            {
+              file &&
+                <div className='filebox'>
+                  <span>Please save this license as a file named atomos.license and place it in /etc/elemento in your licensed AtomOS server.</span><br />
+                  <span>The cloning of the same license file in multiple servers will end up causing the blacklisting of the license and the subsequent deactivation of all premium features.</span>
+                  <textarea className='filearea' rows={20} cols={100}>
+                    {file}
+                  </textarea>
+                </div>
+            }
           </div>
         </div>
       </div>
