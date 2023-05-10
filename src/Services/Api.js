@@ -11,7 +11,7 @@ let client = null
 Api.createClient = (baseURL) => {
   client = apisauce.create({
     baseURL,
-    timeout: 3000,
+    timeout: 20000,
     headers: {
       'Content-Type': 'application/json',
       Authorization: Api.jwt
