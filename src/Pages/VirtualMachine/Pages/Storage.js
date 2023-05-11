@@ -20,6 +20,7 @@ class Storage extends Component {
   }
 
   async componentDidMount () {
+    this.setState({ loading: true })
     const storages = await this.getAccessibleStorages()
 
     const { advancedSetup: { volumeIds } } = this.global
@@ -30,7 +31,8 @@ class Storage extends Component {
 
     this.setState({
       storagesIds: volumeIds || [],
-      storagesSelected
+      storagesSelected,
+      loading: false
     })
   }
 
@@ -50,23 +52,8 @@ class Storage extends Component {
 
   async updateState (storageSelected) {
     const { advancedSetup } = this.global
-    const { storages, storagesIds, storagesSelected } = this.state
 
-    const exists = storagesSelected.filter(storage => storage.volumeID === storageSelected).length > 0
-    if (exists) {
-      window.alert('This volume has already been added')
-      return
-    }
-
-    const storage = storages.filter(storage => storage.volumeID === storageSelected)[0]
-    const volumeIds = [...storagesIds, { vid: storageSelected }]
-    const updatedStoragesSelected = [...storagesSelected, storage]
-
-    this.setState({
-      storage,
-      volumeIds,
-      storagesSelected: updatedStoragesSelected
-    })
+    const volumeIds = storageSelected.map(s => { return { vid: s.volumeID } })
 
     this.props.setVolumeIds({ volumeIds })
     await this.setGlobal({
@@ -77,23 +64,30 @@ class Storage extends Component {
     }, persistState)
   }
 
+  async addStorage () {
+    const { storageSelected, storagesSelected, storages } = this.state
+    const exists = storagesSelected.filter(s => s.name === storageSelected)
+    const newStoragesSelected = [...storagesSelected, storages.filter(s => s.name === storageSelected)[0]]
+
+    exists.length === 0 && this.setState({
+      storagesSelected: newStoragesSelected,
+      storageSelected: null
+    })
+
+    await this.updateState(newStoragesSelected)
+  }
+
   async removeStorage (volumeID) {
-    const { storagesSelected } = this.state
-    const updated = [...storagesSelected.filter(s => s.volumeID !== volumeID)]
-    const volumeIds = updated.map(item => { return { vid: item.volumeID } })
-
-    this.setState({ volumeIds, storagesSelected: updated })
-
-    this.props.setVolumeIds({ volumeIds })
-    await this.setGlobal({
-      advancedSetup: {
-        volumeIds
-      }
-    }, persistState)
+    try {
+      const { storagesSelected } = this.state
+      const removed = storagesSelected.filter(s => s.volumeID !== volumeID)
+      this.setState({ storagesSelected: [...removed], storageSelected: null })
+      await this.updateState([...removed])
+    } catch (error) {}
   }
 
   render () {
-    const { storages, storagesSelected } = this.state
+    const { loading, storages, storagesSelected, storageSelected } = this.state
 
     return (
       <div>
@@ -102,14 +96,13 @@ class Storage extends Component {
         <div className='advstoselect'>
           <CustomSelect
             options={storages ? storages.map(s => s.name) : []}
-            onChange={async (event, storageSelected) => {
+            onChange={(event, storageSelected) => {
               if (storageSelected) {
-                const selected = storages.filter(storage => storage.name === storageSelected)[0].volumeID
-                this.setState({ storageSelected: selected })
-                await this.updateState(selected)
+                this.setState({ storageSelected })
               }
             }}
           />
+          {storageSelected && <button className='bn632-hover bn22' onClick={() => this.addStorage()}>Mount</button>}
         </div>
         <br />
         <br />
@@ -125,7 +118,7 @@ class Storage extends Component {
                 <td>Shareable</td>
                 <td>Own</td>
                 <td>Size</td>
-                <td>Volume ID</td>
+                {/* <td>Volume ID</td> */}
                 {/* <td>Server URL</td> */}
                 {/* <td>Server</td> */}
                 <td>Servers N.</td>
@@ -134,8 +127,9 @@ class Storage extends Component {
               </tr>
             </thead>
             <tbody>
+              {loading && <div className='loaderbox'><span className='loader' /></div>}
               {
-                storagesSelected && storagesSelected.length > 0 && storagesSelected.map((storage, i) => {
+                !loading && storagesSelected && storagesSelected.length > 0 && storagesSelected.map((storage, i) => {
                   return (
                     <tr key={i}>
                       <td>{storage.name}</td>
@@ -145,13 +139,13 @@ class Storage extends Component {
                       <td>{storage.shareable ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
                       <td>{storage.own ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
                       <td>{Utils.formatBytes(storage.size)}</td>
-                      <td>{storage.volumeID}</td>
+                      {/* <td>{storage.volumeID}</td> */}
                       {/* <td>{storage.serverurl}</td> */}
                       {/* <td>{storage.server}</td> */}
                       <td>{storage.nservers}</td>
                       {/* <td>{storage.servers}</td> */}
                       <td>
-                        <button className='bn28' onClick={() => this.removeStorage(storage.volumeID)}>Remove</button>
+                        <button className='bn632-hover bn28' onClick={() => this.removeStorage(storage.volumeID)}>Unmount</button>
                       </td>
                     </tr>
                   )

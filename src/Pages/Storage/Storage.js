@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Modal from 'react-modal'
 import { Api } from '../../Services'
 import { Config, Utils } from '../../Global'
-import { Back, Sidebar } from '../../Components'
+import { Back, Daemons, Sidebar } from '../../Components'
 import './Storage.css'
 import { ReactComponent as Arrow } from '../../Assets/utils/arrow.svg'
 import { ReactComponent as CheckGreen } from '../../Assets/utils/checkgreen.svg'
@@ -108,8 +108,9 @@ class Storage extends Component {
       swal('Success!', 'The selected storage has been destroyed', 'success', {
         buttons: false,
         timer: 3000
+      }).then(async () => {
+        await this.getAccessibleStorages()
       })
-      await this.getAccessibleStorages()
     } else {
       swal('Error', 'Could not destroy the selected storage', 'error', {
         buttons: false,
@@ -335,6 +336,8 @@ class Storage extends Component {
             {loadingNewStorage && <div className='loaderbox'><span className='loader' /></div>}
           </Modal>
         </div>
+
+        <Daemons />
       </div>
     )
   }

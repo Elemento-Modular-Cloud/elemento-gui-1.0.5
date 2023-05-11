@@ -69,7 +69,7 @@ class Resume extends Component {
             </div>
         }
 
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', minHeight: 100 }}>
           {!loading &&
             <button
               className='btnregister'

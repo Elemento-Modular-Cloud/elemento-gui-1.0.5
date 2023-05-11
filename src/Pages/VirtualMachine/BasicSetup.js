@@ -79,6 +79,8 @@ class BasicSetup extends Component {
       swal('Info', 'Please insert a VM name before to continue', 'info', {
         buttons: false,
         timer: 3000
+      }).then(() => {
+        this.setState({ loading: false })
       })
       return
     }
@@ -86,6 +88,8 @@ class BasicSetup extends Component {
       swal('Info', 'Please select a template before to continue', 'info', {
         buttons: false,
         timer: 3000
+      }).then(() => {
+        this.setState({ loading: false })
       })
       return
     }
@@ -93,6 +97,8 @@ class BasicSetup extends Component {
       swal('Info', 'Please select the desired OS before to continue', 'info', {
         buttons: false,
         timer: 3000
+      }).then(() => {
+        this.setState({ loading: false })
       })
       return
     }
@@ -356,12 +362,12 @@ class BasicSetup extends Component {
                         }
                       </div>
                     </div>
+                    {loading && <div className='loaderbox'><span className='loader' /></div>}
+                    {!loading && <button className='basbutton' onClick={async () => await this.registerVirtualMachine()}>CONFIRM AND CREATE</button>}
                   </div>
               }
             </div>
           </div>
-          {loading && <div className='loaderbox'><span className='loader' /></div>}
-          {!loading && <button className='basbutton' onClick={async () => await this.registerVirtualMachine()}>CONFIRM AND CREATE</button>}
         </div>
       </div>
     )

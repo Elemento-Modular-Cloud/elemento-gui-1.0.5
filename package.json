@@ -5,7 +5,7 @@
     "email": "hello@elemento.cloud"
   },
   "description": "Elemento Cloud App",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "main": "public/electron.js",
   "homepage": "./",

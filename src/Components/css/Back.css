@@ -14,9 +14,9 @@
   width: 30px;
   height: 30px;
 }
-.refreshbtn > svg:hover {
+.refreshbtn > svg:active {
   animation-name: rotate;
-  animation-duration: 2s;
+  animation-duration: 1s;
   animation-iteration-count: infinite;
 }
 

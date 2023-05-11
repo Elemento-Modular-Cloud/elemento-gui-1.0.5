@@ -40,19 +40,19 @@ const Daemons = () => {
       >
         <h2>Services Status</h2>
         <div className='statbox'>
-          <span>Matcher Status</span>
+          <span>Matcher Service</span>
           {m ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}
         </div>
         <div className='statbox'>
-          <span>Storage Status</span>
+          <span>Storage Service</span>
           {s ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}
         </div>
         <div className='statbox'>
-          <span>Network Status</span>
+          <span>Network Service</span>
           {n ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}
         </div>
         <div className='statbox'>
-          <span>Authent Status</span>
+          <span>Authentication Service</span>
           {a ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}
         </div>
       </Modal>
