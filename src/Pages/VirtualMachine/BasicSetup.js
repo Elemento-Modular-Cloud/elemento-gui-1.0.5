@@ -362,7 +362,7 @@ class BasicSetup extends Component {
                         }
                       </div>
                     </div>
-                    {loading && <div className='loaderbox'><span className='loader' /></div>}
+                    {loading && <div><div className='loaderbox'><span className='loaderwhite' /></div><br /><br /></div>}
                     {!loading && <button className='basbutton' onClick={async () => await this.registerVirtualMachine()}>CONFIRM AND CREATE</button>}
                   </div>
               }
