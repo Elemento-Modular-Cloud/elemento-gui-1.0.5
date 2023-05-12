@@ -1,14 +1,7 @@
 module.exports = {
   packagerConfig: {
     osxSign: {
-      // optionsForFile: (filePath) => {
-      //   // Here, we keep it simple and return a single entitlements.plist file.
-      //   // You can use this callback to map different sets of entitlements
-      //   // to specific files in your packaged app.
-      //   return {
-      //     entitlements: 'path/to/entitlements.plist'
-      //   }
-      // }
+      identity: 'Developer ID Application: Your Company Name' // the name of your Developer ID certificate
     },
     osxNotarize: {
       tool: 'notarytool',
@@ -16,12 +9,6 @@ module.exports = {
       appleIdPassword: APPLE_PASSWORD, // Apple App-specific password
       teamId: APPLE_TEAM_ID
     }
-    // osxNotarize: {
-    //   tool: 'notarytool',
-    //   appleApiKey: process.env.APPLE_API_KEY,
-    //   appleApiKeyId: process.env.APPLE_API_KEY_ID,
-    //   appleApiIssuer: process.env.APPLE_API_ISSUER,
-    // }
   },
   rebuildConfig: {},
   makers: [
