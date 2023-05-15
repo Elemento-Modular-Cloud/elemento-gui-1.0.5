@@ -114,8 +114,7 @@
     }
   },
   "electron-notarize": {
-    "appleId": "your-apple-id-email",
-    "appleIdPassword": "your-app-specific-password"
+    "nodeScript": "notarize.js"
   },
   "eslintConfig": {
     "extends": [
