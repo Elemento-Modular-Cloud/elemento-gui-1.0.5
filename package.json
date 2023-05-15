@@ -47,7 +47,7 @@
     "standard": "^17.0.0"
   },
   "scripts": {
-    "start": "electron-forge start",
+    "start": "react-scripts start",
     "lint": "standard --verbose | snazzy",
     "lint:fix": "standard --fix",
     "build": "GENERATE_SOURCEMAP=false react-scripts build",
@@ -84,10 +84,7 @@
       "icon": "build/icon.icns",
       "target": [
         "dmg"
-      ],
-      "identity": "Developer ID Application: Your Certificate Common Name (XXXXXXXXXX)",
-      "entitlements": "./entitlements.mac.plist",
-      "entitlementsInherit": "./entitlements.mac.plist"
+      ]
     },
     "linux": {
       "target": [

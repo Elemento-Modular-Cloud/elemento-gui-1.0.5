@@ -17,12 +17,24 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-around;
+  justify-content: flex-start;
   background-color: rgba(200, 200, 200, 0.2);
   margin: 10px;
   padding: 10px;
   border-radius: 10px;
   margin-bottom: 100px;
+}
+.usernamebox {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+}
+.usernameemail{
+  font-weight: 800;
+}
+.usernamedomain {
+  margin-top: -20px;
+  font-weight: lighter;
 }
 .sideitembox {
   color: rgba(200, 200, 200, 0.5);

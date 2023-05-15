@@ -40,7 +40,10 @@ const Sidebar = ({ selected }) => {
 
       <div className='sideuserbox'>
         <User />
-        <span>{username}</span>
+        <div className='usernamebox'>
+          <span className='usernameemail'>{username.split('@')[0]}</span><br />
+          <span className='usernamedomain'>@{username.split('@')[1]}</span>
+        </div>
       </div>
 
       <div className={selected === 'vms' ? 'sideitemboxselected' : 'sideitembox'} onClick={() => navigate('/vmlist')}>
