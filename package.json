@@ -85,7 +85,11 @@
       "icon": "build/icon.icns",
       "target": [
         "dmg"
-      ]
+      ],
+      "identity": "Elemento SRL (9WTDB7G2C7)",
+      "hardenedRuntime": true,
+      "provisioningProfile": "Elemento_cloud_app_provisioning_profile.provisionprofile",
+      "entitlements": "entitlements.mac.plist"
     },
     "linux": {
       "target": [

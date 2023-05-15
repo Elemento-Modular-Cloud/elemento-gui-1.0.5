@@ -2,13 +2,5 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-  <key>com.apple.security.network.client</key>
-  <true/>
-  <key>com.apple.security.filesystem.write.data.apple-internal</key>
-  <true/>
-  <key>com.apple.security.filesystem.write.data</key>
-  <true/>
-  <key>com.apple.security.filesystem.read-only</key>
-  <true/>
 </dict>
 </plist>
