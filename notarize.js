@@ -5,9 +5,12 @@ async function notarizeApp () {
   try {
     await notarize({
       appBundleId: 'app.elemento.cloud',
-      appPath: path.resolve(__dirname, 'dist/mac/Elemento Cloud App.app'),
-      appleId: 'your-apple-id-email',
-      appleIdPassword: 'your-app-specific-password'
+      appPath: path.resolve(__dirname, 'dist/mac-arm64/Elemento Cloud App.app'),
+      appleId: 'xxxxx',
+      appleIdPassword: 'xxxxx',
+      teamId: 'xxxx',
+      tool: 'notarytool',
+      logLevel: 'verbose'
     })
 
     console.log('Notarization successful')

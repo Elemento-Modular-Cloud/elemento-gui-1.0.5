@@ -87,11 +87,9 @@
       "target": [
         "dmg"
       ],
-      "identity": "Elemento SRL (9WTDB7G2C7)",
-      "provisioningProfile": "Elemento_cloud_app_provisioning_profile.provisionprofile",
+      "identity": "xxxx",
       "entitlements": "entitlements.mac.plist",
-      "hardenedRuntime": true,
-      "afterSign": "electron-notarize"
+      "hardenedRuntime": true
     },
     "linux": {
       "target": [
@@ -112,9 +110,6 @@
       ],
       "icon": "build/icon.ico"
     }
-  },
-  "electron-notarize": {
-    "nodeScript": "notarize.js"
   },
   "eslintConfig": {
     "extends": [
