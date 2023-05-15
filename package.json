@@ -84,7 +84,10 @@
       "icon": "build/icon.icns",
       "target": [
         "dmg"
-      ]
+      ],
+      "identity": "Developer ID Application: Your Certificate Common Name (XXXXXXXXXX)",
+      "entitlements": "./entitlements.mac.plist",
+      "entitlementsInherit": "./entitlements.mac.plist"
     },
     "linux": {
       "target": [
