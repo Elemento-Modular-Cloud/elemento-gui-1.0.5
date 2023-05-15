@@ -6,7 +6,8 @@ const Background = ({ children, backgroundColor, backgroundImage }) => {
       style={{
         ...styles.background,
         backgroundColor,
-        backgroundImage: `url(${backgroundImage})`
+        backgroundImage: `url(${backgroundImage})`,
+        overflow: 'hidden'
       }}
     >
       <div style={styles.shadow}>
