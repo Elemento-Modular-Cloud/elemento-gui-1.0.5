@@ -1,13 +1,22 @@
 module.exports = {
   packagerConfig: {
+    icon: './icons/icon',
     osxSign: {
-      identity: 'Developer ID Application: Your Company Name' // the name of your Developer ID certificate
+      identity: 'Developer ID Application: Elemento SRL (9WTDB7G2C7)', // the name of your Developer ID certificate
+      optionsForFile: (filePath) => {
+        // Here, we keep it simple and return a single entitlements.plist file.
+        // You can use this callback to map different sets of entitlements
+        // to specific files in your packaged app.
+        return {
+          entitlements: 'entitlements.mac.plist'
+        }
+      }
     },
     osxNotarize: {
       tool: 'notarytool',
-      appleId: APPLE_ID,
-      appleIdPassword: APPLE_PASSWORD, // Apple App-specific password
-      teamId: APPLE_TEAM_ID
+      appleId: 'framesystem@icloud.com',
+      appleIdPassword: 'mumw-joxm-gdde-lhdq', // Apple App-specific password
+      teamId: '9WTDB7G2C7'
     }
   },
   rebuildConfig: {},
@@ -25,7 +34,11 @@ module.exports = {
     },
     {
       name: '@electron-forge/maker-deb',
-      config: {}
+      config: {
+        options: {
+          icon: './icons/icon.png'
+        }
+      }
     },
     {
       name: '@electron-forge/maker-rpm',

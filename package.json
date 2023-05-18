@@ -63,7 +63,7 @@
     "electron:dist-windows": "electron-builder --win",
     "electron:dist-linux": "electron-builder --linux",
     "electron:dist-arm": "electron-builder --armv7l",
-    "electron:--dist--all--os--": "yarn build && electron-builder --mac --arm64 && electron-builder --mac --x64 && electron-builder --win && electron-builder --linux",
+    "electron:notarize": "DEBUG=* node notarize.js",
     "package": "electron-forge package",
     "make": "electron-forge make"
   },
@@ -79,7 +79,8 @@
       "node_modules/**/*"
     ],
     "dmg": {
-      "background": "build/background.png"
+      "background": "build/background.png",
+      "sign": false
     },
     "mac": {
       "category": "app.elemento.cloud",
@@ -87,9 +88,12 @@
       "target": [
         "dmg"
       ],
-      "identity": "xxxx",
+      "identity": null,
+      "type": "distribution",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
       "entitlements": "entitlements.mac.plist",
-      "hardenedRuntime": true
+      "entitlementsInherit": "entitlements.mac.plist"
     },
     "linux": {
       "target": [
