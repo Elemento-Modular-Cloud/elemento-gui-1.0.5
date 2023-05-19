@@ -5,7 +5,7 @@
     "email": "hello@elemento.cloud"
   },
   "description": "Elemento Cloud App",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "private": true,
   "main": "public/electron.js",
   "homepage": "./",
@@ -65,7 +65,7 @@
     "electron:dist-arm": "electron-builder --armv7l",
     "electron:notarize": "DEBUG=* node notarize.js",
     "package": "electron-forge package",
-    "make": "electron-forge make"
+    "make": "electron-forge make --name \"Elemento Cloud App\""
   },
   "build": {
     "productName": "Elemento Cloud App",
