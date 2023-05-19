@@ -51,10 +51,11 @@ class Pci extends Component {
     }
   }
 
-  removePci (modelId) {
+  async removePci (modelId) {
     const { pci } = this.state
     const pcis = pci.filter(item => item.modelId !== modelId)
     this.setState({ pci: pcis })
+    await this.updateState(pcis)
   }
 
   async updateState (pci) {
@@ -134,7 +135,7 @@ class Pci extends Component {
                         <td>{item.modelId}</td>
                         <td>{item.model}</td>
                         <td>
-                          <button className='bn632-hover bn28' onClick={() => this.removePci(item.modelId)}>Remove</button>
+                          <button className='bn632-hover bn28' onClick={async () => await this.removePci(item.modelId)}>Remove</button>
                         </td>
                       </tr>
                     )

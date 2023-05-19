@@ -129,6 +129,13 @@ class AdvancedSetup extends Component {
       const memories = getMemories()
       const ramsize = memories.filter(memory => memory.label === size)[0].amount
       const archs = archsList.map(arch => arch.value)
+      const _pci = pci.map(p => {
+        return {
+          vendor: p.vendorId,
+          model: p.modelId,
+          quantity: p.quantity
+        }
+      })
 
       Api.createClient(Config.API_URL_MATCHER)
       const res = await Api.post('/canallocate', {
@@ -143,7 +150,7 @@ class AdvancedSetup extends Component {
           os_family: os,
           os_flavour: 'pop'
         },
-        pci
+        pci: _pci
       })
 
       if (res.ok) {
@@ -160,9 +167,9 @@ class AdvancedSetup extends Component {
           reqECC,
           misc: {
             os_family: os,
-            os_flavour: 'pop'
+            os_flavour: os === 'windows' ? 'windows' : 'pop'
           },
-          pci: [],
+          pci: _pci,
           volumes
         })
 
