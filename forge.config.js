@@ -1,5 +1,6 @@
 module.exports = {
   packagerConfig: {
+    name: 'Elemento Cloud App',
     icon: './icons/icon',
     osxSign: {
       identity: 'Developer ID Application: Elemento SRL (9WTDB7G2C7)', // the name of your Developer ID certificate
@@ -17,7 +18,15 @@ module.exports = {
       appleId: 'framesystem@icloud.com',
       appleIdPassword: 'mumw-joxm-gdde-lhdq', // Apple App-specific password
       teamId: '9WTDB7G2C7'
-    }
+    },
+    ignore: [
+      'dist',
+      'notarize',
+      'out',
+      '.env',
+      '.gitignore',
+      'forge.config.js'
+    ]
   },
   rebuildConfig: {},
   makers: [
