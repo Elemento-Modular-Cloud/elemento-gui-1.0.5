@@ -65,7 +65,8 @@
     "electron:dist-arm": "electron-builder --armv7l",
     "electron:notarize": "DEBUG=* node notarize.js",
     "package": "electron-forge package",
-    "make": "electron-forge make --name \"Elemento Cloud App\""
+    "make": "yarn build && electron-forge make --name \"Elemento Cloud App\" --verbose",
+    "make:dmg": "npx electron-installer-dmg elemento-cloud-app-darwin-arm64/elemento-cloud-app.app ElementoCloudApp"
   },
   "build": {
     "productName": "Elemento Cloud App",
