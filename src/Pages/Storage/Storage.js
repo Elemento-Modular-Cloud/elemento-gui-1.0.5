@@ -11,24 +11,26 @@ import swal from 'sweetalert'
 
 Modal.defaultStyles.overlay.backgroundColor = '#f28e00bb'
 
+const DEFAULT_STATE = {
+  personalStorages: [],
+  publicStorages: [],
+  name: '',
+  size: 0,
+  privateStorage: false,
+  shareableStorage: false,
+  bootableStorage: false,
+  readonlyStorage: false,
+  loading: false,
+  selector: 'personal',
+  showModal: false,
+  loadingNewStorage: false,
+  toBeDeleted: null
+}
+
 class Storage extends Component {
   constructor (props) {
     super(props)
-    this.state = {
-      personalStorages: [],
-      publicStorages: [],
-      name: '',
-      size: 0,
-      privateStorage: false,
-      shareableStorage: false,
-      bootableStorage: false,
-      readonlyStorage: false,
-      loading: false,
-      selector: 'personal',
-      showModal: false,
-      loadingNewStorage: false,
-      toBeDeleted: null
-    }
+    this.state = DEFAULT_STATE
   }
 
   async componentDidMount () {
@@ -84,6 +86,7 @@ class Storage extends Component {
           buttons: false,
           timer: 3000
         }).then(async () => {
+          this.setState(DEFAULT_STATE)
           await this.getAccessibleStorages()
         })
       } else {
