@@ -13,7 +13,8 @@ class VirtualMachineList extends Component {
     super(props)
     this.state = {
       templates: [],
-      loading: false
+      loading: false,
+      toBeDeleted: null
     }
   }
 
@@ -38,7 +39,7 @@ class VirtualMachineList extends Component {
   }
 
   async deleteVirtualMachine (uniqueID) {
-    this.setState({ loading: true })
+    this.setState({ toBeDeleted: uniqueID, loading: true })
     Api.createClient(Config.API_URL_MATCHER)
     const res = await Api.post('/unregister', {
       local_index: uniqueID
@@ -49,18 +50,20 @@ class VirtualMachineList extends Component {
         buttons: false,
         timer: 3000
       })
+      this.setState({ toBeDeleted: null })
       await this.getStatus()
     } else {
       swal('Error', 'Could not delete the selected virtual machine', 'error', {
         buttons: false,
         timer: 3000
+      }).then(() => {
+        this.setState({ toBeDeleted: null, loading: false })
       })
     }
-    this.setState({ loading: false })
   }
 
   render () {
-    const { vms, loading } = this.state
+    const { vms, loading, toBeDeleted } = this.state
 
     return (
       <div className='vmlpage'>
@@ -78,6 +81,8 @@ class VirtualMachineList extends Component {
               <span>CREATE NEW VIRTUAL MACHINE</span>
               <Arrow />
             </div>
+
+            {loading && <div className='loaderbox'><span className='loader' /></div>}
           </Navigate>
 
           <div className='vmltables'>
@@ -103,40 +108,36 @@ class VirtualMachineList extends Component {
                   <td>Delete</td>
                 </tr>
               </thead>
-              {loading && <div className='loaderbox'><span className='loader' /></div>}
-              {
-                !loading &&
-                  <tbody className='vmltablebody'>
-                    {
-                      vms && vms.length > 0 && vms.map((vm, i) => {
-                        const uniqueID = vm.uniqueID
-                        const detail = vm.req_json
+              <tbody className='vmltablebody'>
+                {
+                  vms && vms.length > 0 && vms.map((vm, i) => {
+                    const uniqueID = vm.uniqueID
+                    const detail = vm.req_json
 
-                        return (
-                          <tr key={i}>
-                            <td>{detail.vm_name}</td>
-                            <td>{detail.arch}</td>
-                            <td>{detail.slots}</td>
-                            <td>{detail.overprovision}</td>
-                            <td>{detail.allowSMT ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
-                            {/* <td>{JSON.stringify(detail.flags)}</td> */}
-                            <td>{Utils.formatBytes(detail.ramsize * 1000000000)}</td>
-                            <td>{detail.reqECC ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
-                            <td>{detail.volumes.map(volume => volume.name).join(',')}</td>
-                            {/* <td>{JSON.stringify(detail.pcidevs)}</td> */}
-                            {/* <td>{JSON.stringify(detail.netdevs)}</td> */}
-                            <td>{detail.os_family}</td>
-                            <td>{detail.os_flavour}</td>
-                            <td>{detail.creation_date}</td>
-                            <td>{JSON.stringify(detail.network_config?.ipv4)}</td>
-                            <td><button className='bn632-hover bn22' onClick={async () => window.open(detail.viewer, '_blank')}>Viewer</button></td>
-                            <td><button className='bn632-hover bn28' onClick={async () => await this.deleteVirtualMachine(uniqueID)}>Delete</button></td>
-                          </tr>
-                        )
-                      })
-                    }
-                  </tbody>
-              }
+                    return (
+                      <tr key={i} style={{ backgroundColor: toBeDeleted === vm.uniqueID ? '#898C8A99' : '' }}>
+                        <td>{detail.vm_name}</td>
+                        <td>{detail.arch}</td>
+                        <td>{detail.slots}</td>
+                        <td>{detail.overprovision}</td>
+                        <td>{detail.allowSMT ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
+                        {/* <td>{JSON.stringify(detail.flags)}</td> */}
+                        <td>{Utils.formatBytes(detail.ramsize * 1000000000)}</td>
+                        <td>{detail.reqECC ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
+                        <td>{detail.volumes.map(volume => volume.name).join(',')}</td>
+                        {/* <td>{JSON.stringify(detail.pcidevs)}</td> */}
+                        {/* <td>{JSON.stringify(detail.netdevs)}</td> */}
+                        <td>{detail.os_family}</td>
+                        <td>{detail.os_flavour}</td>
+                        <td>{detail.creation_date}</td>
+                        <td>{JSON.stringify(detail.network_config?.ipv4)}</td>
+                        <td><button className='bn632-hover bn22' onClick={async () => !toBeDeleted && window.open(detail.viewer, '_blank')}>Viewer</button></td>
+                        <td><button className='bn632-hover bn28' onClick={async () => !toBeDeleted && await this.deleteVirtualMachine(uniqueID)}>Delete</button></td>
+                      </tr>
+                    )
+                  })
+                }
+              </tbody>
             </table>
           </div>
         </div>

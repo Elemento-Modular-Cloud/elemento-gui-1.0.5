@@ -45,13 +45,14 @@
 }
 .vmlbtncontainer {
   cursor: pointer;
-  width: 330px;
+  width: 230px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
   background-color: #f28e00;
   padding: 10px;
+  margin-top: 10px;
   border-radius: 50px;
   color: white;
   border: solid 1px white;
