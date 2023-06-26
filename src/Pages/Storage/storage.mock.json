@@ -1,0 +1,954 @@
+[
+  {
+    "volumeID": "bf400c2af452455e80dab1762d489d6b",
+    "name": "windows_preset",
+    "creatorID": "3664536c2afa11edbfbd1c834130ce27",
+    "private": false,
+    "bootable": true,
+    "readonly": false,
+    "shareable": false,
+    "size": 100000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": false,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "edb23b3bdf8f4e2883d17922ef522b47",
+    "name": "test_pasquetta",
+    "creatorID": "5e96afa52c1a53348adc5c5663978058",
+    "private": false,
+    "bootable": false,
+    "readonly": false,
+    "shareable": false,
+    "size": 4000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": false,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "18f66c17030f45fc8b7695a315364668",
+    "name": "new_volume",
+    "creatorID": "7ff9b0f0d9df11eda1f972d7a9c834cb",
+    "private": false,
+    "bootable": false,
+    "readonly": false,
+    "shareable": false,
+    "size": 2000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": false,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "2743f24fe8094be1a8e7adaf9b3b5201",
+    "name": "storage-test",
+    "creatorID": "32c0e395bfd85f8493787e6c8ce3d925",
+    "private": true,
+    "bootable": false,
+    "readonly": false,
+    "shareable": false,
+    "size": 250000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": true,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "c4bb74f2ae26418c85cb7ec78ca5b017",
+    "name": "vm_test_adv",
+    "creatorID": "32c0e395bfd85f8493787e6c8ce3d925",
+    "private": true,
+    "bootable": true,
+    "readonly": false,
+    "shareable": false,
+    "size": 500000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": true,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "03485b151f184ed6a3d5005da8bb5445",
+    "name": "vm_advanced",
+    "creatorID": "32c0e395bfd85f8493787e6c8ce3d925",
+    "private": true,
+    "bootable": true,
+    "readonly": false,
+    "shareable": false,
+    "size": 250000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": true,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "637aafacd65e48a68e0090b913ce39e0",
+    "name": "fwevwe",
+    "creatorID": "32c0e395bfd85f8493787e6c8ce3d925",
+    "private": true,
+    "bootable": true,
+    "readonly": false,
+    "shareable": false,
+    "size": 250000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": true,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "a0ad38e616a14ecbbb1577185c05a7d1",
+    "name": "cascveq",
+    "creatorID": "32c0e395bfd85f8493787e6c8ce3d925",
+    "private": true,
+    "bootable": false,
+    "readonly": false,
+    "shareable": true,
+    "size": 125000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": true,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "bf400c2af452455e80dab1762d489d6b",
+    "name": "windows_preset",
+    "creatorID": "3664536c2afa11edbfbd1c834130ce27",
+    "private": false,
+    "bootable": true,
+    "readonly": false,
+    "shareable": false,
+    "size": 100000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": false,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "edb23b3bdf8f4e2883d17922ef522b47",
+    "name": "test_pasquetta",
+    "creatorID": "5e96afa52c1a53348adc5c5663978058",
+    "private": false,
+    "bootable": false,
+    "readonly": false,
+    "shareable": false,
+    "size": 4000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": false,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "18f66c17030f45fc8b7695a315364668",
+    "name": "new_volume",
+    "creatorID": "7ff9b0f0d9df11eda1f972d7a9c834cb",
+    "private": false,
+    "bootable": false,
+    "readonly": false,
+    "shareable": false,
+    "size": 2000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": false,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "2743f24fe8094be1a8e7adaf9b3b5201",
+    "name": "storage-test",
+    "creatorID": "32c0e395bfd85f8493787e6c8ce3d925",
+    "private": true,
+    "bootable": false,
+    "readonly": false,
+    "shareable": false,
+    "size": 250000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": true,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "c4bb74f2ae26418c85cb7ec78ca5b017",
+    "name": "vm_test_adv",
+    "creatorID": "32c0e395bfd85f8493787e6c8ce3d925",
+    "private": true,
+    "bootable": true,
+    "readonly": false,
+    "shareable": false,
+    "size": 500000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": true,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "03485b151f184ed6a3d5005da8bb5445",
+    "name": "vm_advanced",
+    "creatorID": "32c0e395bfd85f8493787e6c8ce3d925",
+    "private": true,
+    "bootable": true,
+    "readonly": false,
+    "shareable": false,
+    "size": 250000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": true,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "637aafacd65e48a68e0090b913ce39e0",
+    "name": "fwevwe",
+    "creatorID": "32c0e395bfd85f8493787e6c8ce3d925",
+    "private": true,
+    "bootable": true,
+    "readonly": false,
+    "shareable": false,
+    "size": 250000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": true,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "a0ad38e616a14ecbbb1577185c05a7d1",
+    "name": "cascveq",
+    "creatorID": "32c0e395bfd85f8493787e6c8ce3d925",
+    "private": true,
+    "bootable": false,
+    "readonly": false,
+    "shareable": true,
+    "size": 125000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": true,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "bf400c2af452455e80dab1762d489d6b",
+    "name": "windows_preset",
+    "creatorID": "3664536c2afa11edbfbd1c834130ce27",
+    "private": false,
+    "bootable": true,
+    "readonly": false,
+    "shareable": false,
+    "size": 100000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": false,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "edb23b3bdf8f4e2883d17922ef522b47",
+    "name": "test_pasquetta",
+    "creatorID": "5e96afa52c1a53348adc5c5663978058",
+    "private": false,
+    "bootable": false,
+    "readonly": false,
+    "shareable": false,
+    "size": 4000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": false,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "18f66c17030f45fc8b7695a315364668",
+    "name": "new_volume",
+    "creatorID": "7ff9b0f0d9df11eda1f972d7a9c834cb",
+    "private": false,
+    "bootable": false,
+    "readonly": false,
+    "shareable": false,
+    "size": 2000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": false,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "2743f24fe8094be1a8e7adaf9b3b5201",
+    "name": "storage-test",
+    "creatorID": "32c0e395bfd85f8493787e6c8ce3d925",
+    "private": true,
+    "bootable": false,
+    "readonly": false,
+    "shareable": false,
+    "size": 250000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": true,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "c4bb74f2ae26418c85cb7ec78ca5b017",
+    "name": "vm_test_adv",
+    "creatorID": "32c0e395bfd85f8493787e6c8ce3d925",
+    "private": true,
+    "bootable": true,
+    "readonly": false,
+    "shareable": false,
+    "size": 500000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": true,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "03485b151f184ed6a3d5005da8bb5445",
+    "name": "vm_advanced",
+    "creatorID": "32c0e395bfd85f8493787e6c8ce3d925",
+    "private": true,
+    "bootable": true,
+    "readonly": false,
+    "shareable": false,
+    "size": 250000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": true,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "637aafacd65e48a68e0090b913ce39e0",
+    "name": "fwevwe",
+    "creatorID": "32c0e395bfd85f8493787e6c8ce3d925",
+    "private": true,
+    "bootable": true,
+    "readonly": false,
+    "shareable": false,
+    "size": 250000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": true,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "a0ad38e616a14ecbbb1577185c05a7d1",
+    "name": "cascveq",
+    "creatorID": "32c0e395bfd85f8493787e6c8ce3d925",
+    "private": true,
+    "bootable": false,
+    "readonly": false,
+    "shareable": true,
+    "size": 125000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": true,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "bf400c2af452455e80dab1762d489d6b",
+    "name": "windows_preset",
+    "creatorID": "3664536c2afa11edbfbd1c834130ce27",
+    "private": false,
+    "bootable": true,
+    "readonly": false,
+    "shareable": false,
+    "size": 100000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": false,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "edb23b3bdf8f4e2883d17922ef522b47",
+    "name": "test_pasquetta",
+    "creatorID": "5e96afa52c1a53348adc5c5663978058",
+    "private": false,
+    "bootable": false,
+    "readonly": false,
+    "shareable": false,
+    "size": 4000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": false,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "18f66c17030f45fc8b7695a315364668",
+    "name": "new_volume",
+    "creatorID": "7ff9b0f0d9df11eda1f972d7a9c834cb",
+    "private": false,
+    "bootable": false,
+    "readonly": false,
+    "shareable": false,
+    "size": 2000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": false,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "2743f24fe8094be1a8e7adaf9b3b5201",
+    "name": "storage-test",
+    "creatorID": "32c0e395bfd85f8493787e6c8ce3d925",
+    "private": true,
+    "bootable": false,
+    "readonly": false,
+    "shareable": false,
+    "size": 250000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": true,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "c4bb74f2ae26418c85cb7ec78ca5b017",
+    "name": "vm_test_adv",
+    "creatorID": "32c0e395bfd85f8493787e6c8ce3d925",
+    "private": true,
+    "bootable": true,
+    "readonly": false,
+    "shareable": false,
+    "size": 500000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": true,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "03485b151f184ed6a3d5005da8bb5445",
+    "name": "vm_advanced",
+    "creatorID": "32c0e395bfd85f8493787e6c8ce3d925",
+    "private": true,
+    "bootable": true,
+    "readonly": false,
+    "shareable": false,
+    "size": 250000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": true,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "637aafacd65e48a68e0090b913ce39e0",
+    "name": "fwevwe",
+    "creatorID": "32c0e395bfd85f8493787e6c8ce3d925",
+    "private": true,
+    "bootable": true,
+    "readonly": false,
+    "shareable": false,
+    "size": 250000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": true,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "a0ad38e616a14ecbbb1577185c05a7d1",
+    "name": "cascveq",
+    "creatorID": "32c0e395bfd85f8493787e6c8ce3d925",
+    "private": true,
+    "bootable": false,
+    "readonly": false,
+    "shareable": true,
+    "size": 125000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": true,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "bf400c2af452455e80dab1762d489d6b",
+    "name": "windows_preset",
+    "creatorID": "3664536c2afa11edbfbd1c834130ce27",
+    "private": false,
+    "bootable": true,
+    "readonly": false,
+    "shareable": false,
+    "size": 100000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": false,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "edb23b3bdf8f4e2883d17922ef522b47",
+    "name": "test_pasquetta",
+    "creatorID": "5e96afa52c1a53348adc5c5663978058",
+    "private": false,
+    "bootable": false,
+    "readonly": false,
+    "shareable": false,
+    "size": 4000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": false,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "18f66c17030f45fc8b7695a315364668",
+    "name": "new_volume",
+    "creatorID": "7ff9b0f0d9df11eda1f972d7a9c834cb",
+    "private": false,
+    "bootable": false,
+    "readonly": false,
+    "shareable": false,
+    "size": 2000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": false,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "2743f24fe8094be1a8e7adaf9b3b5201",
+    "name": "storage-test",
+    "creatorID": "32c0e395bfd85f8493787e6c8ce3d925",
+    "private": true,
+    "bootable": false,
+    "readonly": false,
+    "shareable": false,
+    "size": 250000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": true,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "c4bb74f2ae26418c85cb7ec78ca5b017",
+    "name": "vm_test_adv",
+    "creatorID": "32c0e395bfd85f8493787e6c8ce3d925",
+    "private": true,
+    "bootable": true,
+    "readonly": false,
+    "shareable": false,
+    "size": 500000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": true,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "03485b151f184ed6a3d5005da8bb5445",
+    "name": "vm_advanced",
+    "creatorID": "32c0e395bfd85f8493787e6c8ce3d925",
+    "private": true,
+    "bootable": true,
+    "readonly": false,
+    "shareable": false,
+    "size": 250000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": true,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "637aafacd65e48a68e0090b913ce39e0",
+    "name": "fwevwe",
+    "creatorID": "32c0e395bfd85f8493787e6c8ce3d925",
+    "private": true,
+    "bootable": true,
+    "readonly": false,
+    "shareable": false,
+    "size": 250000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": true,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "a0ad38e616a14ecbbb1577185c05a7d1",
+    "name": "cascveq",
+    "creatorID": "32c0e395bfd85f8493787e6c8ce3d925",
+    "private": true,
+    "bootable": false,
+    "readonly": false,
+    "shareable": true,
+    "size": 125000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": true,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "bf400c2af452455e80dab1762d489d6b",
+    "name": "windows_preset",
+    "creatorID": "3664536c2afa11edbfbd1c834130ce27",
+    "private": false,
+    "bootable": true,
+    "readonly": false,
+    "shareable": false,
+    "size": 100000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": false,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "edb23b3bdf8f4e2883d17922ef522b47",
+    "name": "test_pasquetta",
+    "creatorID": "5e96afa52c1a53348adc5c5663978058",
+    "private": false,
+    "bootable": false,
+    "readonly": false,
+    "shareable": false,
+    "size": 4000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": false,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "18f66c17030f45fc8b7695a315364668",
+    "name": "new_volume",
+    "creatorID": "7ff9b0f0d9df11eda1f972d7a9c834cb",
+    "private": false,
+    "bootable": false,
+    "readonly": false,
+    "shareable": false,
+    "size": 2000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": false,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "2743f24fe8094be1a8e7adaf9b3b5201",
+    "name": "storage-test",
+    "creatorID": "32c0e395bfd85f8493787e6c8ce3d925",
+    "private": true,
+    "bootable": false,
+    "readonly": false,
+    "shareable": false,
+    "size": 250000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": true,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "c4bb74f2ae26418c85cb7ec78ca5b017",
+    "name": "vm_test_adv",
+    "creatorID": "32c0e395bfd85f8493787e6c8ce3d925",
+    "private": true,
+    "bootable": true,
+    "readonly": false,
+    "shareable": false,
+    "size": 500000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": true,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "03485b151f184ed6a3d5005da8bb5445",
+    "name": "vm_advanced",
+    "creatorID": "32c0e395bfd85f8493787e6c8ce3d925",
+    "private": true,
+    "bootable": true,
+    "readonly": false,
+    "shareable": false,
+    "size": 250000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": true,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "637aafacd65e48a68e0090b913ce39e0",
+    "name": "fwevwe",
+    "creatorID": "32c0e395bfd85f8493787e6c8ce3d925",
+    "private": true,
+    "bootable": true,
+    "readonly": false,
+    "shareable": false,
+    "size": 250000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": true,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "a0ad38e616a14ecbbb1577185c05a7d1",
+    "name": "cascveq",
+    "creatorID": "32c0e395bfd85f8493787e6c8ce3d925",
+    "private": true,
+    "bootable": false,
+    "readonly": false,
+    "shareable": true,
+    "size": 125000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": true,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "bf400c2af452455e80dab1762d489d6b",
+    "name": "windows_preset",
+    "creatorID": "3664536c2afa11edbfbd1c834130ce27",
+    "private": false,
+    "bootable": true,
+    "readonly": false,
+    "shareable": false,
+    "size": 100000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": false,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "edb23b3bdf8f4e2883d17922ef522b47",
+    "name": "test_pasquetta",
+    "creatorID": "5e96afa52c1a53348adc5c5663978058",
+    "private": false,
+    "bootable": false,
+    "readonly": false,
+    "shareable": false,
+    "size": 4000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": false,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "18f66c17030f45fc8b7695a315364668",
+    "name": "new_volume",
+    "creatorID": "7ff9b0f0d9df11eda1f972d7a9c834cb",
+    "private": false,
+    "bootable": false,
+    "readonly": false,
+    "shareable": false,
+    "size": 2000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": false,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "2743f24fe8094be1a8e7adaf9b3b5201",
+    "name": "storage-test",
+    "creatorID": "32c0e395bfd85f8493787e6c8ce3d925",
+    "private": true,
+    "bootable": false,
+    "readonly": false,
+    "shareable": false,
+    "size": 250000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": true,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "c4bb74f2ae26418c85cb7ec78ca5b017",
+    "name": "vm_test_adv",
+    "creatorID": "32c0e395bfd85f8493787e6c8ce3d925",
+    "private": true,
+    "bootable": true,
+    "readonly": false,
+    "shareable": false,
+    "size": 500000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": true,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "03485b151f184ed6a3d5005da8bb5445",
+    "name": "vm_advanced",
+    "creatorID": "32c0e395bfd85f8493787e6c8ce3d925",
+    "private": true,
+    "bootable": true,
+    "readonly": false,
+    "shareable": false,
+    "size": 250000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": true,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "637aafacd65e48a68e0090b913ce39e0",
+    "name": "fwevwe",
+    "creatorID": "32c0e395bfd85f8493787e6c8ce3d925",
+    "private": true,
+    "bootable": true,
+    "readonly": false,
+    "shareable": false,
+    "size": 250000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": true,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  },
+  {
+    "volumeID": "a0ad38e616a14ecbbb1577185c05a7d1",
+    "name": "cascveq",
+    "creatorID": "32c0e395bfd85f8493787e6c8ce3d925",
+    "private": true,
+    "bootable": false,
+    "readonly": false,
+    "shareable": true,
+    "size": 125000000000,
+    "serverurl": "http://10.164.0.3:7772",
+    "server": "10.164.0.3",
+    "own": true,
+    "nservers": 1,
+    "servers": [
+      "http://10.164.0.3:7772"
+    ]
+  }
+]

@@ -8,6 +8,7 @@ import { ReactComponent as Arrow } from '../../Assets/utils/arrow.svg'
 import { ReactComponent as CheckGreen } from '../../Assets/utils/checkgreen.svg'
 import { ReactComponent as CheckRed } from '../../Assets/utils/checkred.svg'
 import swal from 'sweetalert'
+import storages from './storage.mock.json'
 
 Modal.defaultStyles.overlay.backgroundColor = '#f28e00bb'
 
@@ -39,8 +40,9 @@ class Storage extends Component {
 
   async getAccessibleStorages () {
     this.setState({ loading: true })
-    Api.createClient(Config.API_URL_STORAGE)
-    const res = await Api.get('/accessible')
+
+    // Api.createClient(Config.API_URL_STORAGE)
+    const res = { ok: true, data: storages } // await Api.get('/accessible')
 
     if (res.ok && res.data && res.data.length > 0) {
       const personalStorages = res.data ? res.data.filter(storage => storage.own) : []
