@@ -126,7 +126,7 @@ class Setup extends Component {
             {
               downloaded && !installed &&
                 <>
-                  <span>Please, execute the daemons software from your Downloads folder so we could connect and let you log into the electrOS App.</span><br /><br />
+                  <span>Daemon software has been downloaded in the Downloads folder. Please, run the service and then log into the electrOS App.</span><br /><br />
                   <div className='loaderbox'><span className='loader' /></div>
                 </>
             }

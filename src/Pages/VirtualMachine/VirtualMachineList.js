@@ -104,7 +104,7 @@ class VirtualMachineList extends Component {
                   <td>OS Falvour</td>
                   <td>Date</td>
                   <td>Network</td>
-                  <td>Viewer</td>
+                  <td>SSH</td>
                   <td>Delete</td>
                 </tr>
               </thead>
@@ -131,7 +131,8 @@ class VirtualMachineList extends Component {
                         <td>{detail.os_flavour}</td>
                         <td>{detail.creation_date}</td>
                         <td>{JSON.stringify(detail.network_config?.ipv4)}</td>
-                        <td><button className='bn632-hover bn22' onClick={async () => !toBeDeleted && window.open(detail.viewer, '_blank')}>Viewer</button></td>
+                        {/* <td><button className='bn632-hover bn22' onClick={async () => !toBeDeleted && window.open(detail.viewer, '_blank')}>Viewer</button></td> */}
+                        <td>ssh {JSON.stringify(detail.network_config?.ipv4)}</td>
                         <td><button className='bn632-hover bn28' onClick={async () => !toBeDeleted && await this.deleteVirtualMachine(uniqueID)}>Delete</button></td>
                       </tr>
                     )
