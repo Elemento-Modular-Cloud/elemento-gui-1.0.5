@@ -126,7 +126,7 @@ class Setup extends Component {
             {
               downloaded && !installed &&
                 <>
-                  <span>Please, execute the daemons software from your Downloads folder so we could connect and let you log into the Elemento Cloud App.</span><br /><br />
+                  <span>Please, execute the daemons software from your Downloads folder so we could connect and let you log into the electrOS App.</span><br /><br />
                   <div className='loaderbox'><span className='loader' /></div>
                 </>
             }
