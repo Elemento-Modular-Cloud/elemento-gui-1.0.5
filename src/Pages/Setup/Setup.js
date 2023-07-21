@@ -75,6 +75,12 @@ class Setup extends Component {
     await this.props.postSetup()
   }
 
+  async handleKeyDown (event) {
+    if (event.keyCode === 13) {
+      await this.continue()
+    }
+  }
+
   render () {
     const { chunk, downloaded, installed, loading } = this.state
 
@@ -83,7 +89,7 @@ class Setup extends Component {
         backgroundColor='rgba(30, 30, 30, 1)'
         backgroundImage={onde}
       >
-        <div className='setpage'>
+        <div className='setpage' tabIndex='0' onKeyDownCapture={e => this.handleKeyDown(e)}>
           <div className='setheader'>
             <div
               className='logobigwhite'
@@ -120,7 +126,7 @@ class Setup extends Component {
             {
               downloaded && !installed &&
                 <>
-                  <span>Please, execute the daemons software from your Downloads folder so we could connect and let you log into the Elemento Cloud App.</span><br /><br />
+                  <span>Daemon software has been downloaded in the Downloads folder. Please, run the service and then log into the electrOS App.</span><br /><br />
                   <div className='loaderbox'><span className='loader' /></div>
                 </>
             }

@@ -123,7 +123,7 @@ class BasicSetup extends Component {
       reqECC,
       misc: {
         os_family: osFamily,
-        os_flavour: 'pop'
+        os_flavour: osFamily === 'linux' ? 'pop' : 'windows'
       },
       pci: []
     })
@@ -142,7 +142,7 @@ class BasicSetup extends Component {
         reqECC,
         misc: {
           os_family: osFamily,
-          os_flavour: 'pop'
+          os_flavour: osFamily === 'linux' ? 'pop' : 'windows'
         },
         pci: [],
         volumes: volumeIds

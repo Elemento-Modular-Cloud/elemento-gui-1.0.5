@@ -90,10 +90,10 @@ class Home extends Component {
           </div>
           <div className='homebody'>
             <div className='homebuttons'>
-              <Button Icon={Pc} page='/vmlist' name='Virtual Machines' text='Lorem Ipsum is simply dummy text of the printing and typesetting industry.' />
-              <Button Icon={Storage} page='/storage' name='Storage' text='Lorem Ipsum is simply dummy text of the printing and typesetting industry.' />
-              {/* <Button Icon={Network} page='/network' name='Network' text='Lorem Ipsum is simply dummy text of the printing and typesetting industry.' /> */}
-              <Button Icon={License} page='/licences' name='Licences' text='Lorem Ipsum is simply dummy text of the printing and typesetting industry.' />
+              <Button Icon={Pc} page='/vmlist' name='Virtual Machines' text='Virtual machines management and visualization' />
+              <Button Icon={Storage} page='/storage' name='Storage' text='Volumes creation to mount in your virtual machines' />
+              {/* <Button Icon={Network} page='/network' name='Network' text='' /> */}
+              <Button Icon={License} page='/licences' name='Licences' text='License management of Elemento Cloud' />
             </div>
 
             <div className='homefooter'>

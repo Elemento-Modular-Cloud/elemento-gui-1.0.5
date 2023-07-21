@@ -11,23 +11,26 @@ import swal from 'sweetalert'
 
 Modal.defaultStyles.overlay.backgroundColor = '#f28e00bb'
 
+const DEFAULT_STATE = {
+  personalStorages: [],
+  publicStorages: [],
+  name: '',
+  size: 0,
+  privateStorage: false,
+  shareableStorage: false,
+  bootableStorage: false,
+  readonlyStorage: false,
+  loading: false,
+  selector: 'personal',
+  showModal: false,
+  loadingNewStorage: false,
+  toBeDeleted: null
+}
+
 class Storage extends Component {
   constructor (props) {
     super(props)
-    this.state = {
-      personalStorages: [],
-      publicStorages: [],
-      name: '',
-      size: 0,
-      privateStorage: false,
-      shareableStorage: false,
-      bootableStorage: false,
-      readonlyStorage: false,
-      loading: false,
-      selector: 'personal',
-      showModal: false,
-      loadingNewStorage: false
-    }
+    this.state = DEFAULT_STATE
   }
 
   async componentDidMount () {
@@ -83,6 +86,7 @@ class Storage extends Component {
           buttons: false,
           timer: 3000
         }).then(async () => {
+          this.setState(DEFAULT_STATE)
           await this.getAccessibleStorages()
         })
       } else {
@@ -101,6 +105,7 @@ class Storage extends Component {
   }
 
   async destroyStorage (volumeID) {
+    this.setState({ toBeDeleted: volumeID, loading: true })
     const ret = await Api.post('/destroy', {
       volume_id: volumeID
     })
@@ -109,12 +114,15 @@ class Storage extends Component {
         buttons: false,
         timer: 3000
       }).then(async () => {
+        this.setState({ toBeDeleted: null })
         await this.getAccessibleStorages()
       })
     } else {
       swal('Error', 'Could not destroy the selected storage', 'error', {
         buttons: false,
         timer: 3000
+      }).then(() => {
+        this.setState({ toBeDeleted: null, loading: false })
       })
     }
   }
@@ -132,7 +140,8 @@ class Storage extends Component {
       readonlyStorage,
       selector,
       showModal,
-      loadingNewStorage
+      loadingNewStorage,
+      toBeDeleted
     } = this.state
 
     return (
@@ -151,6 +160,8 @@ class Storage extends Component {
               <span>CREATE NEW STORAGE</span>
               <Arrow />
             </div>
+
+            {loading && <div className='loaderbox'><span className='loader' /></div>}
           </div>
 
           <div className='stoselector'>
@@ -189,35 +200,31 @@ class Storage extends Component {
                       <td>Destroy</td>
                     </tr>
                   </thead>
-                  {loading && <div className='loaderbox'><span className='loader' /></div>}
-                  {
-                    !loading &&
-                      <tbody className='stotablebody'>
-                        {
-                          personalStorages && personalStorages.length > 0 && personalStorages.map((storage, i) => {
-                            return (
-                              <tr key={i}>
-                                <td style={{ fontWeight: 'bold' }}>{storage.name}</td>
-                                <td style={{ width: 80 }}>{storage.bootable ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
-                                <td style={{ width: 80 }}>{storage.private ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
-                                <td style={{ width: 80 }}>{storage.readonly ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
-                                <td style={{ width: 80 }}>{storage.shareable ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
-                                <td style={{ width: 80 }}>{storage.own ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
-                                <td style={{ width: 80 }}>{Utils.formatBytes(storage.size)}</td>
-                                <td style={{ maxWidth: 200, overflow: 'scroll' }}>{storage.volumeID}</td>
-                                <td style={{ display: 'none' }}>{storage.serverurl}</td>
-                                <td>{storage.server}</td>
-                                <td>{storage.nservers}</td>
-                                <td style={{ display: 'none' }}>{storage.servers.join(' - ')}</td>
-                                <td>
-                                  <button className='bn632-hover bn28' onClick={async () => await this.destroyStorage(storage.volumeID)}>Destroy</button>
-                                </td>
-                              </tr>
-                            )
-                          })
-                        }
-                      </tbody>
-                  }
+                  <tbody className='stotablebody'>
+                    {
+                      personalStorages && personalStorages.length > 0 && personalStorages.map((storage, i) => {
+                        return (
+                          <tr key={i} style={{ backgroundColor: toBeDeleted === storage.volumeID ? '#898C8A99' : '' }}>
+                            <td style={{ fontWeight: 'bold' }}>{storage.name}</td>
+                            <td style={{ width: 80 }}>{storage.bootable ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
+                            <td style={{ width: 80 }}>{storage.private ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
+                            <td style={{ width: 80 }}>{storage.readonly ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
+                            <td style={{ width: 80 }}>{storage.shareable ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
+                            <td style={{ width: 80 }}>{storage.own ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
+                            <td style={{ width: 80 }}>{Utils.formatBytes(storage.size)}</td>
+                            <td style={{ maxWidth: 200, overflow: 'scroll' }}>{storage.volumeID}</td>
+                            <td style={{ display: 'none' }}>{storage.serverurl}</td>
+                            <td>{storage.server}</td>
+                            <td>{storage.nservers}</td>
+                            <td style={{ display: 'none' }}>{storage.servers.join(' - ')}</td>
+                            <td>
+                              <button className='bn632-hover bn28' onClick={async () => !toBeDeleted && await this.destroyStorage(storage.volumeID)}>Destroy</button>
+                            </td>
+                          </tr>
+                        )
+                      })
+                    }
+                  </tbody>
                 </table>
             }
 
@@ -241,35 +248,31 @@ class Storage extends Component {
                       <td>Destroy</td>
                     </tr>
                   </thead>
-                  {loading && <div className='loaderbox'><span className='loader' /></div>}
-                  {
-                    !loading &&
-                      <tbody className='stotablebody'>
-                        {
-                          publicStorages && publicStorages.length > 0 && publicStorages.map((storage, i) => {
-                            return (
-                              <tr key={i}>
-                                <td style={{ fontWeight: 'bold' }}>{storage.name}</td>
-                                <td style={{ width: 80 }}>{storage.bootable ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
-                                <td style={{ width: 80 }}>{storage.private ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
-                                <td style={{ width: 80 }}>{storage.readonly ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
-                                <td style={{ width: 80 }}>{storage.shareable ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
-                                <td style={{ width: 80 }}>{storage.own ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
-                                <td style={{ width: 80 }}>{Utils.formatBytes(storage.size)}</td>
-                                <td style={{ maxWidth: 200, overflow: 'scroll' }}>{storage.volumeID}</td>
-                                <td style={{ display: 'none' }}>{storage.serverurl}</td>
-                                <td>{storage.server}</td>
-                                <td>{storage.nservers}</td>
-                                <td style={{ display: 'none' }}>{storage.servers.join(' - ')}</td>
-                                <td>
-                                  <button className='bn632-hover bn28' onClick={async () => await this.destroyStorage(storage.volumeID)}>Destroy</button>
-                                </td>
-                              </tr>
-                            )
-                          })
-                        }
-                      </tbody>
-                  }
+                  <tbody className='stotablebody'>
+                    {
+                      publicStorages && publicStorages.length > 0 && publicStorages.map((storage, i) => {
+                        return (
+                          <tr key={i} style={{ backgroundColor: toBeDeleted === storage.volumeID ? '#898C8A99' : '' }}>
+                            <td style={{ fontWeight: 'bold' }}>{storage.name}</td>
+                            <td style={{ width: 80 }}>{storage.bootable ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
+                            <td style={{ width: 80 }}>{storage.private ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
+                            <td style={{ width: 80 }}>{storage.readonly ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
+                            <td style={{ width: 80 }}>{storage.shareable ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
+                            <td style={{ width: 80 }}>{storage.own ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
+                            <td style={{ width: 80 }}>{Utils.formatBytes(storage.size)}</td>
+                            <td style={{ maxWidth: 200, overflow: 'scroll' }}>{storage.volumeID}</td>
+                            <td style={{ display: 'none' }}>{storage.serverurl}</td>
+                            <td>{storage.server}</td>
+                            <td>{storage.nservers}</td>
+                            <td style={{ display: 'none' }}>{storage.servers.join(' - ')}</td>
+                            <td>
+                              <button className='bn632-hover bn28' onClick={async () => !toBeDeleted && await this.destroyStorage(storage.volumeID)}>Destroy</button>
+                            </td>
+                          </tr>
+                        )
+                      })
+                    }
+                  </tbody>
                 </table>
             }
           </div>

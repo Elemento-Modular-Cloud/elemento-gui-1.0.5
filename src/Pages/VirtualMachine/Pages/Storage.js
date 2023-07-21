@@ -93,6 +93,8 @@ class Storage extends Component {
       <div>
         <h2>Storage setup</h2>
 
+        <p>⚠️ You can mount as many storage as you want, there is no limit!</p>
+
         <div className='advstoselect'>
           <CustomSelect
             options={storages ? storages.map(s => s.name) : []}

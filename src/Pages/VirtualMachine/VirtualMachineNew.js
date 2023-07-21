@@ -42,9 +42,9 @@ class VirtualMachineNew extends Component {
           </div>
 
           <div className='vmbuttons'>
-            <ButtonOrange Icon={Playlist} isOrange page='/newvm/basic' name='AUTOMAGIC' text='Lorem Ipsum is simply dummy text of the printing and typesetting industry.' />
+            <ButtonOrange Icon={Playlist} isOrange page='/newvm/basic' name='AUTOMAGIC' text='Simplified mode for creating the virtual machine' />
             <div className='divider' />
-            <ButtonBlack Icon={AdminPanel} page='/newvm/advanced' name='ADVANCED' text='Lorem Ipsum is simply dummy text of the printing and typesetting industry.' />
+            <ButtonBlack Icon={AdminPanel} page='/newvm/advanced' name='ADVANCED' text='Advanced mode full of configurations' />
           </div>
         </div>
       </div>
