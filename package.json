@@ -65,10 +65,10 @@
     "electron:dist-arm": "electron-builder --armv7l",
     "electron:notarize": "DEBUG=* node notarize.js",
     "package": "electron-forge package",
-    "electron-forge:make-macos-arm": "yarn build && electron-forge make",
-    "electron-forge:arm-installer-dmg": "cd out && npx electron-installer-dmg --icon=../icons/icon.png --background=../public/background.png --title=Elemento\\ Cloud\\ App Elemento\\ Cloud\\ App-darwin-arm64/Elemento\\ Cloud\\ App.app 'electrOS-arm64'",
-    "electron-forge:make-macos-intel": "yarn build && electron-forge make --arch=x64 --platform=darwin",
-    "electron-forge:intel-installer-dmg": "cd out && npx electron-installer-dmg --icon=../icons/icon.png --background=../public/background.png --title=Elemento\\ Cloud\\ App Elemento\\ Cloud\\ App-darwin-x64/Elemento\\ Cloud\\ App.app 'electrOS-x64'"
+    "electron-forge:make-macos-arm": "electron-forge make",
+    "electron-forge:arm-installer-dmg": "cd out && npx electron-installer-dmg --icon=../icons/icon.png --background=../public/background.png --title=electrOS-darwin-arm64/electrOS.app 'electrOS-arm64'",
+    "electron-forge:make-macos-intel": "electron-forge make --arch=x64 --platform=darwin",
+    "electron-forge:intel-installer-dmg": "cd out && npx electron-installer-dmg --icon=../icons/icon.png --background=../public/background.png --title=electrOS-darwin-x64/electrOS.app 'electrOS-x64'"
   },
   "build": {
     "productName": "electrOS",
