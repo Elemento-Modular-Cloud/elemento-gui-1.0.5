@@ -106,6 +106,7 @@ class Storage extends Component {
 
   async destroyStorage (volumeID) {
     this.setState({ toBeDeleted: volumeID, loading: true })
+    Api.createClient(Config.API_URL_STORAGE)
     const ret = await Api.post('/destroy', {
       volume_id: volumeID
     })
