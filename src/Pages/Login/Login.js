@@ -115,7 +115,7 @@ class Login extends Component {
                   }}
                 />
                 <div className='loginbox'>
-                  <span>Username or email*</span>
+                  <span>Email*</span>
                   <input type='text' value={username} onChange={e => this.setState({ username: e.target.value })} />
                   <span>Password*</span>
                   <input type='password' value={password} onChange={e => this.setState({ password: e.target.value })} onKeyDown={e => this.handleKeyDown(e)} />
