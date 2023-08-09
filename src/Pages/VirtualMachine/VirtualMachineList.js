@@ -78,7 +78,7 @@ class VirtualMachineList extends Component {
 
           <Navigate className='stobtnnew' page='/newvm'>
             <div className='vmlbtncontainer'>
-              <span>CREATE NEW VIRTUAL MACHINE</span>
+              <span>CREATE NEW<br />VIRTUAL MACHINE</span>
               <Arrow />
             </div>
 
@@ -116,7 +116,10 @@ class VirtualMachineList extends Component {
 
                     return (
                       <tr key={i} style={{ backgroundColor: toBeDeleted === vm.uniqueID ? '#898C8A99' : '' }}>
-                        <td>{detail.vm_name}</td>
+                        <td>
+                          <span style={{ fontWeight: 'bold' }}>{detail.vm_name}</span><br />
+                          <span style={{ fontStyle: 'italic', fontSize: 12, display: 'block', paddingTop: 8 }}>{uniqueID}</span>
+                        </td>
                         <td>{detail.arch}</td>
                         <td>{detail.slots}</td>
                         <td>{detail.overprovision}</td>
