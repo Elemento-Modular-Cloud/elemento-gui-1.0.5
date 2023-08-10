@@ -107,6 +107,7 @@ class AdvancedSetup extends Component {
         cpu: {
           cores: slots,
           overprovision,
+          cpuFrequency,
           archsList,
           flags
         },
@@ -146,6 +147,7 @@ class AdvancedSetup extends Component {
         flags,
         ramsize,
         reqECC,
+        min_frequency: cpuFrequency,
         misc: {
           os_family: os,
           os_flavour: 'pop'
@@ -165,6 +167,7 @@ class AdvancedSetup extends Component {
           flags,
           ramsize,
           reqECC,
+          min_frequency: cpuFrequency,
           misc: {
             os_family: os,
             os_flavour: os === 'windows' ? 'windows' : 'pop'
