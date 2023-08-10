@@ -36,7 +36,8 @@ class Cpu extends Component {
     const coresIndex = coresIndexes.length > 0 ? coresIndexes[0].value : 0
     const overprovisionIndexes = overprovisionMarks.filter(x => (x.value + 1) === overprovision)
     const overprovisionIndex = overprovisionIndexes.length > 0 ? overprovisionIndexes[0].value : 0
-    const cpuFrequencyIndex = cpuFrequencyMarks.filter(x => x.label === cpuFrequency)[0].value
+    const cpuFrequencyIndexes = cpuFrequencyMarks.filter(x => x.label === cpuFrequency)
+    const cpuFrequencyIndex = cpuFrequencyIndexes.length > 0 ? cpuFrequencyIndexes[0].value : 0
 
     this.setState({
       cores,

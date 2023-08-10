@@ -84,8 +84,8 @@ class AdvancedSetup extends Component {
     } else if (page === MEMORY_PAGE) {
       // next = false
     } else if (page === OS_PAGE) {
-      if (!os || os.os === '') {
-        swal('Info', 'Please, select the desired OS before to continue', 'info', {
+      if (!os || os.os === '' || !os.flavour) {
+        swal('Info', 'Please, select the desired OS and its own flavour before to continue', 'info', {
           buttons: false,
           timer: 3000
         })
@@ -117,7 +117,8 @@ class AdvancedSetup extends Component {
           ecc: reqECC
         },
         os: {
-          os
+          os,
+          flavour
         },
         volumeIds: {
           volumeIds: volumes
@@ -150,7 +151,7 @@ class AdvancedSetup extends Component {
         min_frequency: cpuFrequency,
         misc: {
           os_family: os,
-          os_flavour: 'pop'
+          os_flavour: flavour
         },
         pci: _pci
       })
@@ -170,7 +171,7 @@ class AdvancedSetup extends Component {
           min_frequency: cpuFrequency,
           misc: {
             os_family: os,
-            os_flavour: os === 'windows' ? 'windows' : 'pop'
+            os_flavour: flavour
           },
           pci: _pci,
           volumes
