@@ -34,7 +34,7 @@ const Sidebar = ({ selected }) => {
 
   return (
     <div className='sidebar'>
-      <div className='sidelogo'>
+      <div className='sidelogo' onClick={() => navigate('/')}>
         <LogoInlineWhite />
       </div>
 
