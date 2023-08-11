@@ -101,7 +101,7 @@ class VirtualMachineList extends Component {
                   {/* <td>PCI devices</td> */}
                   {/* <td>NET devices</td> */}
                   <td>OS Family</td>
-                  <td>OS Falvour</td>
+                  <td>OS Flavour</td>
                   <td>Date</td>
                   <td>Network</td>
                   <td>SSH</td>
