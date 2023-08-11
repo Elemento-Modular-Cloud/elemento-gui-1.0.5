@@ -17,7 +17,7 @@
   justify-content: space-between;
   margin-bottom: 30px;
 }
-.licheader > span {
+.licheader > div > span {
   color: #898C8A;
   font-size: 35px;
 }
@@ -45,7 +45,7 @@
 .lictables {
   width: 100%;
   max-height: 90%;
-  min-height: 150px;
+  min-height: 90px;
   overflow: scroll;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }
