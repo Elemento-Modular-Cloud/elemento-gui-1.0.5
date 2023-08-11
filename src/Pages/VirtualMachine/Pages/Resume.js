@@ -25,7 +25,7 @@ class Resume extends Component {
 
     return (
       <div className='resbody'>
-        <h2>Resume</h2>
+        <h2>Summary</h2>
 
         {
           x &&
@@ -76,6 +76,16 @@ class Resume extends Component {
         }
 
         <div style={{ display: 'flex', justifyContent: 'center', minHeight: 100 }}>
+          {!loading &&
+            <button
+              className='advprevious'
+              onClick={async () => {
+                await this.props.back()
+              }}
+              style={{ marginRight: 10 }}
+            >
+              Previous
+            </button>}
           {!loading &&
             <button
               className='btnregister'
