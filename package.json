@@ -58,8 +58,8 @@
     "electron:start": "electron .",
     "electron:pack": "electron-builder --dir",
     "electron:post": "electron-builder install-app-deps",
-    "---NO---electron:dist-mac-arm": "electron-builder --mac --arm64",
-    "---NO---electron:dist-mac-x64": "electron-builder --mac --x64",
+    "electron:dist-mac-arm": "electron-builder --mac --arm64",
+    "electron:dist-mac-x64": "electron-builder --mac --x64",
     "electron:dist-windows": "electron-builder --win",
     "electron:dist-linux": "electron-builder --linux",
     "electron:dist-arm": "electron-builder --armv7l",
@@ -68,7 +68,8 @@
     "electron-forge:make-macos-arm": "electron-forge make",
     "electron-forge:arm-installer-dmg": "cd out && npx electron-installer-dmg --icon=../icons/icon.png --background=../public/background.png --title=ElectrOS ./electrOS-darwin-arm64/ElectrOS.app 'ElectrOS-arm64'",
     "electron-forge:make-macos-intel": "electron-forge make --arch=x64 --platform=darwin",
-    "electron-forge:intel-installer-dmg": "cd out && npx electron-installer-dmg --icon=../icons/icon.png --background=../public/background.png --title=ElectrOS ./electrOS-darwin-x64/ElectrOS.app 'ElectrOS-x64'"
+    "electron-forge:intel-installer-dmg": "cd out && npx electron-installer-dmg --icon=../icons/icon.png --background=../public/background.png --title=ElectrOS ./electrOS-darwin-x64/ElectrOS.app 'ElectrOS-x64'",
+    "git:pull-iso.json": "cd ./src/Data && git clone https://github.com/Elemento-Modular-Cloud/iso-templates.git"
   },
   "build": {
     "productName": "ElectrOS",
