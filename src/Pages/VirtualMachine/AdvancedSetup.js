@@ -34,7 +34,9 @@ class AdvancedSetup extends Component {
         ecc: false
       },
       os: '',
-      volumeIds: []
+      volumeIds: {
+        volumeIds: []
+      }
     }
   }
 
