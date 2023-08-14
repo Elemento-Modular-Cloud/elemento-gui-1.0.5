@@ -9,14 +9,14 @@ export default function CustomSelect (props) {
       multi={props.multi}
       id='checkboxes-tags-demo'
       options={props.options}
-      disableCloseOnSelect
+      // disableCloseOnSelect
       getOptionLabel={(option) => option}
       value={props.value}
       fullWidth
       size='small'
       onChange={props.onChange}
       renderInput={(params) => (
-        <TextField {...params} variant='standard' label='' placeholder='Select one item...' style={{ fontSize: '.8rem' }} />
+        <TextField {...params} variant='standard' label='' placeholder={props.placeholder || 'Select one item...'} style={{ fontSize: '.8rem' }} />
       )}
     />
   )
