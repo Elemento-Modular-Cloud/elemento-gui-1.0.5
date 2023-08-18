@@ -5,7 +5,7 @@ import { ReactComponent as Pc } from '../Assets/main/pc.svg'
 import { Resume } from '../Pages/VirtualMachine/Pages'
 
 const ResumeModal = () => {
-  const [modal, setModal] = useState(true)
+  const [modal, setModal] = useState(false)
 
   return (
     <div className='resumebtn' onClick={() => setModal(!modal)}>
