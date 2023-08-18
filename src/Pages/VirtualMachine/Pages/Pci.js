@@ -84,11 +84,10 @@ class Pci extends Component {
             <h3>Vendor</h3>
             <CustomSelect
               style={{ windth: '100%' }}
-              options={Object.keys(vendors).sort((a, b) => a - b).map(item => `${item} @ ${vendors[item]}`)}
+              options={Object.keys(vendors).sort((a, b) => a - b).map(item => vendors[item])}
               onChange={(event, vendor) => {
                 if (vendor) {
-                  const splitted = vendor.split(' @ ')
-                  const vendorId = splitted[0]
+                  const vendorId = Object.keys(vendors).filter(item => vendors[item] === vendor)[0]
                   this.setState({ vendorId })
                 }
               }}
@@ -100,11 +99,11 @@ class Pci extends Component {
               <div className='pciselectmodel'>
                 <h3>Model</h3>
                 <CustomSelect
-                  options={models[Object.keys(models).filter(item => item === vendorId)[0]].map(item => `${item[1]} @ ${item[0]}`)}
+                  options={models[Object.keys(models).filter(item => item === vendorId)[0]].map(item => `${item[0]} [${item[1]}]`)}
                   onChange={async (event, model) => {
                     if (model) {
-                      const splitted = model.split(' @ ')
-                      const modelId = splitted[0]
+                      const splitted = model.split(' [')[1]
+                      const modelId = splitted.substring(0, splitted.length - 1)
                       this.setState({ modelId })
                       await this.addPci(modelId)
                     }
