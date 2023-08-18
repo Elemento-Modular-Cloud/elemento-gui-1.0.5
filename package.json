@@ -55,6 +55,7 @@
     "build": "GENERATE_SOURCEMAP=false react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "clean:build": "rm -rf build/ dist/ out/",
     "electron:start": "electron .",
     "electron:pack": "electron-builder --dir",
     "electron:post": "electron-builder install-app-deps",
