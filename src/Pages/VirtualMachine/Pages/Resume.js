@@ -76,7 +76,7 @@ class Resume extends Component {
         }
 
         <div style={{ display: 'flex', justifyContent: 'center', minHeight: 100 }}>
-          {!loading &&
+          {!loading && !this.props.hideButtons &&
             <button
               className='advprevious'
               onClick={async () => {
@@ -86,7 +86,7 @@ class Resume extends Component {
             >
               Previous
             </button>}
-          {!loading &&
+          {!loading && !this.props.hideButtons &&
             <button
               className='btnregister'
               onClick={async () => {

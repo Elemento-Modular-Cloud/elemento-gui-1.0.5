@@ -6,6 +6,7 @@ import { getMemories } from '../../Global/Model'
 import './css/AdvancedSetup.css'
 import { Back, Sidebar, WithRouter } from '../../Components'
 import swal from 'sweetalert'
+import ResumeModal from '../../Components/ResumeModal'
 
 const NAME_PAGE = 1
 const CPU_PAGE = 2
@@ -217,7 +218,10 @@ class AdvancedSetup extends Component {
 
           <div className='advheader'>
             <span>Create new Virtual Machine</span>
-            <Back page='/newvm' />
+            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+              <ResumeModal />
+              <Back page='/newvm' />
+            </div>
           </div>
 
           <span className='advsubtitle'>ADVANCED SETUP</span>
