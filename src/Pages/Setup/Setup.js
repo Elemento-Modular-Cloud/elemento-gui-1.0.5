@@ -108,7 +108,7 @@ class Setup extends Component {
               !downloaded &&
                 <>
                   <span>Welcome to the Elemento Setup board!</span><br /><br />
-                  <span>Before to use the Elemento app we must to setup some services useful to connect you to the Elemento Cloud services.</span><br />
+                  <span>Before using the Elemento app we must to setup some services useful to connect you to the Elemento Cloud services.</span><br />
                   <span>Please, click on Download button and next open the installer file. Then come here again and proceed to the next step!</span><br /><br />
                   <div style={{ display: 'flex', flexDirection: 'row' }}>
                     {!loading && <button className='downloadbutton' onClick={async () => await this.downloadDaemons()}>Download services</button>}
