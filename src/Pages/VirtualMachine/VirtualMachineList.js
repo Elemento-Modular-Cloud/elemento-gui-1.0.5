@@ -183,7 +183,7 @@ class VirtualMachineList extends Component {
                       )
                     })
                     : (
-                      <tr><td style={{ border: 'none' }}><p style={{ marginLeft: 10 }}>ⓘ No virtual machines to be displayed</p></td></tr>
+                      <tr><td style={{ border: 'none' }}><p style={{ marginLeft: 10 }}>{loading ? 'Loading...' : 'ⓘ No virtual machines to be displayed'}</p></td></tr>
                       )
                 }
               </tbody>
