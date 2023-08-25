@@ -242,7 +242,7 @@ class Storage extends Component {
                           )
                         })
                         : (
-                          <tr><td style={{ border: 'none' }}><p style={{ marginLeft: 10 }}>ⓘ No personal storage volumes to be displayed</p></td></tr>
+                          <tr><td style={{ border: 'none' }}><p style={{ marginLeft: 10 }}>{loading ? 'Loading...' : 'ⓘ No personal storage volumes to be displayed'}</p></td></tr>
                           )
                     }
                   </tbody>
@@ -294,7 +294,7 @@ class Storage extends Component {
                           )
                         })
                         : (
-                          <tr><td style={{ border: 'none' }}><p style={{ marginLeft: 10 }}>ⓘ No public storage volumes to be displayed</p></td></tr>
+                          <tr><td style={{ border: 'none' }}><p style={{ marginLeft: 10 }}>{loading ? 'Loading...' : 'ⓘ No public storage volumes to be displayed'}</p></td></tr>
                           )
                     }
                   </tbody>

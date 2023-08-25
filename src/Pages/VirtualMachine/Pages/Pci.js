@@ -99,11 +99,10 @@ class Pci extends Component {
               <div className='pciselectmodel'>
                 <h3>Model</h3>
                 <CustomSelect
-                  options={models[Object.keys(models).filter(item => item === vendorId)[0]].map(item => `${item[0]} [${item[1]}]`)}
+                  options={models[Object.keys(models).filter(item => item === vendorId)[0]].map(item => `${item[0]} → ${item[1]}`)}
                   onChange={async (event, model) => {
                     if (model) {
-                      const splitted = model.split(' [')[1]
-                      const modelId = splitted.substring(0, splitted.length - 1)
+                      const modelId = model.split(' → ')[1]
                       this.setState({ modelId })
                       await this.addPci(modelId)
                     }
