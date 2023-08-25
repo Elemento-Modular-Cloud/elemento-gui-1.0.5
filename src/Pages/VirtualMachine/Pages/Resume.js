@@ -3,6 +3,7 @@ import { ReactComponent as CheckGreen } from '../../../Assets/utils/checkgreen.s
 import { ReactComponent as CheckRed } from '../../../Assets/utils/checkred.svg'
 import '../css/Pages.css'
 import { Utils } from '../../../Global'
+import { Loader } from '../../../Components'
 
 class Resume extends Component {
   constructor (props) {
@@ -97,7 +98,7 @@ class Resume extends Component {
             >
               Register
             </button>}
-          {loading && <div className='loaderbox'><span className='loader' /></div>}
+          {loading && <Loader />}
         </div>
       </div>
     )

@@ -1,7 +1,7 @@
 import React, { Component } from 'reactn'
 import { Api, persistState } from '../../Services'
 import { Config } from '../../Global'
-import { Background, Daemons } from '../../Components'
+import { Background, Daemons, Loader } from '../../Components'
 import onde from '../../Assets/onde.svg'
 import logoinline from '../../Assets/logoinline.svg'
 import './Login.css'
@@ -130,7 +130,7 @@ class Login extends Component {
                       <span>LOGIN</span>
                     </div>
                 }
-                {disableLogin && <div className='loaderbox' style={{ marginRight: 80, marginBottom: 60 }}><span className='loader' /></div>}
+                {disableLogin && <Loader />}
                 <p className='loginregister' onClick={() => this.setState({ register: !register })}>CREATE AN ACCOUNT</p>
               </div>
           }
@@ -168,7 +168,7 @@ class Login extends Component {
                   >
                     <span>REGISTER</span>
                   </div>}
-                {disableLogin && <div className='loaderbox' style={{ marginRight: 80, marginBottom: 60 }}><span className='loader' /></div>}
+                {disableLogin && <Loader />}
 
                 <p className='loginregister' onClick={() => this.setState({ register: !register })}>LOGIN</p>
               </div>

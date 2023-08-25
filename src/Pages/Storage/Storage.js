@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Modal from 'react-modal'
 import { Api } from '../../Services'
 import { Config, Utils } from '../../Global'
-import { Back, CustomSelect, Daemons, Sidebar } from '../../Components'
+import { Back, CustomSelect, Daemons, Loader, Sidebar } from '../../Components'
 import './Storage.css'
 import { ReactComponent as Arrow } from '../../Assets/utils/arrow.svg'
 import { ReactComponent as CheckGreen } from '../../Assets/utils/checkgreen.svg'
@@ -178,7 +178,7 @@ class Storage extends Component {
               <Arrow />
             </div>
 
-            {loading && <div className='loaderbox'><span className='loader' /></div>}
+            {loading && <Loader />}
           </div>
 
           <div className='stoselector'>
@@ -363,7 +363,7 @@ class Storage extends Component {
                   <span>Create Storage</span>
                 </div>
             }
-            {loadingNewStorage && <div className='loaderbox'><span className='loader' /></div>}
+            {loadingNewStorage && <Loader />}
           </Modal>
         </div>
 

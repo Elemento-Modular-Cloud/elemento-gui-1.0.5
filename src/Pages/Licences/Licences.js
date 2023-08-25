@@ -1,7 +1,7 @@
 import React, { Component } from 'reactn'
 import { Api } from '../../Services'
 import { Config } from '../../Global'
-import { Back, Daemons, Sidebar } from '../../Components'
+import { Back, Daemons, Loader, Sidebar } from '../../Components'
 import './Licences.css'
 import swal from 'sweetalert'
 
@@ -91,7 +91,7 @@ class Licences extends Component {
           <div className='licheader'>
             <div style={{ display: 'flex', flexDirection: 'row' }}>
               <span>Licences</span>
-              {loading && <div className='loaderbox'><span className='loader' /></div>}
+              {loading && <Loader />}
             </div>
             <Back page='/' refresh={async () => await this.refreshData()} />
           </div>

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Api } from '../../Services'
 import { Config, Utils } from '../../Global'
 import './css/BasicSetup.css'
-import { Back, CustomSelect, Sidebar, WithRouter } from '../../Components'
+import { Back, CustomSelect, Loader, Sidebar, WithRouter } from '../../Components'
 import { models, vendors } from '../../Global/Model'
 import { ReactComponent as Windows } from '../../Assets/os/windows.svg'
 import { ReactComponent as Linux } from '../../Assets/os/linux.svg'
@@ -362,7 +362,7 @@ class BasicSetup extends Component {
                         }
                       </div>
                     </div>
-                    {loading && <div><div className='loaderbox'><span className='loaderwhite' /></div><br /><br /></div>}
+                    {loading && <Loader />}
                     {!loading && <button className='basbutton' onClick={async () => await this.registerVirtualMachine()}>CONFIRM AND CREATE</button>}
                   </div>
               }

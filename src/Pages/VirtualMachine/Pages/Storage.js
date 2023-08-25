@@ -1,7 +1,7 @@
 import React, { Component } from 'reactn'
 import { Api, persistState } from '../../../Services'
 import { Config, Utils } from '../../../Global'
-import { CustomSelect } from '../../../Components'
+import { CustomSelect, Loader } from '../../../Components'
 import { ReactComponent as CheckGreen } from '../../../Assets/utils/checkgreen.svg'
 import { ReactComponent as CheckRed } from '../../../Assets/utils/checkred.svg'
 import '../css/Pages.css'
@@ -129,7 +129,7 @@ class Storage extends Component {
               </tr>
             </thead>
             <tbody>
-              {loading && <div className='loaderbox'><span className='loader' /></div>}
+              {loading && <Loader />}
               {
                 !loading && storagesSelected && storagesSelected.length > 0 && storagesSelected.map((storage, i) => {
                   return (

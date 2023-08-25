@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Api } from '../../Services'
 import { Config, Utils } from '../../Global'
 import './css/VirtualMachineList.css'
-import { Sidebar, Navigate, Back, Daemons } from '../../Components'
+import { Sidebar, Navigate, Back, Daemons, Loader } from '../../Components'
 import { ReactComponent as Arrow } from '../../Assets/utils/arrow.svg'
 import swal from 'sweetalert'
 import { ReactComponent as CheckGreen } from '../../Assets/utils/checkgreen.svg'
@@ -110,12 +110,12 @@ class VirtualMachineList extends Component {
           </div>
 
           <Navigate className='stobtnnew' page='/newvm'>
-            <div className='vmlbtncontainer'>
+            <div className='vmlbtncontainer' style={{ marginBottom: 40 }}>
               <span>CREATE NEW<br />VIRTUAL MACHINE</span>
               <Arrow />
             </div>
 
-            {loading && <div className='loaderbox'><span className='loader' /></div>}
+            {loading && <Loader style={{ marginBottom: 40 }} />}
           </Navigate>
 
           <div className='vmltables'>

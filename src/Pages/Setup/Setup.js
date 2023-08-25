@@ -4,7 +4,7 @@ import onde from '../../Assets/onde.svg'
 import logobigwhite from '../../Assets/logobigwhite.svg'
 import { Api, persistState } from '../../Services'
 import './Setup.css'
-import { Background } from '../../Components'
+import { Background, Loader } from '../../Components'
 
 class Setup extends Component {
   constructor (props) {
@@ -113,7 +113,7 @@ class Setup extends Component {
                     {!loading && <button className='downloadbutton' onClick={async () => await this.downloadDaemons()}>Download services</button>}
                     {!loading && <button className='downloadbutton' style={{ marginLeft: 20 }} onClick={async () => await this.checkServices(true)}>Check services</button>}
                   </div>
-                  {loading && chunk === 0 && <div className='loaderbox'><span className='loader' /></div>}
+                  {loading && chunk === 0 && <Loader />}
                 </>
             }
             {
@@ -127,7 +127,7 @@ class Setup extends Component {
               downloaded && !installed &&
                 <>
                   <span>Daemon software has been downloaded in the Downloads folder. Please, run the service and then log into the ElectrOS App.</span><br /><br />
-                  <div className='loaderbox'><span className='loader' /></div>
+                  <Loader />
                 </>
             }
             {
@@ -136,7 +136,7 @@ class Setup extends Component {
                   <span>Great, all the services are installed correctly!</span><br />
                   <span style={{ marginLeft: 20, fontSize: 40, marginTop: 40 }}>Ready. Set. Cloud. 🏁🚀☁️</span><br /><br />
                   {!loading && <button className='downloadbutton' onClick={async () => await this.continue()}>Continue</button>}
-                  {loading && <div className='loaderbox'><span className='loader' /></div>}
+                  {loading && <Loader />}
                 </>
             }
           </div>

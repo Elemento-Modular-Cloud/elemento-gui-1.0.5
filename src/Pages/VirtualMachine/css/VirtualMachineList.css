@@ -46,18 +46,18 @@
 }
 .vmlbtncontainer {
   cursor: pointer;
-  width: 230px;
+  width: 238px;
+  height: 40px;
+  max-width: 238px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
   background-color: #f28e00;
   padding: 10px;
-  margin-top: 10px;
   border-radius: 50px;
   color: white;
   border: solid 1px white;
-  margin-bottom: 30px;
 }
 .vmlbtncontainer:hover {
   background-color: white;

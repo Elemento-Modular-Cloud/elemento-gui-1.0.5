@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Modal from 'react-modal'
 import { Api } from '../../Services'
 import { Config } from '../../Global'
-import { Back, Sidebar } from '../../Components'
+import { Back, Loader, Sidebar } from '../../Components'
 import { ReactComponent as Arrow } from '../../Assets/utils/arrow.svg'
 import './Network.css'
 import swal from 'sweetalert'
@@ -71,7 +71,7 @@ class Network extends Component {
             <Back page='/' refresh={async () => await this.getNetworkList()} />
           </div>
 
-          {loading && <div className='loaderbox'><span className='loader' /></div>}
+          {loading && <Loader />}
 
           {
             !loading &&
