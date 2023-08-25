@@ -11,9 +11,10 @@ class Setup extends Component {
     super(props)
     this.state = {
       chunk: 0,
-      downloaded: false,
+      downloaded: true,
       installed: false,
-      loading: false
+      loading: false,
+      docker: true
     }
   }
 
@@ -21,8 +22,8 @@ class Setup extends Component {
     this.intervalServices()
 
     window.require('electron').ipcRenderer.on('download-progress', async (event, arg) => {
-      const { chunk } = arg.data
-      this.setState({ chunk })
+      const { chunk, docker } = arg.data
+      this.setState({ chunk, docker })
 
       if (chunk === 100) {
         this.setState({ downloaded: true, loading: false })
@@ -82,7 +83,7 @@ class Setup extends Component {
   }
 
   render () {
-    const { chunk, downloaded, installed, loading } = this.state
+    const { chunk, downloaded, installed, loading, docker } = this.state
 
     return (
       <Background
@@ -124,9 +125,16 @@ class Setup extends Component {
                 </div>
             }
             {
-              downloaded && !installed &&
+              downloaded && !installed && !docker &&
                 <>
-                  <span>Daemon software has been downloaded in the Downloads folder. Please, run the service and then log into the ElectrOS App.</span><br /><br />
+                  <span>Daemon software has been downloaded in the Downloads folder.<br />Please, run the service and then log into the ElectrOS App.</span><br /><br />
+                  <Loader />
+                </>
+            }
+            {
+              downloaded && !installed && docker &&
+                <>
+                  <span>Please, download and execute the docker-compose file to run the daemon service,<br />then log into the ElectrOS App.</span><br /><br />
                   <Loader />
                 </>
             }
