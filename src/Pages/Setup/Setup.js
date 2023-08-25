@@ -14,7 +14,7 @@ class Setup extends Component {
       downloaded: true,
       installed: false,
       loading: false,
-      docker: true
+      docker: false
     }
   }
 
