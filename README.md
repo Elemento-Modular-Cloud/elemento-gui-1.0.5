@@ -76,4 +76,6 @@ ________________________
 - allow SMT for advanced mode
 
 
-# Errors
+# TODO
+
+https://github.com/Elemento-Modular-Cloud/elemento-pciid-mapper/blob/master/javascript_vendor_models.json
