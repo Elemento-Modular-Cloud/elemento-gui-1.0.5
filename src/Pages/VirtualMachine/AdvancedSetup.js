@@ -213,7 +213,7 @@ class AdvancedSetup extends Component {
     return (
       <div className='advpage'>
         <Sidebar selected='vms' />
-        <div className='advbody'>
+        <div className='lbody advbody'>
           <hr />
 
           <div className='advheader'>

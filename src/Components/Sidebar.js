@@ -64,7 +64,6 @@ const Sidebar = ({ selected }) => {
       </div>
 
       <div className='sidefooter' onClick={async () => await logout()}>
-        <hr />
         <div className='sidefooterlogout'>
           <Logout />
           <span>Logout</span>

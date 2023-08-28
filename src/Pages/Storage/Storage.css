@@ -6,10 +6,7 @@
   color: #898C8A;
 }
 .stobody {
-  width: 78%;
   padding: 20px;
-  margin-top: 10px;
-  overflow: scroll;
 }
 .stotables {
   max-height: 70vh;

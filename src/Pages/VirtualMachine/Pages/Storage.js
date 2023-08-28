@@ -90,7 +90,7 @@ class Storage extends Component {
     const { loading, storages, storagesSelected, storageSelected } = this.state
 
     return (
-      <div>
+      <div className='advmain'>
         <h2>Storage setup</h2>
 
         <p>ⓘ You can mount as many storage as you want, there is no limit!</p>
@@ -110,7 +110,7 @@ class Storage extends Component {
         <br />
         <div>
           <h2>Added volumes</h2>
-          <table>
+          <table className='stopagetable'>
             <thead>
               <tr>
                 <td>Name</td>

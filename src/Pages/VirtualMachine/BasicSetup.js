@@ -198,7 +198,7 @@ class BasicSetup extends Component {
     return (
       <div className='baspage'>
         <Sidebar selected='vms' />
-        <div className='basbody'>
+        <div className='lbody basbody'>
           <hr />
 
           <div className='basheader'>

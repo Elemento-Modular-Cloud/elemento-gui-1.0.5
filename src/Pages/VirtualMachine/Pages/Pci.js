@@ -75,7 +75,7 @@ class Pci extends Component {
     const { vendorId, pci } = this.state
 
     return (
-      <div>
+      <div className='advmain'>
         <h2>Pci setup</h2>
         <p>ⓘ Be aware that certain hosts may require to add both video and audio card or may add both of them automatically</p>
 

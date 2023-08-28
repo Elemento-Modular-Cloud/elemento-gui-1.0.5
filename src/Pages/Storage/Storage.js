@@ -164,7 +164,7 @@ class Storage extends Component {
     return (
       <div className='stopage'>
         <Sidebar selected='storage' />
-        <div className='stobody'>
+        <div className='lbody stobody'>
           <hr />
 
           <div className='stoheader'>

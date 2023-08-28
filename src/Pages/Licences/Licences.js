@@ -85,7 +85,7 @@ class Licences extends Component {
     return (
       <div className='licpage'>
         <Sidebar selected='licences' />
-        <div className='licbody'>
+        <div className='lbody licbody'>
           <hr />
 
           <div className='licheader'>

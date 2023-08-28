@@ -101,7 +101,7 @@ class VirtualMachineList extends Component {
     return (
       <div className='vmlpage'>
         <Sidebar selected='vms' />
-        <div className='vmlbody'>
+        <div className='lbody vmlbody'>
           <hr />
 
           <div className='vmlheader'>
