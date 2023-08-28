@@ -26,8 +26,6 @@ class Resume extends Component {
 
     return (
       <div className='resbody'>
-        <h2>Summary</h2>
-
         {
           x &&
             <div className='resitems'>
@@ -76,7 +74,7 @@ class Resume extends Component {
             </div>
         }
 
-        <div style={{ display: 'flex', justifyContent: 'center', minHeight: 100 }}>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 100 }}>
           {!loading && !this.props.hideButtons &&
             <button
               className='advprevious'

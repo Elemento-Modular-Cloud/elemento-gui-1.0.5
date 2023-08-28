@@ -26,16 +26,15 @@ const ResumeModal = () => {
 
 const customStyle = {
   content: {
-    minWidth: 600,
-    height: 500,
+    minWidth: 550,
+    height: 455,
     paddingTop: 0,
-    paddingBottom: 60,
     top: '50%',
     left: '50%',
     right: 'auto',
     bottom: 'auto',
     position: 'absolute',
-    zIndex: 999999999999999,
+    zIndex: 99999,
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
     backgroundColor: 'white'

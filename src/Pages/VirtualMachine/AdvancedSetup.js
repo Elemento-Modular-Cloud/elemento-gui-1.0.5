@@ -224,7 +224,7 @@ class AdvancedSetup extends Component {
             </div>
           </div>
 
-          <span className='advsubtitle'>ADVANCED SETUP</span>
+          <span className='advsubtitle'>ADVANCED SETUP {page === RESUME_PAGE ? 'SUMMARY' : ''}</span>
 
           <div className='advcenter'>
             {page === NAME_PAGE && <Name setName={name => this.setState({ name })} />}
