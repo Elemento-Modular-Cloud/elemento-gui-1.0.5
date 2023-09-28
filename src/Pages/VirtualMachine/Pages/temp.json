@@ -1,0 +1,29 @@
+{
+  "name": "vm_fra_r32f24g34",
+  "cores": 16,
+  "overprovision": 4,
+  "archsList": [
+      {
+          "value": "X86_64",
+          "checked": true
+      }
+  ],
+  "flags": [],
+  "size": "4GB",
+  "ecc": true,
+  "os": "linux",
+  "volumeIds": [
+      {
+          "vid": "16ae76512e3346aab3eb5ccd71905d00"
+      }
+  ],
+  "pci": [
+      {
+          "vendorId": "10de",
+          "vendor": "NVIDIA Corporation",
+          "modelId": "0613",
+          "model": "G92 [GeForce 9800 GTX+]",
+          "quantity": 1
+      }
+  ]
+}

@@ -1,0 +1,99 @@
+.vmlpage {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+  color: #898C8A;
+}
+.vmlbody {
+  padding: 20px;
+}
+.vmlheader {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+.vmlheader > span {
+  color: #898C8A;
+  font-size: 35px;
+}
+.vmlheader > a {
+  font-size: 20px;
+  color: #f28e00;
+}
+.vmltables {
+  max-height: 70vh;
+  min-height: 10vh;
+  overflow: auto;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+.vmltable {
+  color: #797979;
+  white-space: nowrap;
+  overflow: auto;
+}
+.vmltablebody {
+  font-size: 16px;
+}
+.vmltablehead {
+  font-weight: bold;
+  font-size: 14px;
+}
+.vmlbtncontainer {
+  cursor: pointer;
+  width: 238px;
+  height: 40px;
+  max-width: 238px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  background-color: #f28e00;
+  padding: 10px;
+  border-radius: 50px;
+  color: white;
+  border: solid 1px white;
+}
+.vmlbtncontainer:hover {
+  background-color: white;
+  color: #f28e00;
+  border: solid 1px #f28e00;
+  -webkit-box-shadow: 10px 10px 40px 3px #f28e00aa;
+  -moz-box-shadow: 10px 10px 40px 3px #f28e00aa;
+  box-shadow: 10px 10px 40px 3px #f28e00aa;
+}
+.vmlbtncontainer > svg {
+  rotate: 180deg;
+  width: 30px;
+}
+.vmlbtncontainer:hover > svg g {
+  stroke: #f28e00;
+}
+.vmlbtncontainer:hover > svg line {
+  stroke: #f28e00;
+}
+.vmlbtncontainer:hover > svg path {
+  stroke: #f28e00;
+}
+.vmlbtncontainer > svg g {
+  stroke: #ffffff;
+}
+.vmlbtncontainer > svg line {
+  stroke: #ffffff;
+}
+.vmlbtncontainer > svg path {
+  stroke: #ffffff;
+}
+.vmlbtncontainer > span {
+  font-weight: bold;
+}
+
+.inlineitem {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 6px;
+}

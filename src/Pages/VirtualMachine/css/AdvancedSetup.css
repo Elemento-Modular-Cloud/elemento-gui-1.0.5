@@ -1,0 +1,122 @@
+.advpage {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+  color: #898C8A;
+}
+.advbody {
+  padding: 20px;
+}
+.advmain {
+  width: 70vw;;
+  height: 70vh;
+  max-height: 70vh;
+}
+.advheader {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+.advheader > span {
+  color: #898C8A;
+  font-size: 30px;
+}
+.advheader > a {
+  font-size: 20px;
+  color: #f28e00;
+}
+.advsubtitle {
+  color: #f28e00;
+  font-size: 18px;
+  font-weight: bold;
+}
+.advcenter {
+  max-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.advdotsbox {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.advtools {
+  background-color: rgba(30, 30, 30, 1);
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  transform: translateY(calc(-90% + 30px));
+  width: 100%;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.advnext {
+  border: none;
+  cursor: pointer;
+  width: 200px;
+  height: 45px;
+  background-color: #F28E00;
+  color: white;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20px;
+}
+.advnext:hover {
+  background-color: white;
+  color: #f28e00;
+  border: solid 1px #f28e00;
+}
+.advpreviousvoid {
+  width: 200px;
+  height: 45px;
+}
+.advprevious {
+  border: solid 1px #f28e00;
+  cursor: pointer;
+  width: 200px;
+  height: 45px;
+  background-color: white;
+  color: #F28E00;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 20px;
+}
+.advdots {
+  width: 60%;
+  height: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.advdot {
+  width: 20px;
+  height: 20px;
+  border-radius: 20px;
+  background-color: lightgray;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.advdotinner {
+  background-color: white;
+  width: 10px;
+  height: 10px;
+  border-radius: 12px;
+}

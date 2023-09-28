@@ -1,0 +1,82 @@
+.btncard {
+  min-width: 160px;
+  max-width: 250px;
+  min-height: 240px;
+  max-height: 240px;
+  background-color: white;
+  border-radius: 20px;
+  margin: 10px;
+  padding: 10px;
+  position: relative;
+
+  -webkit-box-shadow: 10px 10px 40px 3px rgba(95, 95, 95, 0.75);
+  -moz-box-shadow: 10px 10px 40px 3px rgba(95, 95, 95, 0.75);
+  box-shadow: 10px 10px 40px 3px rgba(95, 95, 95, 0.75);
+}
+
+.btncard:hover {
+  background-color: #f28e00;
+  cursor: pointer;
+  -webkit-box-shadow: 10px 10px 40px 3px #f28e00aa;
+  -moz-box-shadow: 10px 10px 40px 3px #f28e00aa;
+  box-shadow: 10px 10px 40px 3px #f28e00aa;
+}
+.btncard:hover > svg g {
+  stroke: #ffffff;
+}
+.btncard:hover > svg line {
+  stroke: #ffffff;
+}
+.btncard:hover > svg path {
+  stroke: #ffffff;
+  fill: #ffffff;
+}
+.btncard:hover > span {
+  color: #ffffff;
+}
+
+.btnspan {
+  font-size: 22px;
+  font-weight: bold;
+}
+.btntext {
+  font-size: 14px;
+  line-height: normal;
+}
+.btnicon {
+  width: 35px;
+  height: 35px;
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+.btnarrow {
+  width: 30px;
+  height: 30px;
+  rotate: 180deg;
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+}
+
+@media only screen and (max-width: 450px) {
+}
+
+@media screen and (min-width: 320px) and (max-width: 767px) and (orientation: portrait) {
+}
+
+@media screen and (max-width: 800px) {
+  .btncard {
+    max-width: 220px;
+  }
+}
+
+
+@media screen and (min-width: 800px) and (max-width: 1200px) {
+}
+
+@media screen and (min-width: 1200px) {
+  .btncard {
+    min-width: 250px;
+    min-height: 250px;
+  }
+}

@@ -1,0 +1,141 @@
+{
+  "name": "electr-os",
+  "author": {
+    "name": "ElectrOS",
+    "email": "hello@elemento.cloud"
+  },
+  "description": "ElectrOS",
+  "version": "0.4.3",
+  "private": true,
+  "main": "public/electron.js",
+  "homepage": "./",
+  "dependencies": {
+    "@emotion/react": "^11.10.8",
+    "@emotion/styled": "^11.10.8",
+    "@material-ui/core": "^4.12.4",
+    "@material-ui/icons": "^4.11.3",
+    "@material-ui/lab": "^4.0.0-alpha.61",
+    "@mui/material": "^5.12.2",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "apisauce": "^2.1.6",
+    "electron-squirrel-startup": "^1.0.0",
+    "jwt-decode": "^3.1.2",
+    "md5": "^2.3.0",
+    "moment": "^2.29.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-modal": "^3.16.1",
+    "react-router-dom": "^6.8.2",
+    "react-scripts": "5.0.1",
+    "reactn": "^2.2.7",
+    "socket.io-client": "^4.6.1",
+    "sweetalert": "^2.1.2",
+    "web-vitals": "^2.1.4"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^6.1.1",
+    "@electron-forge/maker-deb": "^6.1.1",
+    "@electron-forge/maker-rpm": "^6.1.1",
+    "@electron-forge/maker-squirrel": "^6.1.1",
+    "@electron-forge/maker-zip": "^6.1.1",
+    "electron": "^24.1.3",
+    "electron-builder": "^23.6.0",
+    "electron-is-dev": "^2.0.0",
+    "electron-notarize": "^1.2.2",
+    "path": "^0.12.7",
+    "snazzy": "^9.0.0",
+    "standard": "^17.0.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "lint": "standard --verbose | snazzy",
+    "lint:fix": "standard --fix",
+    "build": "GENERATE_SOURCEMAP=false react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "clean:build": "rm -rf build/ dist/ out/",
+    "electron:start": "electron .",
+    "electron:pack": "electron-builder --dir",
+    "electron:post": "electron-builder install-app-deps",
+    "electron:dist-mac-arm": "electron-builder --mac --arm64",
+    "electron:dist-mac-x64": "electron-builder --mac --x64",
+    "electron:dist-windows": "electron-builder --win",
+    "electron:dist-linux": "electron-builder --linux",
+    "electron:dist-arm": "electron-builder --armv7l",
+    "electron:notarize": "DEBUG=* node notarize.js",
+    "package": "electron-forge package",
+    "electron-forge:make-macos-arm": "electron-forge make",
+    "electron-forge:arm-installer-dmg": "cd out && npx electron-installer-dmg --icon=../icons/icon.png --background=../public/background.png --title=ElectrOS ./electrOS-darwin-arm64/ElectrOS.app 'ElectrOS-arm64'",
+    "electron-forge:make-macos-intel": "electron-forge make --arch=x64 --platform=darwin",
+    "electron-forge:intel-installer-dmg": "cd out && npx electron-installer-dmg --icon=../icons/icon.png --background=../public/background.png --title=ElectrOS ./electrOS-darwin-x64/ElectrOS.app 'ElectrOS-x64'",
+    "git:pull-iso.json": "cd ./src/Data && git clone https://github.com/Elemento-Modular-Cloud/iso-templates.git"
+  },
+  "build": {
+    "productName": "ElectrOS",
+    "appId": "app.elemento.cloud",
+    "includeSubNodeModules": "true",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "./build/**/*",
+      "node_modules/**/*"
+    ],
+    "dmg": {
+      "background": "build/background.png",
+      "sign": false
+    },
+    "mac": {
+      "category": "app.elemento.cloud",
+      "icon": "build/icon.icns",
+      "target": [
+        "dmg"
+      ],
+      "identity": null,
+      "type": "distribution",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "entitlements.mac.plist",
+      "entitlementsInherit": "entitlements.mac.plist"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ]
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32",
+            "arm64"
+          ]
+        }
+      ],
+      "icon": "build/icon.ico"
+    }
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

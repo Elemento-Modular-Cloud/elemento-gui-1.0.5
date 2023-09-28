@@ -1,0 +1,106 @@
+.sidebar {
+  width: 220px;
+  min-width: 220px;
+  min-height: 300px;
+  height: 100vh;
+  background-color: rgba(30, 30, 30, 1);
+  position: fixed;
+}
+.sidelogo {
+  padding: 10px;
+  width: 90px;
+}
+.sidelogo > svg {
+  width: 200px;
+}
+.sideuserbox {
+  color: white;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: rgba(200, 200, 200, 0.2);
+  margin: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 100px;
+}
+.usernamebox {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+}
+.usernameemail{
+  font-weight: 800;
+}
+.usernamedomain {
+  margin-top: -20px;
+  font-weight: lighter;
+}
+.sideitembox {
+  color: rgba(200, 200, 200, 0.5);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.sideitemboxselected {
+  cursor: pointer;
+  color: white;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 10px;
+  padding: 10px;
+  border-radius: 10px;
+}
+.sideitemboxselected > span {
+  margin-left: 20px;
+}
+.sideitemboxselected > svg path  {
+  fill: #ffffff;
+}
+.sideitembox > span {
+  margin-left: 20px;
+}
+.sideitembox > svg path {
+  fill: rgba(200, 200, 200, 0.5);
+}
+.sideitembox:hover > svg path {
+  fill: #ffffff;
+}
+.sideitembox:hover > span {
+  color: #ffffff;
+}
+.sidefooter {
+  height: 80px;
+  width: 100%;
+  position: absolute;
+  bottom: 0px;
+  cursor: pointer;
+}
+.sidefooterlogout {
+  display: flex;
+  flex-direction: row;
+  margin-top: 30px;
+  margin-left: 20px;
+}
+.sidefooterlogout > svg path {
+  fill: #F28E00;
+}
+.sidefooterlogout > span {
+  margin-left: 20px;
+  color: #F28E00;
+}
+
+.sidefooterlogout:hover > svg path {
+  fill: #ffffff;
+}
+.sidefooterlogout:hover > span {
+  color: #ffffff;
+}

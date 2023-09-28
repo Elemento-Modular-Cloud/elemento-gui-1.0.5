@@ -1,0 +1,124 @@
+.btncardorange {
+  width: 500px;
+  height: 350px;
+  background-color: #f28e00;
+  color: white;
+  border-radius: 20px;
+  margin: 10px;
+  padding: 30px;
+  position: relative;
+  overflow: hidden;
+  -webkit-box-shadow: 10px 10px 40px 3px rgba(95, 95, 95, 0.75);
+  -moz-box-shadow: 10px 10px 40px 3px rgba(95, 95, 95, 0.75);
+  box-shadow: 10px 10px 40px 3px rgba(95, 95, 95, 0.75);
+}
+.btncardorange:hover {
+  cursor: pointer;
+  -webkit-box-shadow: 10px 10px 40px 3px #f28e00aa;
+  -moz-box-shadow: 10px 10px 40px 3px #f28e00aa;
+  box-shadow: 10px 10px 40px 3px #f28e00aa;
+}
+.btncardorange:hover #svgsett {
+  animation-name: rotate;
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
+}
+#svgicon {
+  width: 80px;
+  height: 80px;
+}
+#svgsett {
+  width: 230px;
+  height: 230px;
+  position: absolute;
+  right: -50px;
+  top: -50px;
+}
+.btncardorange:hover {
+  background-color: #f28e00;
+}
+.btncardorange > svg g {
+  stroke: #ffffff;
+}
+.btncardorange > svg line {
+  stroke: #ffffff;
+}
+.btncardorange > svg path {
+  stroke: #ffffff;
+}
+.btncardorange > span {
+  color: #ffffff;
+}
+
+.btnspanorange {
+  font-size: 22px;
+  font-weight: bold;
+}
+.btntextorange {
+  display: block;
+  width: 250px;
+  font-size: 14px;
+  line-height: normal;
+}
+.btniconorange {
+  width: 35px;
+  height: 35px;
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+.btnarrowdiv {
+  width: 200px;
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+}
+.btnarroworange {
+  width: 30px;
+  height: 30px;
+  rotate: 180deg;
+  margin-right: 20px;
+}
+.divider {
+  margin-left: 80px;
+}
+
+
+@media only screen and (max-width: 450px) {
+}
+
+@media screen and (min-width: 320px) and (max-width: 767px) and (orientation: portrait) {
+}
+
+@media screen and (max-width: 800px) {
+  .btncardorange {
+    max-width: 220px;
+    margin: 0px;
+  }
+  .divider {
+    margin-left: 20px;
+  }
+  .btnspanorange {
+    margin-top: 250px;
+  }
+}
+
+@media screen and (min-width: 800px) and (max-width: 1200px) {
+}
+
+@media screen and (min-width: 1200px) {
+  .btncardorange {
+    min-width: 50px;
+    min-height: 250px;
+  }
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -1,0 +1,124 @@
+.netpage {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+}
+.netbody {
+  width: 100%;
+  padding: 20px;
+  margin-top: 10px;
+}
+.netheader {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+.netheader > span {
+  color: #898C8A;
+  font-size: 35px;
+}
+.netheader > a {
+  font-size: 20px;
+  color: #f28e00;
+}
+.nettablebody {
+  font-size: 14px;
+}
+.nettablehead {
+  font-weight: bold;
+}
+.nettable {
+  color: #797979;
+  overflow: scroll;
+  white-space: nowrap;
+}
+.nettables {
+  width: 100%;
+  height: 75%;
+  overflow: scroll;
+  margin-top: 30px;
+}
+.netmodal {
+  padding: 50px;
+  border-radius: 20px;
+  color: #898C8A;
+}
+.netmodal > select {
+  width: 250px;
+  height: 40px;
+  margin-top: 10px;
+}
+.netbtn {
+  width: 200px;
+  height: 45px;
+  margin-top: 20px;
+  background-color: #F28E00;
+  color: white;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+}
+.netbtnnew {
+  width: 250px;
+}
+.netbtncontainer {
+  cursor: pointer;
+  width: 250px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  background-color: #f28e00;
+  padding: 10px;
+  border-radius: 50px;
+  color: white;
+  border: solid 1px white;
+}
+.netbtncontainer:hover {
+  background-color: white;
+  color: #f28e00;
+  border: solid 1px #f28e00;
+}
+.netbtncontainer > svg {
+  rotate: 180deg;
+  width: 30px;
+}
+.netbtncontainer:hover > svg g {
+  stroke: #f28e00;
+}
+.netbtncontainer:hover > svg line {
+  stroke: #f28e00;
+}
+.netbtncontainer:hover > svg path {
+  stroke: #f28e00;
+}
+.netbtncontainer > svg g {
+  stroke: #ffffff;
+}
+.netbtncontainer > svg line {
+  stroke: #ffffff;
+}
+.netbtncontainer > svg path {
+  stroke: #ffffff;
+}
+.netbtncontainer > span {
+  font-weight: bold;
+}
+
+@media screen and (max-width: 800px) {
+  .netpage {
+    width: 100%;
+    max-width: 60%;
+    height: 100vh;
+    font-size: 14px;
+  }
+  .netbody {
+    width: 100%;
+  }
+}

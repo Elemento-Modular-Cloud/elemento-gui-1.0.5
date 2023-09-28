@@ -1,0 +1,35 @@
+.vmpage {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+}
+.vmbody {
+  padding: 20px;
+}
+.vmheader {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+.vmheader > span {
+  color: #898C8A;
+  font-size: 35px;
+}
+.vmheader > a {
+  font-size: 20px;
+  color: #f28e00;
+}
+.vmbuttons {
+  display: flex;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 800px) {
+  .sidebar {
+    min-width: 220px;
+  }
+}
