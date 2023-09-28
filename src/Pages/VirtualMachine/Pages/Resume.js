@@ -3,6 +3,7 @@ import { ReactComponent as CheckGreen } from '../../../Assets/utils/checkgreen.s
 import { ReactComponent as CheckRed } from '../../../Assets/utils/checkred.svg'
 import '../css/Pages.css'
 import { Utils } from '../../../Global'
+import { Loader } from '../../../Components'
 
 class Resume extends Component {
   constructor (props) {
@@ -25,20 +26,20 @@ class Resume extends Component {
 
     return (
       <div className='resbody'>
-        <h2>Resume</h2>
-
         {
           x &&
             <div className='resitems'>
               <div className='resitembox'>
                 <span className='resitemtitle'>Name</span><span className='resitemvalue'>{x.name}</span>
               </div>
-
               <div className='resitembox'>
                 <span className='resitemtitle'>Cores</span><span className='resitemvalue'>{x.cores}</span>
               </div>
               <div className='resitembox'>
                 <span className='resitemtitle'>Overprovision</span><span className='resitemvalue'>{x.overprovision}</span>
+              </div>
+              <div className='resitembox'>
+                <span className='resitemtitle'>Frequency</span><span className='resitemvalue'>{x.cpuFrequency} GHz</span>
               </div>
               <div className='resitembox'>
                 <span className='resitemtitle'>Architectures</span><span className='resitemvalue'>{x.archsList && x.archsList.lenght > 0 ? x.archsList.map(arch => arch.value).join(', ') : 'None'}</span>
@@ -52,6 +53,10 @@ class Resume extends Component {
               <div className='resitembox'>
                 <span className='resitemtitle'>ECC RAM</span><span className='resitemvalue'>{x.ecc ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</span>
               </div>
+              <div className='resitembox'>
+                <span className='resitemtitle'>O.S.</span><span className='resitemvalue' style={{ textTransform: 'capitalize' }}>{x.os} ({x.flavour})</span>
+              </div>
+
               <div className='resitembox'>
                 <span className='resitemtitle'>Volumes</span><span className='resitemvalue'>{x.volumeIds && x.volumeIds.length > 0 ? x.volumeIds.map(vol => vol.vid).join(', ') : 'None'}</span>
               </div>
@@ -69,8 +74,18 @@ class Resume extends Component {
             </div>
         }
 
-        <div style={{ display: 'flex', justifyContent: 'center', minHeight: 100 }}>
-          {!loading &&
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 100 }}>
+          {!loading && !this.props.hideButtons &&
+            <button
+              className='advprevious'
+              onClick={async () => {
+                await this.props.back()
+              }}
+              style={{ marginRight: 10 }}
+            >
+              Previous
+            </button>}
+          {!loading && !this.props.hideButtons &&
             <button
               className='btnregister'
               onClick={async () => {
@@ -81,7 +96,7 @@ class Resume extends Component {
             >
               Register
             </button>}
-          {loading && <div className='loaderbox'><span className='loader' /></div>}
+          {loading && <Loader />}
         </div>
       </div>
     )

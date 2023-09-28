@@ -6,6 +6,7 @@ import { getMemories } from '../../Global/Model'
 import './css/AdvancedSetup.css'
 import { Back, Sidebar, WithRouter } from '../../Components'
 import swal from 'sweetalert'
+import ResumeModal from '../../Components/ResumeModal'
 
 const NAME_PAGE = 1
 const CPU_PAGE = 2
@@ -34,7 +35,9 @@ class AdvancedSetup extends Component {
         ecc: false
       },
       os: '',
-      volumeIds: []
+      volumeIds: {
+        volumeIds: []
+      }
     }
   }
 
@@ -84,8 +87,8 @@ class AdvancedSetup extends Component {
     } else if (page === MEMORY_PAGE) {
       // next = false
     } else if (page === OS_PAGE) {
-      if (!os || os.os === '') {
-        swal('Info', 'Please, select the desired OS before to continue', 'info', {
+      if (!os || os.os === '' || !os.flavour) {
+        swal('Info', 'Please, select the desired OS and its own flavour before to continue', 'info', {
           buttons: false,
           timer: 3000
         })
@@ -107,6 +110,7 @@ class AdvancedSetup extends Component {
         cpu: {
           cores: slots,
           overprovision,
+          cpuFrequency,
           archsList,
           flags
         },
@@ -116,7 +120,8 @@ class AdvancedSetup extends Component {
           ecc: reqECC
         },
         os: {
-          os
+          os,
+          flavour
         },
         volumeIds: {
           volumeIds: volumes
@@ -146,9 +151,10 @@ class AdvancedSetup extends Component {
         flags,
         ramsize,
         reqECC,
+        min_frequency: cpuFrequency,
         misc: {
           os_family: os,
-          os_flavour: 'pop'
+          os_flavour: flavour
         },
         pci: _pci
       })
@@ -165,9 +171,10 @@ class AdvancedSetup extends Component {
           flags,
           ramsize,
           reqECC,
+          min_frequency: cpuFrequency,
           misc: {
             os_family: os,
-            os_flavour: os === 'windows' ? 'windows' : 'pop'
+            os_flavour: flavour
           },
           pci: _pci,
           volumes
@@ -206,15 +213,18 @@ class AdvancedSetup extends Component {
     return (
       <div className='advpage'>
         <Sidebar selected='vms' />
-        <div className='advbody'>
+        <div className='lbody advbody'>
           <hr />
 
           <div className='advheader'>
             <span>Create new Virtual Machine</span>
-            <Back page='/newvm' />
+            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+              <ResumeModal />
+              <Back page='/newvm' />
+            </div>
           </div>
 
-          <span className='advsubtitle'>ADVANCED SETUP</span>
+          <span className='advsubtitle'>ADVANCED SETUP {page === RESUME_PAGE ? 'SUMMARY' : ''}</span>
 
           <div className='advcenter'>
             {page === NAME_PAGE && <Name setName={name => this.setState({ name })} />}
@@ -224,7 +234,7 @@ class AdvancedSetup extends Component {
             {page === STORAGE_PAGE && <Storage setVolumeIds={volumeIds => this.setState({ volumeIds })} />}
             {page === PCI_PAGE && <Pci setPci={pci => this.setState({ pci })} />}
             {/* {page === NETWORK_PAGE && <Network />} */}
-            {page === RESUME_PAGE && <Resume register={async () => await this.register()} />}
+            {page === RESUME_PAGE && <Resume register={async () => await this.register()} back={() => this.previous()} />}
 
             <div className='advtools'>
               {page > 1 && page !== RESUME_PAGE && <button className='advprevious' onClick={() => this.previous()}>Previous</button>}

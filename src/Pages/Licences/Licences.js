@@ -1,7 +1,7 @@
 import React, { Component } from 'reactn'
 import { Api } from '../../Services'
 import { Config } from '../../Global'
-import { Back, Daemons, Sidebar } from '../../Components'
+import { Back, Daemons, Loader, Sidebar } from '../../Components'
 import './Licences.css'
 import swal from 'sweetalert'
 
@@ -85,11 +85,14 @@ class Licences extends Component {
     return (
       <div className='licpage'>
         <Sidebar selected='licences' />
-        <div className='licbody'>
+        <div className='lbody licbody'>
           <hr />
 
           <div className='licheader'>
-            <span>Licences</span>
+            <div style={{ display: 'flex', flexDirection: 'row' }}>
+              <span>Licences</span>
+              {loading && <Loader />}
+            </div>
             <Back page='/' refresh={async () => await this.refreshData()} />
           </div>
 
@@ -110,32 +113,35 @@ class Licences extends Component {
                 !loading &&
                   <tbody className='lictablebody'>
                     {
-                      licenses && licenses.length > 0 && licenses.map((license, i) => {
-                        return (
-                          <tr key={i}>
-                            <td>{license.license_key}</td>
-                            <td>{license.duration}</td>
-                            <td>
-                              <div className='licarmed' style={{ backgroundColor: license.is_armed ? 'rgba(80 , 160, 80)' : '#eb3941' }}>
-                                <span>{license.is_armed ? 'ACTIVATED' : 'NOT ACTIVATED'}</span>
-                              </div>
-                            </td>
-                            <td>{license.expire_date}</td>
-                            <td>{license.expire === null ? 'N/A' : new Date(license.expire * 1000).toDateString()}</td>
-                            <td>
-                              <button className={license.is_armed ? 'bn40' : 'bn632-hover bn22'} disabled={license.is_armed || lock} onClick={async () => await this.armLicense(license.license_key)}>{license.is_armed ? 'Activated' : 'Activate'}</button>
-                            </td>
-                            <td>
-                              <button className='bn632-hover bn28' disabled={lock} onClick={async () => await this.deleteLicense(license.license_key)}>Delete</button>
-                            </td>
-                          </tr>
-                        )
-                      })
+                      licenses && licenses.length > 0
+                        ? licenses.map((license, i) => {
+                          return (
+                            <tr key={i}>
+                              <td>{license.license_key}</td>
+                              <td>{license.duration}</td>
+                              <td>
+                                <div className='licarmed' style={{ backgroundColor: license.is_armed ? 'rgba(80 , 160, 80)' : '#eb3941' }}>
+                                  <span>{license.is_armed ? 'ACTIVATED' : 'NOT ACTIVATED'}</span>
+                                </div>
+                              </td>
+                              <td>{license.expire_date}</td>
+                              <td>{license.expire === null ? 'N/A' : new Date(license.expire * 1000).toDateString()}</td>
+                              <td>
+                                <button className={license.is_armed ? 'bn40' : 'bn632-hover bn22'} disabled={license.is_armed || lock} onClick={async () => await this.armLicense(license.license_key)}>{license.is_armed ? 'Activated' : 'Activate'}</button>
+                              </td>
+                              <td>
+                                <button className='bn632-hover bn28' disabled={lock} onClick={async () => await this.deleteLicense(license.license_key)}>Delete</button>
+                              </td>
+                            </tr>
+                          )
+                        })
+                        : (
+                          <tr><td style={{ border: 'none' }}><p style={{ marginLeft: 10 }}>ⓘ No licences to be displayed</p></td></tr>
+                          )
                     }
                   </tbody>
               }
             </table>
-            {loading && <div className='loaderbox'><span className='loader' /></div>}
             {
               file &&
                 <div className='filebox'>

@@ -1,6 +1,6 @@
 module.exports = {
   packagerConfig: {
-    name: 'electrOS',
+    name: 'ElectrOS',
     icon: './icons/icon',
     osxSign: {
       identity: 'Developer ID Application: Elemento SRL (9WTDB7G2C7)', // the name of your Developer ID certificate

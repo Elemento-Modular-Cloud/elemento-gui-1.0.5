@@ -6,7 +6,7 @@ async function notarizeApp () {
     console.log('Try to notarize the app...')
     await notarize({
       appBundleId: 'app.elemento.cloud',
-      appPath: path.resolve(__dirname, 'dist/mac-arm64/electrOS.app'),
+      appPath: path.resolve(__dirname, 'dist/mac-arm64/ElectrOS.app'),
       appleId: 'framesystem@icloud.com',
       appleIdPassword: 'mumw-joxm-gdde-lhdq',
       teamId: '9WTDB7G2C7',

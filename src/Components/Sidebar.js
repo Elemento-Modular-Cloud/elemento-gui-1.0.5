@@ -34,7 +34,7 @@ const Sidebar = ({ selected }) => {
 
   return (
     <div className='sidebar'>
-      <div className='sidelogo'>
+      <div className='sidelogo' onClick={() => navigate('/')}>
         <LogoInlineWhite />
       </div>
 
@@ -64,7 +64,6 @@ const Sidebar = ({ selected }) => {
       </div>
 
       <div className='sidefooter' onClick={async () => await logout()}>
-        <hr />
         <div className='sidefooterlogout'>
           <Logout />
           <span>Logout</span>

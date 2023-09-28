@@ -33,7 +33,7 @@ class VirtualMachineNew extends Component {
     return (
       <div className='vmpage'>
         <Sidebar selected='vms' />
-        <div className='vmbody'>
+        <div className='lbody vmbody'>
           <hr />
 
           <div className='vmheader'>
