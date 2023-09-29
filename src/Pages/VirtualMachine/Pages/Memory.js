@@ -10,7 +10,7 @@ class Cpu extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      size: 0,
+      size: '250MB',
       ecc: false,
       value: 0
     }
@@ -24,6 +24,9 @@ class Cpu extends Component {
       size,
       ecc,
       value: marks.filter(x => x.label === size)[0].value
+    })
+    this.props.setMemory({
+      size, ecc
     })
   }
 
