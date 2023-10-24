@@ -28,19 +28,31 @@ class Pci extends Component {
 
   async addPci (modelId) {
     try {
-      const { vendorId, pci } = this.state // modelId
-      if (pci.filter(p => p.modelId === modelId).length > 0) { return }
+      let added = {}
 
-      const pcis = [
-        ...pci,
-        {
+      const { vendorId, pci } = this.state // modelId
+      const found = pci.filter(p => p.modelId === modelId)
+      if (found.length > 0) {
+        added = {
+          ...found[0],
+          quantity: found[0].quantity + 1
+        }
+      } else {
+        const vendor = vendors[Object.keys(vendors).filter(item => item === vendorId)[0]]
+        const model = models[Object.keys(models).filter(item => item === vendorId)].filter(item => item[1] === modelId)[0][0]
+        added = {
           vendorId,
-          vendor: vendors[Object.keys(vendors).filter(item => item === vendorId)[0]],
+          vendor,
           modelId,
-          model: models[Object.keys(models).filter(item => item === vendorId)].filter(item => item[1] === modelId)[0][0],
+          model,
           quantity: 1
         }
-      ]
+      }
+
+      const pcis = [...pci.filter(p => p.modelId !== modelId), added]
+
+      console.log(pcis)
+
       this.setState({ pci: pcis })
       await this.updateState(pcis)
     } catch (error) {
@@ -121,6 +133,7 @@ class Pci extends Component {
                   <td>Vedor</td>
                   <td>Model ID</td>
                   <td>Model</td>
+                  <td>N.</td>
                   <td>Remove</td>
                 </tr>
               </thead>
@@ -133,6 +146,7 @@ class Pci extends Component {
                         <td>{item.vendor}</td>
                         <td>{item.modelId}</td>
                         <td>{item.model}</td>
+                        <td>{item.quantity}</td>
                         <td>
                           <button className='bn632-hover bn28' onClick={async () => await this.removePci(item.modelId)}>Remove</button>
                         </td>
