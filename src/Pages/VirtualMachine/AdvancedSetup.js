@@ -64,7 +64,7 @@ class AdvancedSetup extends Component {
     let next = true
 
     if (page === NAME_PAGE) {
-      if (!/^[a-zA-Z0-9_-]*$/.test(name) || name === '') {
+      if (!/^[a-zA-Z0-9-]*$/.test(name) || name === '') {
         swal('Info', 'Please, insert a VM name before to continue', 'info', {
           buttons: false,
           timer: 3000
@@ -160,6 +160,7 @@ class AdvancedSetup extends Component {
       })
 
       if (res.ok) {
+        Api.createClient(Config.API_URL_MATCHER)
         const ret = await Api.post('/register', {
           info: {
             vm_name: name
