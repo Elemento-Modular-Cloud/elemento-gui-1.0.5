@@ -7,6 +7,7 @@ import { ReactComponent as Arrow } from '../../Assets/utils/arrow.svg'
 import swal from 'sweetalert'
 import { ReactComponent as CheckGreen } from '../../Assets/utils/checkgreen.svg'
 import { ReactComponent as CheckRed } from '../../Assets/utils/checkred.svg'
+import { ReactComponent as AtomOS } from '../../Assets/atomos.svg'
 import google from '../../Assets/google.png'
 import ovh from '../../Assets/ovh.jpg'
 import upcloud from '../../Assets/upcloud.jpg'
@@ -161,6 +162,7 @@ class VirtualMachineList extends Component {
                             {detail.mesos && detail.mesos.provider === 'GOOGLE' && <img src={google} alt='' style={{ width: 25, height: 25, position: 'absolute', top: 5, right: 5 }} />}
                             {detail.mesos && detail.mesos.provider === 'OVH' && <img src={ovh} alt='' style={{ width: 45, height: 45, position: 'absolute', top: 5, right: 5 }} />}
                             {detail.mesos && detail.mesos.provider === 'UPCLOUD' && <img src={upcloud} alt='' style={{ width: 45, height: 45, position: 'absolute', top: 5, right: 5 }} />}
+                            {(!detail.mesos || !detail.mesos.provider) && <AtomOS style={{ width: 35, height: 35, position: 'absolute', top: 5, right: 0 }} />}
                           </td>
                           <td style={{ minWidth: 180 }}>
                             <div className='inlineitem'><span style={{ fontSize: 14, fontStyle: 'italic' }}>Architecture</span><span>{detail.arch}</span></div>
