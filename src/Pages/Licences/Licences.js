@@ -145,7 +145,7 @@ class Licences extends Component {
             {
               file &&
                 <div className='filebox'>
-                  <span>Please save this license as a file named atomos.license and place it in /etc/elemento in your licensed AtomOS server.</span><br />
+                  <span>Please save this license as a file named atomos.license and place it in /etc/elemento/atomos.license in your licensed AtomOS server.</span><br />
                   <span>The cloning of the same license file in multiple servers will end up causing the blacklisting of the license and the subsequent deactivation of all premium features.</span>
                   <textarea className='filearea' rows={20} cols={100}>
                     {file}
