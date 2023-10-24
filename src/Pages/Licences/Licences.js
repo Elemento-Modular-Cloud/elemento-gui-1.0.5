@@ -21,7 +21,7 @@ class Licences extends Component {
   }
 
   async refreshData () {
-    this.setState({ loading: true, lock: true })
+    this.setState({ loading: true, lock: true, file: null })
 
     Api.createClient(Config.API_URL_AUTHENT)
     const res = await Api.get('/license/list')
@@ -33,7 +33,7 @@ class Licences extends Component {
   }
 
   async armLicense (licenseKey) {
-    this.setState({ loading: true })
+    this.setState({ loading: true, file: null })
     Api.createClient(Config.API_URL_AUTHENT)
     const res = await Api.post('/license/arm', {
       license_key: licenseKey
@@ -58,7 +58,7 @@ class Licences extends Component {
   }
 
   async deleteLicense (licenseKey) {
-    this.setState({ loading: true })
+    this.setState({ loading: true, toBeDeleted: licenseKey })
     Api.createClient(Config.API_URL_AUTHENT)
     const res = await Api.delete('/license/delete', {
       license_key: licenseKey
@@ -76,11 +76,11 @@ class Licences extends Component {
         timer: 3000
       })
     }
-    this.setState({ loading: false })
+    this.setState({ loading: false, toBeDeleted: null })
   }
 
   render () {
-    const { loading, licenses, lock, file } = this.state
+    const { loading, licenses, lock, file, toBeDeleted } = this.state
 
     return (
       <div className='licpage'>
@@ -109,38 +109,35 @@ class Licences extends Component {
                   <td>Delete License</td>
                 </tr>
               </thead>
-              {
-                !loading &&
-                  <tbody className='lictablebody'>
-                    {
-                      licenses && licenses.length > 0
-                        ? licenses.map((license, i) => {
-                          return (
-                            <tr key={i}>
-                              <td>{license.license_key}</td>
-                              <td>{license.duration}</td>
-                              <td>
-                                <div className='licarmed' style={{ backgroundColor: license.is_armed ? 'rgba(80 , 160, 80)' : '#eb3941' }}>
-                                  <span>{license.is_armed ? 'ACTIVATED' : 'NOT ACTIVATED'}</span>
-                                </div>
-                              </td>
-                              <td>{license.expire_date}</td>
-                              <td>{license.expire === null ? 'N/A' : new Date(license.expire * 1000).toDateString()}</td>
-                              <td>
-                                <button className={license.is_armed ? 'bn40' : 'bn632-hover bn22'} disabled={license.is_armed || lock} onClick={async () => await this.armLicense(license.license_key)}>{license.is_armed ? 'Activated' : 'Activate'}</button>
-                              </td>
-                              <td>
-                                <button className='bn632-hover bn28' disabled={lock} onClick={async () => await this.deleteLicense(license.license_key)}>Delete</button>
-                              </td>
-                            </tr>
-                          )
-                        })
-                        : (
-                          <tr><td style={{ border: 'none' }}><p style={{ marginLeft: 10 }}>ⓘ No licences to be displayed</p></td></tr>
-                          )
-                    }
-                  </tbody>
-              }
+              <tbody className='lictablebody'>
+                {
+                  licenses && licenses.length > 0
+                    ? licenses.map((license, i) => {
+                      return (
+                        <tr key={i} style={{ backgroundColor: toBeDeleted === license.license_key ? '#898C8A99' : '' }}>
+                          <td>{license.license_key}</td>
+                          <td>{license.duration}</td>
+                          <td>
+                            <div className='licarmed' style={{ backgroundColor: license.is_armed ? 'rgba(80 , 160, 80)' : '#eb3941' }}>
+                              <span>{license.is_armed ? 'ACTIVATED' : 'NOT ACTIVATED'}</span>
+                            </div>
+                          </td>
+                          <td>{license.expire_date}</td>
+                          <td>{license.expire === null ? 'N/A' : new Date(license.expire * 1000).toDateString()}</td>
+                          <td>
+                            <button className={license.is_armed ? 'bn40' : 'bn632-hover bn22'} disabled={license.is_armed || lock} onClick={async () => await this.armLicense(license.license_key)}>{license.is_armed ? 'Activated' : 'Activate'}</button>
+                          </td>
+                          <td>
+                            <button className='bn632-hover bn28' disabled={lock} onClick={async () => !toBeDeleted && await this.deleteLicense(license.license_key)}>Delete</button>
+                          </td>
+                        </tr>
+                      )
+                    })
+                    : (
+                      <tr><td style={{ border: 'none' }}><p style={{ marginLeft: 10 }}>ⓘ No licences to be displayed</p></td></tr>
+                      )
+                }
+              </tbody>
             </table>
             {
               file &&
