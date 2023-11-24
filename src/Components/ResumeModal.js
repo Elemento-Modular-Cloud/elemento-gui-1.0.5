@@ -16,6 +16,7 @@ const ResumeModal = () => {
         isOpen={modal}
         style={customStyle}
         className='netmodal'
+        ariaHideApp={false}
         onRequestClose={() => setModal(!modal)}
       >
         <Resume hideButtons />
@@ -27,8 +28,8 @@ const ResumeModal = () => {
 const customStyle = {
   content: {
     minWidth: 550,
-    height: 455,
-    paddingTop: 0,
+    height: 500,
+    padding: 0,
     top: '50%',
     left: '50%',
     right: 'auto',

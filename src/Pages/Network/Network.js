@@ -123,6 +123,7 @@ class Network extends Component {
             isOpen={showModal}
             style={customStyle}
             className='netmodal'
+            ariaHideApp={false}
             onRequestClose={() => this.setState({ showModal: false })}
           >
             <h2>New network</h2>
