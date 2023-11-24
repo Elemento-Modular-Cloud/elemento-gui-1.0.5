@@ -75,8 +75,8 @@ class BasicSetup extends Component {
       storagesSelected
     } = this.state
 
-    if (!name || name === '') {
-      swal('Info', 'Please insert a VM name before to continue', 'info', {
+    if (!name || name === '' || !/^[a-zA-Z0-9-]*$/.test(name)) {
+      swal('Info', 'Please check the VM name before to continue', 'info', {
         buttons: false,
         timer: 3000
       }).then(() => {
@@ -214,6 +214,7 @@ class BasicSetup extends Component {
                 <div className='basmachine'>
                   <span>Virtual machine name:</span>
                   <input type='text' onChange={e => this.setState({ name: e.target.value })} />
+                  <p style={{ fontSize: 12 }}>Use only letters, number,- (dash).</p>
                 </div>
 
                 <div className='basmachine'>

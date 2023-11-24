@@ -65,7 +65,7 @@ class AdvancedSetup extends Component {
 
     if (page === NAME_PAGE) {
       if (!/^[a-zA-Z0-9-]*$/.test(name) || name === '') {
-        swal('Info', 'Please, insert a VM name before to continue', 'info', {
+        swal('Info', 'Please, check the VM name before to continue', 'info', {
           buttons: false,
           timer: 3000
         })
