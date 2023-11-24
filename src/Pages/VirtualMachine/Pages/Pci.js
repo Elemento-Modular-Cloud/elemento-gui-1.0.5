@@ -23,7 +23,7 @@ class Pci extends Component {
     const pci = advancedSetup.pci || []
 
     this.setState({ pci })
-    await this.updateState([])
+    await this.updateState(pci)
   }
 
   async addPci (modelId) {
@@ -50,8 +50,6 @@ class Pci extends Component {
       }
 
       const pcis = [...pci.filter(p => p.modelId !== modelId), added]
-
-      console.log(pcis)
 
       this.setState({ pci: pcis })
       await this.updateState(pcis)
@@ -81,6 +79,46 @@ class Pci extends Component {
         pci
       }
     }, persistState)
+  }
+
+  async decreaseQuantity (vendorId, modelId) {
+    const { pci } = this.state
+    let updated = []
+
+    const selected = pci.filter(p => p.vendorId === vendorId && p.modelId === modelId)[0]
+    const others = pci.filter(p => p.vendorId !== vendorId || p.modelId !== modelId)
+
+    if (selected.quantity > 1) {
+      updated = [
+        ...others,
+        {
+          ...selected,
+          quantity: selected.quantity - 1
+        }
+      ]
+    } else {
+      await this.removePci(modelId)
+      updated = others
+    }
+
+    this.setState({ pci: updated })
+  }
+
+  async increaseQuantity (vendorId, modelId) {
+    const { pci } = this.state
+
+    const selected = pci.filter(p => p.vendorId === vendorId && p.modelId === modelId)[0]
+    const others = pci.filter(p => p.vendorId !== vendorId || p.modelId !== modelId)
+    const updated = [
+      ...others,
+      {
+        ...selected,
+        quantity: selected.quantity + 1
+      }
+    ]
+
+    await this.updateState(updated)
+    this.setState({ pci: updated })
   }
 
   render () {
@@ -133,7 +171,7 @@ class Pci extends Component {
                   <td>Vedor</td>
                   <td>Model ID</td>
                   <td>Model</td>
-                  <td>N.</td>
+                  <td>Quantity</td>
                   <td>Remove</td>
                 </tr>
               </thead>
@@ -146,7 +184,23 @@ class Pci extends Component {
                         <td>{item.vendor}</td>
                         <td>{item.modelId}</td>
                         <td>{item.model}</td>
-                        <td>{item.quantity}</td>
+                        <td>
+                          <div style={{ display: 'flex', flexDirection: 'row' }}>
+                            <div
+                              onClick={() => this.decreaseQuantity(item.vendorId, item.modelId)}
+                              style={{ backgroundColor: 'lightgray', width: 20, height: 20, borderRadius: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: 10 }}
+                            >
+                              -
+                            </div>
+                            {item.quantity}
+                            <div
+                              onClick={() => this.increaseQuantity(item.vendorId, item.modelId)}
+                              style={{ backgroundColor: 'lightgray', width: 20, height: 20, borderRadius: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: 10 }}
+                            >
+                              +
+                            </div>
+                          </div>
+                        </td>
                         <td>
                           <button className='bn632-hover bn28' onClick={async () => await this.removePci(item.modelId)}>Remove</button>
                         </td>

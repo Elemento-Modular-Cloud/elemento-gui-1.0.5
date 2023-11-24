@@ -61,7 +61,7 @@ class Resume extends Component {
                 <span className='resitemtitle'>Volumes</span><span className='resitemvalue'>{x.volumeIds && x.volumeIds.length > 0 ? x.volumeIds.map(vol => vol.vid).join(', ') : 'None'}</span>
               </div>
               <div className='resitembox'>
-                <span className='resitemtitle'>PCI</span><span className='resitemvalue'>{x.pci && x.pci.length > 0 ? x.pci.map(pci => `${pci.vendor} - ${pci.model}`).join(', ') : 'None'}</span>
+                <span className='resitemtitle'>PCI</span><span className='resitemvalue'>{x.pci && x.pci.length > 0 ? x.pci.map(pci => `(x${pci.quantity}) ${pci.vendor} - ${pci.model}`).join(', ') : 'None'}</span>
               </div>
 
               <div className='restoplogo' style={{ backgroundColor: Utils.toRGB(compactName) }}>
