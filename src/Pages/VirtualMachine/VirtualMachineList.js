@@ -25,7 +25,7 @@ class VirtualMachineList extends Component {
       loading: false,
       toBeDeleted: null,
       smartViewerModal: false,
-      credentials: false,
+      credentials: null,
       viewerURL: null,
       username: '',
       password: ''
@@ -111,15 +111,17 @@ class VirtualMachineList extends Component {
 
   async openSSHViewer () {
     const { host, username, password } = this.state
-    this.setState({ credentials: false, smartViewerModal: true, viewerURL: `http://localhost:8000?host=${host}&username=${username}&password=${password}` })
-  }
-
-  async openRDPViewer () {
-    this.setState({ smartViewerModal: true, viewerURL: 'http://localhost:9000' })
+    this.setState({ credentials: null, smartViewerModal: true, viewerURL: `http://localhost:8000?host=${host}&username=${username}&password=${password}` })
   }
 
   async openVNCViewer () {
-    this.setState({ smartViewerModal: true, viewerURL: 'http://localhost:10000' })
+    const { host, username, password } = this.state
+    this.setState({ credentials: null, smartViewerModal: true, viewerURL: `http://localhost:10000?host=${host}&username=${username}&password=${password}` })
+  }
+
+  async openRDPViewer () {
+    const { host, username, password } = this.state
+    this.setState({ credentials: null, smartViewerModal: true, viewerURL: `http://localhost:9000?host=${host}&username=${username}&password=${password}` })
   }
 
   render () {
@@ -210,9 +212,9 @@ class VirtualMachineList extends Component {
                           {/* <td><button className='bn632-hover bn22' onClick={async () => !toBeDeleted && window.open(detail.viewer, '_blank')}>Viewer</button></td> */}
                           <td style={{ minWidth: 100 }}>
                             <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                              <img src={ssh} alt='' style={{ width: 25 }} onClick={() => this.setState({ host: detail.network_config?.ipv4, credentials: true })} />
-                              <img src={vnc} alt='' style={{ width: 25 }} onClick={() => this.openVNCViewer()} />
-                              <img src={rdp} alt='' style={{ width: 25 }} onClick={() => this.openRDPViewer()} />
+                              <img src={ssh} alt='' style={{ width: 25 }} onClick={() => this.setState({ host: detail.network_config?.ipv4, credentials: 'ssh' })} />
+                              <img src={vnc} alt='' style={{ width: 25 }} onClick={() => this.setState({ host: detail.network_config?.ipv4, credentials: 'vnc' })} />
+                              <img src={rdp} alt='' style={{ width: 25 }} onClick={() => this.setState({ host: detail.network_config?.ipv4, credentials: 'rdp' })} />
                             </div>
                           </td>
                           <td><button className='bn632-hover bn28' onClick={async () => !toBeDeleted && await this.deleteVirtualMachine(uniqueID)}>Delete</button></td>
@@ -259,9 +261,13 @@ class VirtualMachineList extends Component {
                 username && password &&
                   <div
                     className='stobutton'
-                    onClick={async () => await this.openSSHViewer()}
+                    onClick={async () => {
+                      credentials === 'ssh' && await this.openSSHViewer()
+                      credentials === 'vnc' && await this.openVNCViewer()
+                      credentials === 'rdp' && await this.openRDPViewer()
+                    }}
                   >
-                    <span>Open SSH Connection</span>
+                    <span>Open Connection</span>
                   </div>
               }
             </Modal>
