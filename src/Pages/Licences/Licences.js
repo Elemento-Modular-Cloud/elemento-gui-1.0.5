@@ -46,6 +46,8 @@ class Licences extends Component {
       }).then(() => {
         const file = res.data && res.data.license ? res.data.license.file : ''
         this.setState({ file })
+
+        this.saveLicenceLocally(file)
       })
       await this.refreshData()
     } else {
@@ -77,6 +79,15 @@ class Licences extends Component {
       })
     }
     this.setState({ loading: false, toBeDeleted: null })
+  }
+
+  async saveLicenceLocally (file) {
+    window.require('electron').ipcRenderer.send('save-licence', file)
+
+    swal('Success!', 'The license has beed successfully saved under ~/Downloads folder.', 'success', {
+      buttons: false,
+      timer: 3000
+    })
   }
 
   render () {
