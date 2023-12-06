@@ -97,7 +97,7 @@ class Storage extends Component {
 
         <div className='advstoselect'>
           <CustomSelect
-            options={storages ? storages.map(s => s.private ? `🔒 ${s.name}` : `🌍 ${s.name}`) : []}
+            options={storages ? storages.map(s => s.private ? `👤 ${s.name}` : `🌍 ${s.name}`) : []}
             onChange={(event, storageSelected) => {
               if (storageSelected) {
                 this.setState({ storageSelected: storageSelected.substring(3, storageSelected.length) })

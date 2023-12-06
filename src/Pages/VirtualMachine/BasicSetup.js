@@ -250,7 +250,7 @@ class BasicSetup extends Component {
                 <span className='bascaption'>Storage Selection</span>
                 <div style={{ display: 'flex', flexDirection: 'row' }}>
                   <CustomSelect
-                    options={storages ? storages.map(s => s.private ? `🔒 ${s.name}` : `🌍 ${s.name}`) : []}
+                    options={storages ? storages.map(s => s.private ? `👤 ${s.name}` : `🌍 ${s.name}`) : []}
                     onChange={(event, storageSelected) => {
                       if (storageSelected) {
                         this.setState({ storageSelected: storageSelected.substring(3, storageSelected.length) })
