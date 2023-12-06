@@ -151,6 +151,7 @@ class Storage extends Component {
       publicStorages,
       name,
       size,
+      amount,
       privateStorage,
       shareableStorage,
       bootableStorage,
@@ -326,11 +327,22 @@ class Storage extends Component {
                     options={['GB', 'TB']}
                     style={{ width: 120 }}
                     placeholder='UoM'
+                    value={amount}
                     onChange={(event, amount) => {
                       this.setState({ amount })
                     }}
                   />
                 </div>
+
+                <button className={size === 125 ? 'stosizebtnselected' : 'stosizebtn'} value={size} onClick={e => this.setState({ size: 125, amount: 'GB' })}>125GB</button>
+                <button className={size === 250 ? 'stosizebtnselected' : 'stosizebtn'} value={size} onClick={e => this.setState({ size: 250, amount: 'GB' })}>250GB</button>
+                <button className={size === 500 ? 'stosizebtnselected' : 'stosizebtn'} value={size} onClick={e => this.setState({ size: 500, amount: 'GB' })}>500GB</button>
+                <br />
+                <button className={size === 1 ? 'stosizebtnselected' : 'stosizebtn'} value={size} onClick={e => this.setState({ size: 1, amount: 'TB' })}>1TB</button>
+                <button className={size === 2 ? 'stosizebtnselected' : 'stosizebtn'} value={size} onClick={e => this.setState({ size: 2, amount: 'TB' })}>2TB</button>
+                <button className={size === 4 ? 'stosizebtnselected' : 'stosizebtn'} value={size} onClick={e => this.setState({ size: 4, amount: 'TB' })}>4TB</button>
+                <br />
+                <button className={size === 8 ? 'stosizebtnselected' : 'stosizebtn'} value={size} onClick={e => this.setState({ size: 8, amount: 'TB' })}>8TB</button>
               </div>
             </div>
 
