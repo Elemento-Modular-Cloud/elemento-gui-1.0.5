@@ -4,7 +4,7 @@ import onde from '../../Assets/onde.svg'
 import logobigwhite from '../../Assets/logobigwhite.svg'
 import { Api, persistState } from '../../Services'
 import './Setup.css'
-import { Background } from '../../Components'
+import { Background, Loader } from '../../Components'
 
 class Setup extends Component {
   constructor (props) {
@@ -13,7 +13,8 @@ class Setup extends Component {
       chunk: 0,
       downloaded: false,
       installed: false,
-      loading: false
+      loading: false,
+      docker: false
     }
   }
 
@@ -21,8 +22,8 @@ class Setup extends Component {
     this.intervalServices()
 
     window.require('electron').ipcRenderer.on('download-progress', async (event, arg) => {
-      const { chunk } = arg.data
-      this.setState({ chunk })
+      const { chunk, docker } = arg.data
+      this.setState({ chunk, docker })
 
       if (chunk === 100) {
         this.setState({ downloaded: true, loading: false })
@@ -82,7 +83,7 @@ class Setup extends Component {
   }
 
   render () {
-    const { chunk, downloaded, installed, loading } = this.state
+    const { chunk, downloaded, installed, loading, docker } = this.state
 
     return (
       <Background
@@ -107,13 +108,13 @@ class Setup extends Component {
               !downloaded &&
                 <>
                   <span>Welcome to the Elemento Setup board!</span><br /><br />
-                  <span>Before to use the Elemento app we must to setup some services useful to connect you to the Elemento Cloud services.</span><br />
+                  <span>Before using the Elemento app we must to setup some services useful to connect you to the Elemento Cloud services.</span><br />
                   <span>Please, click on Download button and next open the installer file. Then come here again and proceed to the next step!</span><br /><br />
                   <div style={{ display: 'flex', flexDirection: 'row' }}>
                     {!loading && <button className='downloadbutton' onClick={async () => await this.downloadDaemons()}>Download services</button>}
                     {!loading && <button className='downloadbutton' style={{ marginLeft: 20 }} onClick={async () => await this.checkServices(true)}>Check services</button>}
                   </div>
-                  {loading && chunk === 0 && <div className='loaderbox'><span className='loader' /></div>}
+                  {loading && chunk === 0 && <Loader />}
                 </>
             }
             {
@@ -124,10 +125,17 @@ class Setup extends Component {
                 </div>
             }
             {
-              downloaded && !installed &&
+              downloaded && !installed && !docker &&
                 <>
-                  <span>Daemon software has been downloaded in the Downloads folder. Please, run the service and then log into the electrOS App.</span><br /><br />
-                  <div className='loaderbox'><span className='loader' /></div>
+                  <span>Daemon software has been downloaded in the Downloads folder.<br />Please, run the service and then log into the ElectrOS App.</span><br /><br />
+                  <Loader />
+                </>
+            }
+            {
+              downloaded && !installed && docker &&
+                <>
+                  <span>Please, download and execute the docker-compose file to run the daemon service,<br />then log into the ElectrOS App.</span><br /><br />
+                  <Loader />
                 </>
             }
             {
@@ -136,7 +144,7 @@ class Setup extends Component {
                   <span>Great, all the services are installed correctly!</span><br />
                   <span style={{ marginLeft: 20, fontSize: 40, marginTop: 40 }}>Ready. Set. Cloud. 🏁🚀☁️</span><br /><br />
                   {!loading && <button className='downloadbutton' onClick={async () => await this.continue()}>Continue</button>}
-                  {loading && <div className='loaderbox'><span className='loader' /></div>}
+                  {loading && <Loader />}
                 </>
             }
           </div>

@@ -6,9 +6,7 @@
   color: #898C8A;
 }
 .vmlbody {
-  width: 78%;
   padding: 20px;
-  margin-top: 10px;
 }
 .vmlheader {
   width: 100%;
@@ -27,36 +25,37 @@
   color: #f28e00;
 }
 .vmltables {
-  width: 100%;
-  max-height: 75%;
-  min-height: 150px;
-  overflow: scroll;
+  max-height: 70vh;
+  min-height: 10vh;
+  overflow: auto;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-}
-.vmltablebody {
-  font-size: 14px;
-}
-.vmltablehead {
-  font-weight: bold;
 }
 .vmltable {
   color: #797979;
   white-space: nowrap;
+  overflow: auto;
+}
+.vmltablebody {
+  font-size: 16px;
+}
+.vmltablehead {
+  font-weight: bold;
+  font-size: 14px;
 }
 .vmlbtncontainer {
   cursor: pointer;
-  width: 230px;
+  width: 238px;
+  height: 40px;
+  max-width: 238px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
   background-color: #f28e00;
   padding: 10px;
-  margin-top: 10px;
   border-radius: 50px;
   color: white;
   border: solid 1px white;
-  margin-bottom: 30px;
 }
 .vmlbtncontainer:hover {
   background-color: white;
@@ -92,16 +91,9 @@
   font-weight: bold;
 }
 
-@media screen and (max-width: 800px) {
-  .vmlpage {
-    width: 78%;
-    font-size: 14px;
-  }
-  .vmlselector span {
-    font-size: 22px;
-    margin-top: 20px;
-  }
-  .vmltables {
-    height: 70%;
-  }
+.inlineitem {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 6px;
 }

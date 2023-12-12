@@ -38,16 +38,31 @@ app.on('ready', () => {
     shell.openExternal(url)
   })
 
+  ipcMain.on('save-licence', (event, licence) => {
+    const filepath = path.join(os.homedir(), 'Downloads', 'atomos.license')
+    fs.writeFileSync(filepath, licence)
+  })
+
   ipcMain.on('download-daemons', () => {
     let url
     let filepath
 
-    if (os.type() === 'Windows_NT') {
+    const platform = os.platform()
+
+    if (platform === 'win32') {
       url = 'https://repo.elemento.cloud/app/Elemento_daemons.zip'
       filepath = path.join(os.homedir(), 'Downloads', 'Elemento_daemons.zip')
-    } else if (os.type() === 'Darwin') {
-      url = 'https://repo.elemento.cloud/app/Elemento_daemons.dmg'
-      filepath = path.join(os.homedir(), 'Downloads', 'Elemento_daemons.dmg')
+    } else if (platform === 'darwin') {
+      if (process.arch.includes('arm')) {
+        url = 'https://repo.elemento.cloud/app/Elemento_daemons.dmg'
+        filepath = path.join(os.homedir(), 'Downloads', 'Elemento_daemons.dmg')
+      } else {
+        shell.openExternal('https://github.com/Elemento-Modular-Cloud/electros')
+        mainWindow.webContents.send('download-progress', { message: 'chunk', data: { chunk: 100, docker: true } })
+      }
+    } else if (platform === 'linux') {
+      shell.openExternal('https://github.com/Elemento-Modular-Cloud/electros')
+      mainWindow.webContents.send('download-progress', { message: 'chunk', data: { chunk: 100, docker: true } })
     } else {
       return 'Error: operating system not supported'
     }
@@ -66,7 +81,7 @@ app.on('ready', () => {
 
       response.on('data', (chunk) => {
         chunks += chunk.length
-        mainWindow.webContents.send('download-progress', { message: 'chunk', data: { chunk: Math.round((chunks / totalSize) * 100) } })
+        mainWindow.webContents.send('download-progress', { message: 'chunk', data: { chunk: Math.round((chunks / totalSize) * 100), docker: true } })
       })
 
       file.on('finish', () => {
@@ -83,10 +98,6 @@ app.on('ready', () => {
       })
     })
   })
-
-  setTimeout(() => {
-    mainWindow.webContents.send('some-event-reply', { message: 'Hello, world!', data: { ciao: true } })
-  }, 3000)
 })
 
 app.on('window-all-closed', () => {

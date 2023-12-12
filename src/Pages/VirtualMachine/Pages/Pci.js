@@ -23,24 +23,34 @@ class Pci extends Component {
     const pci = advancedSetup.pci || []
 
     this.setState({ pci })
-    await this.updateState([])
+    await this.updateState(pci)
   }
 
   async addPci (modelId) {
     try {
-      const { vendorId, pci } = this.state // modelId
-      if (pci.filter(p => p.modelId === modelId).length > 0) { return }
+      let added = {}
 
-      const pcis = [
-        ...pci,
-        {
+      const { vendorId, pci } = this.state // modelId
+      const found = pci.filter(p => p.modelId === modelId)
+      if (found.length > 0) {
+        added = {
+          ...found[0],
+          quantity: found[0].quantity + 1
+        }
+      } else {
+        const vendor = vendors[Object.keys(vendors).filter(item => item === vendorId)[0]]
+        const model = models[Object.keys(models).filter(item => item === vendorId)].filter(item => item[1] === modelId)[0][0]
+        added = {
           vendorId,
-          vendor: vendors[Object.keys(vendors).filter(item => item === vendorId)[0]],
+          vendor,
           modelId,
-          model: models[Object.keys(models).filter(item => item === vendorId)].filter(item => item[1] === modelId)[0][0],
+          model,
           quantity: 1
         }
-      ]
+      }
+
+      const pcis = [...pci.filter(p => p.modelId !== modelId), added]
+
       this.setState({ pci: pcis })
       await this.updateState(pcis)
     } catch (error) {
@@ -71,23 +81,63 @@ class Pci extends Component {
     }, persistState)
   }
 
+  async decreaseQuantity (vendorId, modelId) {
+    const { pci } = this.state
+    let updated = []
+
+    const selected = pci.filter(p => p.vendorId === vendorId && p.modelId === modelId)[0]
+    const others = pci.filter(p => p.vendorId !== vendorId || p.modelId !== modelId)
+
+    if (selected.quantity > 1) {
+      updated = [
+        ...others,
+        {
+          ...selected,
+          quantity: selected.quantity - 1
+        }
+      ]
+    } else {
+      await this.removePci(modelId)
+      updated = others
+    }
+
+    this.setState({ pci: updated })
+  }
+
+  async increaseQuantity (vendorId, modelId) {
+    const { pci } = this.state
+
+    const selected = pci.filter(p => p.vendorId === vendorId && p.modelId === modelId)[0]
+    const others = pci.filter(p => p.vendorId !== vendorId || p.modelId !== modelId)
+    const updated = [
+      ...others,
+      {
+        ...selected,
+        quantity: selected.quantity + 1
+      }
+    ]
+
+    await this.updateState(updated)
+    this.setState({ pci: updated })
+  }
+
   render () {
     const { vendorId, pci } = this.state
 
     return (
-      <div>
+      <div className='advmain'>
         <h2>Pci setup</h2>
+        <p>ⓘ Be aware that certain hosts may require to add both video and audio card or may add both of them automatically</p>
 
         <div className='pciselectors'>
           <div className='pciselectvendor'>
             <h3>Vendor</h3>
             <CustomSelect
               style={{ windth: '100%' }}
-              options={Object.keys(vendors).sort((a, b) => a - b).map(item => `${item} @ ${vendors[item]}`)}
+              options={Object.keys(vendors).sort((a, b) => a - b).map(item => vendors[item])}
               onChange={(event, vendor) => {
                 if (vendor) {
-                  const splitted = vendor.split(' @ ')
-                  const vendorId = splitted[0]
+                  const vendorId = Object.keys(vendors).filter(item => vendors[item] === vendor)[0]
                   this.setState({ vendorId })
                 }
               }}
@@ -99,11 +149,10 @@ class Pci extends Component {
               <div className='pciselectmodel'>
                 <h3>Model</h3>
                 <CustomSelect
-                  options={models[Object.keys(models).filter(item => item === vendorId)[0]].map(item => `${item[1]} @ ${item[0]}`)}
+                  options={models[Object.keys(models).filter(item => item === vendorId)[0]].map(item => `${item[0]} → ${item[1]}`)}
                   onChange={async (event, model) => {
                     if (model) {
-                      const splitted = model.split(' @ ')
-                      const modelId = splitted[0]
+                      const modelId = model.split(' → ')[1]
                       this.setState({ modelId })
                       await this.addPci(modelId)
                     }
@@ -122,6 +171,7 @@ class Pci extends Component {
                   <td>Vedor</td>
                   <td>Model ID</td>
                   <td>Model</td>
+                  <td>Quantity</td>
                   <td>Remove</td>
                 </tr>
               </thead>
@@ -134,6 +184,23 @@ class Pci extends Component {
                         <td>{item.vendor}</td>
                         <td>{item.modelId}</td>
                         <td>{item.model}</td>
+                        <td>
+                          <div style={{ display: 'flex', flexDirection: 'row' }}>
+                            <div
+                              onClick={() => this.decreaseQuantity(item.vendorId, item.modelId)}
+                              style={{ backgroundColor: 'lightgray', width: 20, height: 20, borderRadius: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: 10 }}
+                            >
+                              -
+                            </div>
+                            {item.quantity}
+                            <div
+                              onClick={() => this.increaseQuantity(item.vendorId, item.modelId)}
+                              style={{ backgroundColor: 'lightgray', width: 20, height: 20, borderRadius: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: 10 }}
+                            >
+                              +
+                            </div>
+                          </div>
+                        </td>
                         <td>
                           <button className='bn632-hover bn28' onClick={async () => await this.removePci(item.modelId)}>Remove</button>
                         </td>

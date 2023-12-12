@@ -25,6 +25,7 @@ const Daemons = () => {
 
   useEffect(() => {
     checkStatus()
+    setInterval(() => checkStatus(), 60000)
   }, [])
 
   return (
@@ -36,6 +37,7 @@ const Daemons = () => {
         isOpen={modal}
         style={customStyle}
         className='netmodal'
+        ariaHideApp={false}
         onRequestClose={() => setModal(!modal)}
       >
         <h2>Services Status</h2>

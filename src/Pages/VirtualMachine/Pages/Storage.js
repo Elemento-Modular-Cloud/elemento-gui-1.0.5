@@ -1,7 +1,7 @@
 import React, { Component } from 'reactn'
 import { Api, persistState } from '../../../Services'
 import { Config, Utils } from '../../../Global'
-import { CustomSelect } from '../../../Components'
+import { CustomSelect, Loader } from '../../../Components'
 import { ReactComponent as CheckGreen } from '../../../Assets/utils/checkgreen.svg'
 import { ReactComponent as CheckRed } from '../../../Assets/utils/checkred.svg'
 import '../css/Pages.css'
@@ -90,17 +90,17 @@ class Storage extends Component {
     const { loading, storages, storagesSelected, storageSelected } = this.state
 
     return (
-      <div>
+      <div className='advmain'>
         <h2>Storage setup</h2>
 
-        <p>⚠️ You can mount as many storage as you want, there is no limit!</p>
+        <p>ⓘ You can mount as many storage as you want, there is no limit!</p>
 
         <div className='advstoselect'>
           <CustomSelect
-            options={storages ? storages.map(s => s.name) : []}
+            options={storages ? storages.map(s => s.private ? `👤 ${s.name}` : `🌍 ${s.name}`) : []}
             onChange={(event, storageSelected) => {
               if (storageSelected) {
-                this.setState({ storageSelected })
+                this.setState({ storageSelected: storageSelected.substring(3, storageSelected.length) })
               }
             }}
           />
@@ -110,7 +110,7 @@ class Storage extends Component {
         <br />
         <div>
           <h2>Added volumes</h2>
-          <table>
+          <table className='stopagetable'>
             <thead>
               <tr>
                 <td>Name</td>
@@ -129,7 +129,7 @@ class Storage extends Component {
               </tr>
             </thead>
             <tbody>
-              {loading && <div className='loaderbox'><span className='loader' /></div>}
+              {loading && <Loader />}
               {
                 !loading && storagesSelected && storagesSelected.length > 0 && storagesSelected.map((storage, i) => {
                   return (
