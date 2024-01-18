@@ -188,14 +188,14 @@ class Pci extends Component {
                           <div style={{ display: 'flex', flexDirection: 'row' }}>
                             <div
                               onClick={() => this.decreaseQuantity(item.vendorId, item.modelId)}
-                              style={{ backgroundColor: 'lightgray', width: 20, height: 20, borderRadius: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: 10 }}
+                              style={{ backgroundColor: 'lightgray', width: 20, height: 20, borderRadius: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: 10, cursor: 'pointer' }}
                             >
                               -
                             </div>
                             {item.quantity}
                             <div
                               onClick={() => this.increaseQuantity(item.vendorId, item.modelId)}
-                              style={{ backgroundColor: 'lightgray', width: 20, height: 20, borderRadius: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: 10 }}
+                              style={{ backgroundColor: 'lightgray', width: 20, height: 20, borderRadius: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: 10, cursor: 'pointer' }}
                             >
                               +
                             </div>
