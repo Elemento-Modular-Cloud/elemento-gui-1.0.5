@@ -38,7 +38,7 @@ class componentName extends Component {
             await this.updateState(e.target.value)
           }}
         />
-        <p>Only letters, number,- (dash) are permitted.</p>
+        <p>Only letters, number,- (dash) are permitted. Max lenght 15 chars.</p>
       </div>
     )
   }
