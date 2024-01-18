@@ -90,6 +90,7 @@ class Storage extends Component {
     })
 
     if (res.ok) {
+      Api.createClient(Config.API_URL_STORAGE)
       const ret = await Api.post('/create', {
         name,
         size: sizeInGB,
