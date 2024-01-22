@@ -34,8 +34,10 @@ class componentName extends Component {
           value={name}
           style={{ height: 35, width: 250 }}
           onChange={async e => {
-            this.setState({ name: e.target.value })
-            await this.updateState(e.target.value)
+            if (e.target.value.length < 15) {
+              this.setState({ name: e.target.value })
+              await this.updateState(e.target.value)
+            }
           }}
         />
         <p>Only letters, number,- (dash) are permitted. Max lenght 15 chars.</p>
