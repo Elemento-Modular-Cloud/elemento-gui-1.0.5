@@ -249,8 +249,8 @@ class VirtualMachineList extends Component {
               onRequestClose={() => this.setState({ credentials: !credentials, username: null, password: null })}
             >
               <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <span style={{ fontWeight: 'bold', color: '#f28e00' }}>Attenzione</span>
-                <span style={{ width: 250, marginTop: 8, marginBottom: 10, fontSize: 13 }}>Prima di aprire la connessione remota è necessario eseguire l'applicativo elemento-remote-tools.</span>
+                <span style={{ fontWeight: 'bold', color: '#f28e00' }}>Attention</span>
+                <span style={{ width: 250, marginTop: 8, marginBottom: 10, fontSize: 13 }}>To ensure the {credentials} remote connection can be opened, you must run elemento-remote-tools beforehand.</span>
               </div>
 
               <div className='stomodalinput'>
