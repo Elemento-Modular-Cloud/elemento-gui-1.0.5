@@ -26,6 +26,14 @@ class Pci extends Component {
     await this.updateState(pci)
   }
 
+  sortPci (pci) {
+    if (pci && pci.length > 0) {
+      console.log(pci)
+      return pci.sort((a, b) => a.vendorId.localeCompare(b.vendorId) || a.modelId.localeCompare(b.modelId))
+    }
+    return []
+  }
+
   async addPci (modelId) {
     try {
       let added = {}
@@ -51,7 +59,7 @@ class Pci extends Component {
 
       const pcis = [...pci.filter(p => p.modelId !== modelId), added]
 
-      this.setState({ pci: pcis })
+      this.setState({ pci: this.sortPci(pcis) })
       await this.updateState(pcis)
     } catch (error) {
       swal('Error', 'Error during model selection, please select it again', 'error', {
@@ -64,7 +72,7 @@ class Pci extends Component {
   async removePci (modelId) {
     const { pci } = this.state
     const pcis = pci.filter(item => item.modelId !== modelId)
-    this.setState({ pci: pcis })
+    this.setState({ pci: this.sortPci(pcis) })
     await this.updateState(pcis)
   }
 
@@ -100,7 +108,9 @@ class Pci extends Component {
       await this.removePci(modelId)
       updated = others
     }
+    updated = this.sortPci(updated)
 
+    await this.updateState(updated)
     this.setState({ pci: updated })
   }
 
@@ -109,13 +119,14 @@ class Pci extends Component {
 
     const selected = pci.filter(p => p.vendorId === vendorId && p.modelId === modelId)[0]
     const others = pci.filter(p => p.vendorId !== vendorId || p.modelId !== modelId)
-    const updated = [
+    let updated = [
       ...others,
       {
         ...selected,
         quantity: selected.quantity + 1
       }
     ]
+    updated = this.sortPci(updated)
 
     await this.updateState(updated)
     this.setState({ pci: updated })
