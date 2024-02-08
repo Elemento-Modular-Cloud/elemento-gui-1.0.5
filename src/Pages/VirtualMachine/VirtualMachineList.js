@@ -124,6 +124,10 @@ class VirtualMachineList extends Component {
     this.setState({ credentials: null, smartViewerModal: true, viewerURL: `http://localhost:9000?host=${host}&username=${username}&password=${password}` })
   }
 
+  async openExternalLink () {
+    window.require('electron').ipcRenderer.send('open-external-link', 'https://github.com/Elemento-Modular-Cloud/elemento-smart-tools/releases')
+  }
+
   render () {
     const { vms, loading, toBeDeleted, smartViewerModal, viewerURL, credentials, username, password } = this.state
 
@@ -251,6 +255,7 @@ class VirtualMachineList extends Component {
               <div style={{ display: 'flex', flexDirection: 'column' }}>
                 <span style={{ fontWeight: 'bold', color: '#f28e00' }}>Attention</span>
                 <span style={{ width: 250, marginTop: 8, marginBottom: 10, fontSize: 13 }}>To ensure the {credentials} remote connection can be opened, you must run elemento-remote-tools beforehand.</span>
+                <p className='loginregister' style={{ textAlign: 'center' }} onClick={() => this.openExternalLink()}>Download elemento-remote-tools here!</p>
               </div>
 
               <div className='stomodalinput'>
