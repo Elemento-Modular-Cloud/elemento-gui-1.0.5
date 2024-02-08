@@ -91,6 +91,10 @@ class Login extends Component {
     }
   }
 
+  async openExternalLink () {
+    window.require('electron').ipcRenderer.send('open-external-link', 'https://portal.elemento.cloud/password_recovery')
+  }
+
   render () {
     const { register, username, password, name, surname, email, passwordr, disableLogin } = this.state
 
@@ -119,6 +123,7 @@ class Login extends Component {
                   <input type='text' value={username} onChange={e => this.setState({ username: e.target.value })} />
                   <span>Password*</span>
                   <input type='password' value={password} onChange={e => this.setState({ password: e.target.value })} onKeyDown={e => this.handleKeyDown(e)} />
+                  <p className='loginregister' style={{ textAlign: 'center' }} onClick={() => this.openExternalLink()}>Forgot your password?</p>
                 </div>
                 {
                   !disableLogin &&
