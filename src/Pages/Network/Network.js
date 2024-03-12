@@ -63,7 +63,7 @@ class Network extends Component {
     return (
       <div className='netpage'>
         <Sidebar selected='network' />
-        <div className='netbody'>
+        <div className='lbody netbody'>
           <hr />
 
           <div className='netheader'>
@@ -73,51 +73,46 @@ class Network extends Component {
 
           {loading && <Loader />}
 
-          {
-            !loading &&
-              <>
-                <div className='netbtnnew' onClick={() => this.setState({ showModal: true })}>
-                  <div className='netbtncontainer'>
-                    <span>CREATE NEW NETWORK</span>
-                    <Arrow />
-                  </div>
-                </div>
+          <div className='netbtnnew' onClick={() => this.setState({ showModal: true })}>
+            <div className='netbtncontainer'>
+              <span>CREATE NEW NETWORK</span>
+              <Arrow />
+            </div>
+          </div>
 
-                <div className='nettables'>
-                  <table className='lictable'>
-                    <thead className='lictablehead'>
-                      <tr>
-                        <td>Creator Id</td>
-                        <td>Network Id</td>
-                        <td>Name</td>
-                        <td>Ports</td>
-                        <td>Hostname</td>
-                        <td>Overprovision</td>
-                        <td>Private</td>
-                        <td>Speed</td>
+          <div className='nettables'>
+            <table className='lictable'>
+              <thead className='lictablehead'>
+                <tr>
+                  <td>Creator Id</td>
+                  <td>Network Id</td>
+                  <td>Name</td>
+                  <td>Ports</td>
+                  <td>Hostname</td>
+                  <td>Overprovision</td>
+                  <td>Private</td>
+                  <td>Speed</td>
+                </tr>
+              </thead>
+              <tbody className='lictablebody'>
+                {
+                  networks && networks.length > 0 && networks.map((network, i) => {
+                    return (
+                      <tr key={i}>
+                        <td>{network.creatorID}</td>
+                        <td>{network.network_id}</td>
+                        <td>{network.name}</td>
+                        <td>{network.hostname}</td>
+                        <td>{network.overprovision}</td>
+                        <td>{network.private}</td>
+                        <td>{network.speed}</td>
                       </tr>
-                    </thead>
-                    <tbody className='lictablebody'>
-                      {
-                        networks && networks.length > 0 && networks.map((network, i) => {
-                          return (
-                            <tr key={i}>
-                              <td>{network.creatorID}</td>
-                              <td>{network.network_id}</td>
-                              <td>{network.name}</td>
-                              <td>{network.hostname}</td>
-                              <td>{network.overprovision}</td>
-                              <td>{network.private}</td>
-                              <td>{network.speed}</td>
-                            </tr>
-                          )
-                        })
-                      }
-                    </tbody>
-                  </table>
-                </div>
-              </>
-          }
+                    )
+                  })
+                }
+              </tbody>
+            </table>
+          </div>
 
           <Modal
             isOpen={showModal}
