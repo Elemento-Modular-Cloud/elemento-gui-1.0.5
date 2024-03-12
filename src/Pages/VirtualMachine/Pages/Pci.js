@@ -28,7 +28,6 @@ class Pci extends Component {
 
   sortPci (pci) {
     if (pci && pci.length > 0) {
-      console.log(pci)
       return pci.sort((a, b) => a.vendorId.localeCompare(b.vendorId) || a.modelId.localeCompare(b.modelId))
     }
     return []
