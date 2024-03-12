@@ -1,0 +1,57 @@
+.billingBox {
+  width: 400px;
+  height: 280px;
+  position: absolute;
+  z-index: 999;
+  background-color: white;
+  border-radius: 10px;
+  margin-top: 20px;
+  box-shadow: 0 4px 15px 0 #F28E00;
+}
+.tickContainer {
+  display: inline-block;
+  box-shadow: 0 4px 15px 0 #F28E00;
+  background-color: red;
+}
+.tick {
+  width: 0;
+  height: 0;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-bottom: 20px solid #fff; /* Height of equilateral triangle: (sqrt(3)/2)*width */
+  position: absolute;
+  top: -19px;
+  left: 5px;
+}
+.bContent {
+  margin-top: -30px;
+  padding: 10px;
+}
+.bTitle {
+  font-weight: bold;
+  font-size: 20px;
+}
+.bCheck {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+}
+
+.reddot {
+  width: 20px;
+  height: 20px;
+  background-color: red;
+  border-radius: 100%;
+  position: absolute;
+  top: -5px;
+  right: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.whitedot {
+  width: 5px;
+  height: 5px;
+  background-color: white;
+  border-radius: 100%;
+}
