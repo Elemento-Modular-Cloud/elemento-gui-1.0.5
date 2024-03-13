@@ -163,7 +163,7 @@ class AdvancedSetup extends Component {
     }
   }
 
-  async register () {
+  async register (provider) {
     try {
       const {
         name,
@@ -239,9 +239,7 @@ class AdvancedSetup extends Component {
           },
           pci: _pci,
           volumes,
-          provider: {
-            // ...
-          }
+          ip_address: `${provider}.mesos.elemento.cloud`
         })
 
         if (ret.ok) {
@@ -315,7 +313,7 @@ class AdvancedSetup extends Component {
             {page === STORAGE_PAGE && <Storage setVolumeIds={volumeIds => this.setState({ volumeIds })} />}
             {page === PCI_PAGE && <Pci setPci={pci => this.setState({ pci })} />}
             {/* {page === NETWORK_PAGE && <Network />} */}
-            {page === RESUME_PAGE && <Resume register={async () => await this.register()} back={() => this.previous()} />}
+            {page === RESUME_PAGE && <Resume register={async ({ provider }) => await this.register(provider)} back={() => this.previous()} />}
 
             <div className='advtools'>
               {page > 1 && page !== RESUME_PAGE && <button className='advprevious' onClick={() => this.previous()}>Previous</button>}

@@ -18,16 +18,14 @@ class Cpu extends Component {
 
   async componentDidMount () {
     const { advancedSetup } = this.global
-    const size = advancedSetup.size || marks[0].label
+    const size = advancedSetup.size || marks[0].label || this.state.size
     const ecc = advancedSetup.ecc || 0
     this.setState({
       size,
       ecc,
       value: marks.filter(x => x.label === size)[0].value
     })
-    this.props.setMemory({
-      size, ecc
-    })
+    await this.updateState(size, ecc)
   }
 
   async updateState (size, ecc) {
