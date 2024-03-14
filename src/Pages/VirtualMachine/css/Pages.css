@@ -267,6 +267,24 @@
   -moz-box-shadow: 2px 2px 20px 1px #f28e00aa;
   box-shadow: 2px 2px 20px 1px #f28e00aa;
 }
+.respriceitem_inverted {
+  position: relative;
+  width: 240px;
+  min-width: 240px;
+  height: 220px;
+  background-color: #f28e00;
+  border: solid 1px #f28e00;
+  border-radius: 10px;
+  margin-right: 30px;
+  margin-top: 20px;
+  padding: 8px;
+  -webkit-box-shadow: 2px 2px 20px 1px #f28e00;
+  -moz-box-shadow: 2px 2px 20px 1px #f28e00;
+  box-shadow: 2px 2px 20px 1px #f28e00;
+}
+.respriceitem_inverted > span {
+  color: white;
+}
 .respriceitem > img {
   position: absolute;
   top: 5px;

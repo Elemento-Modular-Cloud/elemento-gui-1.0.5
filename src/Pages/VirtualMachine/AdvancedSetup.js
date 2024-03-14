@@ -239,7 +239,7 @@ class AdvancedSetup extends Component {
           },
           pci: _pci,
           volumes,
-          ip_address: `${provider}.mesos.elemento.cloud`
+          ip_address: provider !== 'elemento' ? `${provider}.mesos.elemento.cloud` : null
         })
 
         if (ret.ok) {
@@ -281,7 +281,15 @@ class AdvancedSetup extends Component {
           <div className='advheader'>
             <span>Create new Virtual Machine</span>
             <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-              {page > 1 && page < 7 && <BillingModal mesos={mesos} updated={updated} setUpdated={() => this.setState({ updated: false })} />}
+              {
+                page > 1 && page < 7 &&
+                  <BillingModal
+                    mesos={mesos}
+                    updated={updated}
+                    detail={{ cores: this.state.cpu.cores, overprovision: this.state.cpu.overprovision, ramsize: this.state.memory.size }}
+                    setUpdated={() => this.setState({ updated: false })}
+                  />
+              }
               <ResumeModal />
               <Back page='/newvm' />
             </div>

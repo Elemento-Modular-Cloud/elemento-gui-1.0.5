@@ -5,8 +5,8 @@ import { Config, Utils } from '../../../Global'
 import { Loader } from '../../../Components'
 import { ReactComponent as AtomOS } from '../../../Assets/atomos.svg'
 import google from '../../../Assets/google.png'
-import ovh from '../../../Assets/ovh.jpg'
-import upcloud from '../../../Assets/upcloud.jpg'
+import ovh from '../../../Assets/ovh.png'
+import upcloud from '../../../Assets/upcloud.png'
 import aws from '../../../Assets/aws.png'
 import aruba from '../../../Assets/aruba.png'
 import azure from '../../../Assets/azure.png'
@@ -82,7 +82,6 @@ class Resume extends Component {
     const res = await Api.post('/canallocate', data)
 
     if (res.ok) {
-      console.log('/canallocate', res.data)
       this.setState({ allocate: res.data })
     } else {
       console.log('cannot execute correctly /canallocate', res)
@@ -146,6 +145,33 @@ class Resume extends Component {
         </div>
 
         <div className='resprices'>
+          <div className='respriceitem'>
+            <><AtomOS style={{ width: 60, height: 60, position: 'absolute', top: 10, right: 10 }} /><br /></>
+            <span style={{ fontWeight: 'bold' }}>On Premises</span><br /><br />
+
+            <span>Hourly:  0,00 EUR</span><br />
+            <span>Monthly: 0,00 EUR</span><br /><br /><br /><br />
+
+            {
+              this.state.provider === 'elemento'
+                ? (
+                  <button
+                    className='resbtnwhite'
+                  >
+                    Selected ✓
+                  </button>
+                  )
+                : (
+                  <button
+                    className='resbtn'
+                    onClick={async () => this.setState({ provider: 'elemento' })}
+                  >
+                    Select
+                  </button>
+                  )
+            }
+            <br />
+          </div>
           {
             allocate && allocate.mesos && allocate.mesos.length > 0 && allocate.mesos.map((mesos, i) => {
               const provider = mesos.provider
@@ -153,18 +179,23 @@ class Resume extends Component {
               const hourly = mesos.price.hour
               const unit = mesos.price.unit
               return (
-                <div className='respriceitem' key={i}>
-                  {provider === 'elemento' && <><AtomOS style={{ width: 45, height: 45, position: 'absolute', top: 10, right: 10 }} /><br /></>}
+                <div className={this.state.provider === provider ? 'respriceitem respriceitem_inverted' : 'respriceitem respriceitem_inverted'} key={i}>
                   {provider === 'google' && <><img src={google} alt='' style={{ width: 45, height: 45 }} /><br /></>}
-                  {provider === 'aws' && <><img src={aws} alt='' style={{ width: 60, height: 60 }} /><br /></>}
-                  {provider === 'ovh' && <><img src={ovh} alt='' style={{ width: 60, height: 60 }} /><br /></>}
-                  {provider === 'upcloud' && <><img src={upcloud} alt='' style={{ width: 60, height: 60 }} /><br /></>}
-                  {provider === 'aruba' && <><img src={aruba} alt='' style={{ width: 100, height: 40 }} /><br /></>}
-                  {provider === 'azure' && <><img src={azure} alt='' style={{ width: 100, height: 40 }} /><br /></>}
-                  <span style={{ fontWeight: 'bold' }}>{mesos.provider}</span><br /><br />
+                  {provider === 'aws' && <><img src={aws} alt='' style={{ width: 60, height: 40, marginTop: 10, marginRight: 10 }} /><br /></>}
+                  {provider === 'ovh' && <><img src={ovh} alt='' style={{ width: 70, height: 50 }} /><br /></>}
+                  {provider === 'upcloud' && <><img src={upcloud} alt='' style={{ width: 70, height: 60 }} /><br /></>}
+                  {provider === 'aruba' && <><img src={aruba} alt='' style={{ width: 80, height: 45 }} /><br /></>}
+                  {provider === 'azure' && <><img src={azure} alt='' style={{ width: 90, height: 30 }} /><br /></>}
 
-                  <span>Monthly: {monthly || '0,00'} {unit || 'USD'}</span><br />
-                  <span>Hourly:  {hourly || '0,00'} {unit || 'USD'}</span><br /><br /><br /><br />
+                  {provider === 'google' && <><span style={{ fontWeight: 'bold' }}>Google Cloud</span><br /><br /></>}
+                  {provider === 'aws' && <><span style={{ fontWeight: 'bold' }}>AWS</span><br /><br /></>}
+                  {provider === 'ovh' && <><span style={{ fontWeight: 'bold' }}>OVHcloud</span><br /><br /></>}
+                  {provider === 'upcloud' && <><span style={{ fontWeight: 'bold' }}>UpCloud</span><br /><br /></>}
+                  {provider === 'aruba' && <><span style={{ fontWeight: 'bold' }}>aruba Cloud</span><br /><br /></>}
+                  {provider === 'azure' && <><span style={{ fontWeight: 'bold' }}>Microsoft Azure</span><br /><br /></>}
+
+                  <span>Hourly:  {hourly || '0,00'} {unit || 'USD'}</span><br />
+                  <span>Monthly: {monthly || '0,00'} {unit || 'USD'}</span><br /><br /><br /><br />
 
                   {
                     this.state.provider === provider
@@ -198,10 +229,27 @@ class Resume extends Component {
               onClick={async () => {
                 await this.props.back()
               }}
-              style={{ marginRight: 10 }}
             >
               Previous
             </button>}
+          <button
+            className='advprevious'
+            onClick={() => {
+              if (allocate && allocate.mesos && allocate.mesos.length > 0) {
+                let lowestProvider = allocate.mesos[0]
+
+                allocate.mesos.forEach(provider => {
+                  if (provider.price.month < lowestProvider.price.month) {
+                    lowestProvider = provider
+                  }
+                })
+                this.setState({ provider: lowestProvider.provider })
+              }
+            }}
+            style={{ marginRight: 10 }}
+          >
+            Highlight the best ✓
+          </button>
           {!loading && !this.props.hideButtons &&
             <button
               className='btnregister'

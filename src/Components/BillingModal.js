@@ -21,7 +21,7 @@ class BillingModal extends Component {
 
   render () {
     const { showBilling, billingVisible } = this.state
-    const { mesos, updated } = this.props
+    const { mesos, updated, detail } = this.props
 
     return (
       <div style={{ position: 'relative', backgroundColor: 'white' }}>
@@ -33,7 +33,7 @@ class BillingModal extends Component {
           }}
         >
           <Pc />
-          Billing
+          Cost
 
           {updated && <div className='reddot'><div className='whitedot' /></div>}
         </div>
@@ -54,14 +54,11 @@ class BillingModal extends Component {
                 }}
               />
             </div>
-            <p className='bTitle'>Billing Details</p>
-            <span>Hourly price</span> <br />
-            <span>(4 Cores, 3 Overprovision, {'<'}2GB RAM)</span>
+            <p className='bTitle'>Cost Details</p>
+            <span><b>Hourly price</b></span> <br />
+            <span>({detail.cores || 0} Cores, {detail.overprovision || 0} Overprovision, {detail.ramsize || 0} RAM)</span>
             <p style={{ textAlign: 'right', marginTop: -5 }}>{mesos ? mesos.price.hour : '0,00'} {mesos ? mesos.price.unit : 'USD'}</p>
-            <span>Monthly price</span>
-            <p style={{ textAlign: 'right', marginTop: -5 }}>{mesos ? mesos.price.month : '0,00'} {mesos ? mesos.price.unit : 'USD'}</p>
-            <hr />
-            <span>Total price</span>
+            <span><b>Monthly price</b></span>
             <p style={{ textAlign: 'right', marginTop: -5 }}>{mesos ? mesos.price.month : '0,00'} {mesos ? mesos.price.unit : 'USD'}</p>
           </div>
         </div>
