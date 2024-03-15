@@ -179,7 +179,7 @@ class Resume extends Component {
               const hourly = mesos.price.hour
               const unit = mesos.price.unit
               return (
-                <div className={this.state.provider === provider ? 'respriceitem respriceitem_inverted' : 'respriceitem respriceitem_inverted'} key={i}>
+                <div className={this.state.provider === provider ? 'respriceitem respriceitem_inverted' : 'respriceitem'} key={i}>
                   {provider === 'google' && <><img src={google} alt='' style={{ width: 45, height: 45 }} /><br /></>}
                   {provider === 'aws' && <><img src={aws} alt='' style={{ width: 60, height: 40, marginTop: 10, marginRight: 10 }} /><br /></>}
                   {provider === 'ovh' && <><img src={ovh} alt='' style={{ width: 70, height: 50 }} /><br /></>}
