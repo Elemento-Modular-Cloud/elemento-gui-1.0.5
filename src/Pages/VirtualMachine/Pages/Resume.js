@@ -22,7 +22,7 @@ class Resume extends Component {
       compactName: '',
       loading: false,
       allocate: null,
-      provider: null
+      provider: 'elemento'
     }
   }
 
@@ -89,6 +89,7 @@ class Resume extends Component {
   }
 
   render () {
+    const { hideButtons, hideProviders, hideBottomBar } = this.props
     const { advancedSetup: x, compactName, loading, allocate } = this.state
 
     if (!x) { return (<p>Error</p>) }
@@ -115,7 +116,7 @@ class Resume extends Component {
               <span className='resitemtitle'>Overprovision</span><span className='resitemvalue'>{x.overprovision}</span>
             </div>
             <div className='resitembox'>
-              <span className='resitemtitle'>Frequency</span><span className='resitemvalue'>{x.cpuFrequency} GHz</span>
+              <span className='resitemtitle'>Minimum Frequency</span><span className='resitemvalue'>{x.cpuFrequency || 0} GHz</span>
             </div>
             <div className='resitembox'>
               <span className='resitemtitle'>Architectures</span><span className='resitemvalue'>{x.archsList && x.archsList.lenght > 0 ? x.archsList.map(arch => arch.value).join(', ') : 'None'}</span>
@@ -144,7 +145,7 @@ class Resume extends Component {
           </div>
         </div>
 
-        <div className='resprices'>
+        <div className='resprices' style={{ display: hideProviders ? 'none' : 'block' }}>
           <div className='respriceitem'>
             <><AtomOS style={{ width: 60, height: 60, position: 'absolute', top: 10, right: 10 }} /><br /></>
             <span style={{ fontWeight: 'bold' }}>On Premises</span><br /><br />
@@ -222,8 +223,8 @@ class Resume extends Component {
           }
         </div>
 
-        <div className='resbuttons'>
-          {!loading && !this.props.hideButtons &&
+        <div className='advtools' style={{ display: hideBottomBar ? 'none' : 'block' }}>
+          {!loading && !hideButtons &&
             <button
               className='advprevious'
               onClick={async () => {
@@ -232,25 +233,28 @@ class Resume extends Component {
             >
               Previous
             </button>}
-          <button
-            className='advprevious'
-            onClick={() => {
-              if (allocate && allocate.mesos && allocate.mesos.length > 0) {
-                let lowestProvider = allocate.mesos[0]
+          {
+            !loading &&
+              <button
+                className='advprevious'
+                onClick={() => {
+                  if (allocate && allocate.mesos && allocate.mesos.length > 0) {
+                    let lowestProvider = allocate.mesos[0]
 
-                allocate.mesos.forEach(provider => {
-                  if (provider.price.month < lowestProvider.price.month) {
-                    lowestProvider = provider
+                    allocate.mesos.forEach(provider => {
+                      if (provider.price.month < lowestProvider.price.month) {
+                        lowestProvider = provider
+                      }
+                    })
+                    this.setState({ provider: lowestProvider.provider })
                   }
-                })
-                this.setState({ provider: lowestProvider.provider })
-              }
-            }}
-            style={{ marginRight: 10 }}
-          >
-            Highlight the best ✓
-          </button>
-          {!loading && !this.props.hideButtons &&
+                }}
+                style={{ marginRight: 10 }}
+              >
+                Highlight the best ✓
+              </button>
+          }
+          {!loading && !hideButtons &&
             <button
               className='btnregister'
               onClick={async () => {
@@ -261,8 +265,13 @@ class Resume extends Component {
             >
               Register
             </button>}
-          {loading && <Loader />}
         </div>
+        {
+          loading &&
+            <div style={{ position: 'absolute', bottom: 30, right: 50 }}>
+              <Loader style={{ height: 90, marginBottom: 10 }} />
+            </div>
+        }
       </div>
     )
   }

@@ -98,6 +98,11 @@
   justify-content: center;
   margin-left: 20px;
 }
+.advprevious:hover {
+  border: solid 1px white;
+  background-color: #F28E00;
+  color: white;
+}
 .advdots {
   width: 60%;
   height: 20px;

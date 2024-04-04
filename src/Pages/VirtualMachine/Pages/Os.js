@@ -11,14 +11,17 @@ class Os extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      os: ''
+      os: 'linux',
+      flavour: 'ubuntu'
     }
   }
 
   async componentDidMount () {
     const { advancedSetup } = this.global
-    const os = advancedSetup.os || ''
-    this.setState({ os })
+    const os = advancedSetup.os || 'linux'
+    const flavour = advancedSetup.flavour || 'ubuntu'
+    this.setState({ os, flavour })
+    await this.updateState(os, flavour)
   }
 
   async updateState (os, flavour) {
@@ -37,7 +40,7 @@ class Os extends Component {
   }
 
   render () {
-    const { os } = this.state
+    const { os, flavour } = this.state
     return (
       <>
         <span style={{ marginBottom: 50, fontSize: 25 }}>OS Setup</span>
@@ -71,6 +74,7 @@ class Os extends Component {
             <>
               <span style={{ marginBottom: 10, fontWeight: 'bold' }}>OS Flavour</span>
               <CustomSelect
+                value={flavour}
                 options={iso.filter(j => j.os_family === os).map(i => i.os_flavour)}
                 onChange={async (event, flavour) => {
                   if (flavour) {
