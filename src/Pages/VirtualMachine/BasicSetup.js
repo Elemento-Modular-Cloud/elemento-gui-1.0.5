@@ -75,8 +75,8 @@ class BasicSetup extends Component {
       storagesSelected
     } = this.state
 
-    if (!name || name === '') {
-      swal('Info', 'Please insert a VM name before to continue', 'info', {
+    if (!name || name === '' || !/^[a-zA-Z0-9-]*$/.test(name) || name.length > 15) {
+      swal('Info', 'Please check the VM name before to continue', 'info', {
         buttons: false,
         timer: 3000
       }).then(() => {
@@ -123,7 +123,7 @@ class BasicSetup extends Component {
       reqECC,
       misc: {
         os_family: osFamily,
-        os_flavour: osFamily === 'linux' ? 'pop' : 'windows'
+        os_flavour: osFamily === 'linux' ? 'ubuntu' : 'windows'
       },
       pci: []
     })
@@ -142,7 +142,7 @@ class BasicSetup extends Component {
         reqECC,
         misc: {
           os_family: osFamily,
-          os_flavour: osFamily === 'linux' ? 'pop' : 'windows'
+          os_flavour: osFamily === 'linux' ? 'ubuntu' : 'windows'
         },
         pci: [],
         volumes: volumeIds
@@ -214,6 +214,7 @@ class BasicSetup extends Component {
                 <div className='basmachine'>
                   <span>Virtual machine name:</span>
                   <input type='text' onChange={e => this.setState({ name: e.target.value })} />
+                  <p style={{ fontSize: 12 }}>Use only letters, number,- (dash). Max lenght 15 chars.</p>
                 </div>
 
                 <div className='basmachine'>
@@ -249,10 +250,10 @@ class BasicSetup extends Component {
                 <span className='bascaption'>Storage Selection</span>
                 <div style={{ display: 'flex', flexDirection: 'row' }}>
                   <CustomSelect
-                    options={storages ? storages.map(s => s.name) : []}
+                    options={storages ? storages.map(s => s.private ? `👤 ${s.name}` : `🌍 ${s.name}`) : []}
                     onChange={(event, storageSelected) => {
                       if (storageSelected) {
-                        this.setState({ storageSelected })
+                        this.setState({ storageSelected: storageSelected.substring(3, storageSelected.length) })
                       }
                     }}
                   />

@@ -28,9 +28,9 @@ class Cpu extends Component {
     const { advancedSetup } = this.global
     const cores = advancedSetup.cores || 1
     const overprovision = advancedSetup.overprovision || 1
-    const archsList = advancedSetup.archsList || []
+    const archsList = advancedSetup.archsList || [{ value: 'X86_64', checked: true }]
     const flags = advancedSetup.flags || []
-    const cpuFrequency = advancedSetup.cpuFrequency || []
+    const cpuFrequency = advancedSetup.cpuFrequency || '0.5'
 
     const coresIndexes = coresMarks.filter(x => x.scaledValue === cores)
     const coresIndex = coresIndexes.length > 0 ? coresIndexes[0].value : 0

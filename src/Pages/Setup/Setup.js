@@ -11,7 +11,7 @@ class Setup extends Component {
     super(props)
     this.state = {
       chunk: 0,
-      downloaded: true,
+      downloaded: false,
       installed: false,
       loading: false,
       docker: false

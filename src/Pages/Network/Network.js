@@ -3,7 +3,8 @@ import Modal from 'react-modal'
 import { Api } from '../../Services'
 import { Config } from '../../Global'
 import { Back, Loader, Sidebar } from '../../Components'
-import { ReactComponent as Arrow } from '../../Assets/utils/arrow.svg'
+import { ReactComponent as CheckGreen } from '../../Assets/utils/checkgreen.svg'
+import { ReactComponent as CheckRed } from '../../Assets/utils/checkred.svg'
 import './Network.css'
 import swal from 'sweetalert'
 
@@ -25,12 +26,37 @@ class Network extends Component {
 
   async getNetworkList () {
     this.setState({ loading: true })
-    Api.createClient(Config.API_URL_NETWORK)
-    const res = await Api.post('/list', {})
+    // Api.createClient(Config.API_URL_NETWORK)
+    // const res = await Api.post('/list', {})
+    // if (res.ok) {
+    //   this.setState({ networks: res.data })
+    // }
 
-    if (res.ok) {
-      this.setState({ networks: res.data })
-    }
+    this.setState({
+      networks: [
+        {
+          ip: '10.0.0.42',
+          id: 1,
+          quantity: 10,
+          speed: '1Gbits',
+          status: true
+        },
+        {
+          ip: '99.83.190.102',
+          id: 2,
+          quantity: 2,
+          speed: '2.5Gbits',
+          status: true
+        },
+        {
+          ip: '75.2.70.75',
+          id: 3,
+          quantity: 2,
+          speed: '2.5Gbits',
+          status: false
+        }
+      ]
+    })
     this.setState({ loading: false })
   }
 
@@ -63,7 +89,7 @@ class Network extends Component {
     return (
       <div className='netpage'>
         <Sidebar selected='network' />
-        <div className='netbody'>
+        <div className='lbody netbody'>
           <hr />
 
           <div className='netheader'>
@@ -73,56 +99,47 @@ class Network extends Component {
 
           {loading && <Loader />}
 
-          {
-            !loading &&
-              <>
-                <div className='netbtnnew' onClick={() => this.setState({ showModal: true })}>
-                  <div className='netbtncontainer'>
-                    <span>CREATE NEW NETWORK</span>
-                    <Arrow />
-                  </div>
-                </div>
+          {/* <div className='netbtnnew' onClick={() => this.setState({ showModal: true })}>
+            <div className='netbtncontainer'>
+              <span>CREATE NEW NETWORK</span>
+              <Arrow />
+            </div>
+          </div> */}
 
-                <div className='nettables'>
-                  <table className='lictable'>
-                    <thead className='lictablehead'>
-                      <tr>
-                        <td>Creator Id</td>
-                        <td>Network Id</td>
-                        <td>Name</td>
-                        <td>Ports</td>
-                        <td>Hostname</td>
-                        <td>Overprovision</td>
-                        <td>Private</td>
-                        <td>Speed</td>
+          <div className='nettables'>
+            <table className='lictable'>
+              <thead className='lictablehead'>
+                <tr>
+                  <td>IPv4</td>
+                  <td>VLAN</td>
+                  <td>No.</td>
+                  <td>Bandwidth</td>
+                  <td>Public</td>
+                </tr>
+              </thead>
+              <tbody className='lictablebody'>
+                {
+                  networks && networks.length > 0 && networks.map((network, i) => {
+                    return (
+                      <tr key={i}>
+                        <td>{network.ip}</td>
+                        <td>{network.id}</td>
+                        <td>{network.quantity}</td>
+                        <td>{network.speed}</td>
+                        <td>{network.status ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
                       </tr>
-                    </thead>
-                    <tbody className='lictablebody'>
-                      {
-                        networks && networks.length > 0 && networks.map((network, i) => {
-                          return (
-                            <tr key={i}>
-                              <td>{network.creatorID}</td>
-                              <td>{network.network_id}</td>
-                              <td>{network.name}</td>
-                              <td>{network.hostname}</td>
-                              <td>{network.overprovision}</td>
-                              <td>{network.private}</td>
-                              <td>{network.speed}</td>
-                            </tr>
-                          )
-                        })
-                      }
-                    </tbody>
-                  </table>
-                </div>
-              </>
-          }
+                    )
+                  })
+                }
+              </tbody>
+            </table>
+          </div>
 
           <Modal
             isOpen={showModal}
             style={customStyle}
             className='netmodal'
+            ariaHideApp={false}
             onRequestClose={() => this.setState({ showModal: false })}
           >
             <h2>New network</h2>

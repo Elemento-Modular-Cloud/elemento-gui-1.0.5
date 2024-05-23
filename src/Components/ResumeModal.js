@@ -16,9 +16,15 @@ const ResumeModal = () => {
         isOpen={modal}
         style={customStyle}
         className='netmodal'
+        ariaHideApp={false}
         onRequestClose={() => setModal(!modal)}
       >
-        <Resume hideButtons />
+        <span style={{ fontSize: 22, fontWeight: 'bold' }}>Create new Virtual Machine - Summary</span>
+        <Resume
+          hideButtons
+          hideProviders
+          hideBottomBar
+        />
       </Modal>
     </div>
   )
@@ -27,8 +33,8 @@ const ResumeModal = () => {
 const customStyle = {
   content: {
     minWidth: 550,
-    height: 455,
-    paddingTop: 0,
+    height: 400,
+    padding: 20,
     top: '50%',
     left: '50%',
     right: 'auto',

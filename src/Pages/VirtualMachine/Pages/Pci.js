@@ -23,25 +23,42 @@ class Pci extends Component {
     const pci = advancedSetup.pci || []
 
     this.setState({ pci })
-    await this.updateState([])
+    await this.updateState(pci)
+  }
+
+  sortPci (pci) {
+    if (pci && pci.length > 0) {
+      return pci.sort((a, b) => a.vendorId.localeCompare(b.vendorId) || a.modelId.localeCompare(b.modelId))
+    }
+    return []
   }
 
   async addPci (modelId) {
     try {
-      const { vendorId, pci } = this.state // modelId
-      if (pci.filter(p => p.modelId === modelId).length > 0) { return }
+      let added = {}
 
-      const pcis = [
-        ...pci,
-        {
+      const { vendorId, pci } = this.state // modelId
+      const found = pci.filter(p => p.modelId === modelId)
+      if (found.length > 0) {
+        added = {
+          ...found[0],
+          quantity: found[0].quantity + 1
+        }
+      } else {
+        const vendor = vendors[Object.keys(vendors).filter(item => item === vendorId)[0]]
+        const model = models[Object.keys(models).filter(item => item === vendorId)].filter(item => item[1] === modelId)[0][0]
+        added = {
           vendorId,
-          vendor: vendors[Object.keys(vendors).filter(item => item === vendorId)[0]],
+          vendor,
           modelId,
-          model: models[Object.keys(models).filter(item => item === vendorId)].filter(item => item[1] === modelId)[0][0],
+          model,
           quantity: 1
         }
-      ]
-      this.setState({ pci: pcis })
+      }
+
+      const pcis = [...pci.filter(p => p.modelId !== modelId), added]
+
+      this.setState({ pci: this.sortPci(pcis) })
       await this.updateState(pcis)
     } catch (error) {
       swal('Error', 'Error during model selection, please select it again', 'error', {
@@ -54,7 +71,7 @@ class Pci extends Component {
   async removePci (modelId) {
     const { pci } = this.state
     const pcis = pci.filter(item => item.modelId !== modelId)
-    this.setState({ pci: pcis })
+    this.setState({ pci: this.sortPci(pcis) })
     await this.updateState(pcis)
   }
 
@@ -69,6 +86,49 @@ class Pci extends Component {
         pci
       }
     }, persistState)
+  }
+
+  async decreaseQuantity (vendorId, modelId) {
+    const { pci } = this.state
+    let updated = []
+
+    const selected = pci.filter(p => p.vendorId === vendorId && p.modelId === modelId)[0]
+    const others = pci.filter(p => p.vendorId !== vendorId || p.modelId !== modelId)
+
+    if (selected.quantity > 1) {
+      updated = [
+        ...others,
+        {
+          ...selected,
+          quantity: selected.quantity - 1
+        }
+      ]
+    } else {
+      await this.removePci(modelId)
+      updated = others
+    }
+    updated = this.sortPci(updated)
+
+    await this.updateState(updated)
+    this.setState({ pci: updated })
+  }
+
+  async increaseQuantity (vendorId, modelId) {
+    const { pci } = this.state
+
+    const selected = pci.filter(p => p.vendorId === vendorId && p.modelId === modelId)[0]
+    const others = pci.filter(p => p.vendorId !== vendorId || p.modelId !== modelId)
+    let updated = [
+      ...others,
+      {
+        ...selected,
+        quantity: selected.quantity + 1
+      }
+    ]
+    updated = this.sortPci(updated)
+
+    await this.updateState(updated)
+    this.setState({ pci: updated })
   }
 
   render () {
@@ -121,6 +181,7 @@ class Pci extends Component {
                   <td>Vedor</td>
                   <td>Model ID</td>
                   <td>Model</td>
+                  <td>Quantity</td>
                   <td>Remove</td>
                 </tr>
               </thead>
@@ -133,6 +194,23 @@ class Pci extends Component {
                         <td>{item.vendor}</td>
                         <td>{item.modelId}</td>
                         <td>{item.model}</td>
+                        <td>
+                          <div style={{ display: 'flex', flexDirection: 'row' }}>
+                            <div
+                              onClick={() => this.decreaseQuantity(item.vendorId, item.modelId)}
+                              style={{ backgroundColor: 'lightgray', width: 20, height: 20, borderRadius: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: 10, cursor: 'pointer' }}
+                            >
+                              -
+                            </div>
+                            {item.quantity}
+                            <div
+                              onClick={() => this.increaseQuantity(item.vendorId, item.modelId)}
+                              style={{ backgroundColor: 'lightgray', width: 20, height: 20, borderRadius: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: 10, cursor: 'pointer' }}
+                            >
+                              +
+                            </div>
+                          </div>
+                        </td>
                         <td>
                           <button className='bn632-hover bn28' onClick={async () => await this.removePci(item.modelId)}>Remove</button>
                         </td>

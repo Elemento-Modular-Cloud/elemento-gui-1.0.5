@@ -9,6 +9,7 @@
   align-items: center;
   cursor: pointer;
   margin-right: 30px;
+  position: relative;
 }
 .resumebtn svg {
   width: 15px;

@@ -38,6 +38,11 @@ app.on('ready', () => {
     shell.openExternal(url)
   })
 
+  ipcMain.on('save-licence', (event, licence) => {
+    const filepath = path.join(os.homedir(), 'Downloads', 'atomos.license')
+    fs.writeFileSync(filepath, licence)
+  })
+
   ipcMain.on('download-daemons', () => {
     let url
     let filepath

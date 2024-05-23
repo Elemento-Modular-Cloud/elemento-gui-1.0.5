@@ -1,12 +1,25 @@
 import React, { Component } from 'react'
+import swal from 'sweetalert'
+import Modal from 'react-modal'
 import { Api } from '../../Services'
 import { Config, Utils } from '../../Global'
 import './css/VirtualMachineList.css'
 import { Sidebar, Navigate, Back, Daemons, Loader } from '../../Components'
 import { ReactComponent as Arrow } from '../../Assets/utils/arrow.svg'
-import swal from 'sweetalert'
 import { ReactComponent as CheckGreen } from '../../Assets/utils/checkgreen.svg'
 import { ReactComponent as CheckRed } from '../../Assets/utils/checkred.svg'
+import { ReactComponent as AtomOS } from '../../Assets/atomos.svg'
+import google from '../../Assets/google.png'
+import ovh from '../../Assets/ovh.png'
+import upcloud from '../../Assets/upcloud.png'
+import aruba from '../../Assets/aruba.png'
+import aws from '../../Assets/aws.png'
+import linode from '../../Assets/linode.png'
+import azure from '../../Assets/azure.png'
+import ssh from '../../Assets/utils/ssh.png'
+import vnc from '../../Assets/utils/vnc.png'
+import rdp from '../../Assets/utils/rdp.png'
+import close from '../../Assets/utils/close.png'
 
 class VirtualMachineList extends Component {
   constructor (props) {
@@ -14,7 +27,12 @@ class VirtualMachineList extends Component {
     this.state = {
       templates: [],
       loading: false,
-      toBeDeleted: null
+      toBeDeleted: null,
+      smartViewerModal: false,
+      credentials: null,
+      viewerURL: null,
+      username: '',
+      password: ''
     }
   }
 
@@ -95,8 +113,27 @@ class VirtualMachineList extends Component {
     return userLocalDate
   }
 
+  async openSSHViewer () {
+    const { host, username, password } = this.state
+    this.setState({ credentials: null, smartViewerModal: true, viewerURL: `http://localhost:8000?host=${host}&username=${username}&password=${password}` })
+  }
+
+  async openVNCViewer () {
+    const { host, username, password } = this.state
+    this.setState({ credentials: null, smartViewerModal: true, viewerURL: `http://localhost:10000?host=${host}&username=${username}&password=${password}` })
+  }
+
+  async openRDPViewer () {
+    const { host, username, password } = this.state
+    this.setState({ credentials: null, smartViewerModal: true, viewerURL: `http://localhost:9000?host=${host}&username=${username}&password=${password}` })
+  }
+
+  async openExternalLink () {
+    window.require('electron').ipcRenderer.send('open-external-link', 'https://github.com/Elemento-Modular-Cloud/elemento-smart-tools/releases')
+  }
+
   render () {
-    const { vms, loading, toBeDeleted } = this.state
+    const { vms, loading, toBeDeleted, smartViewerModal, viewerURL, credentials, username, password } = this.state
 
     return (
       <div className='vmlpage'>
@@ -137,7 +174,7 @@ class VirtualMachineList extends Component {
                   {/* <td>OS Flavour</td> */}
                   <td>Date</td>
                   <td>Network</td>
-                  <td>SSH</td>
+                  <td>Viewer</td>
                   <td>Delete</td>
                 </tr>
               </thead>
@@ -152,9 +189,17 @@ class VirtualMachineList extends Component {
 
                       return (
                         <tr key={i} style={{ backgroundColor: toBeDeleted === vm.uniqueID ? '#898C8A99' : '' }}>
-                          <td>
+                          <td style={{ position: 'relative', minWidth: 150 }}>
                             <span style={{ fontWeight: 'bold' }}>{detail.vm_name}</span><br />
                             <span style={{ fontStyle: 'italic', fontSize: 12, display: 'block', paddingTop: 8 }}>{uniqueID}</span>
+                            {detail.mesos && detail.mesos.provider === 'GOOGLE' && <img src={google} alt='' style={{ width: 25, height: 25, position: 'absolute', top: 5, right: 5 }} />}
+                            {detail.mesos && detail.mesos.provider === 'OVH' && <img src={ovh} alt='' style={{ width: 45, height: 45, position: 'absolute', top: 5, right: 5 }} />}
+                            {detail.mesos && detail.mesos.provider === 'UPCLOUD' && <img src={upcloud} alt='' style={{ width: 45, height: 45, position: 'absolute', top: 5, right: 5 }} />}
+                            {detail.mesos && detail.mesos.provider === 'ARUBA' && <img src={aruba} alt='' style={{ width: 45, height: 45, position: 'absolute', top: 5, right: 5 }} />}
+                            {detail.mesos && detail.mesos.provider === 'AWS' && <img src={aws} alt='' style={{ width: 45, height: 45, position: 'absolute', top: 5, right: 5 }} />}
+                            {detail.mesos && detail.mesos.provider === 'LINODE' && <img src={linode} alt='' style={{ width: 45, height: 45, position: 'absolute', top: 5, right: 5 }} />}
+                            {detail.mesos && detail.mesos.provider === 'AZURE' && <img src={azure} alt='' style={{ width: 45, height: 45, position: 'absolute', top: 5, right: 5 }} />}
+                            {(!detail.mesos || !detail.mesos.provider) && <AtomOS style={{ width: 35, height: 35, position: 'absolute', top: 5, right: 0 }} />}
                           </td>
                           <td style={{ minWidth: 180 }}>
                             <div className='inlineitem'><span style={{ fontSize: 14, fontStyle: 'italic' }}>Architecture</span><span>{detail.arch}</span></div>
@@ -177,7 +222,13 @@ class VirtualMachineList extends Component {
                           <td>{creationDate}</td>
                           <td style={{ minWidth: 100 }}>{detail.network_config?.ipv4}</td>
                           {/* <td><button className='bn632-hover bn22' onClick={async () => !toBeDeleted && window.open(detail.viewer, '_blank')}>Viewer</button></td> */}
-                          <td style={{ minWidth: 100 }}>{detail.network_config?.ipv4 ? `ssh ${detail.network_config?.ipv4}` : ''}</td>
+                          <td style={{ minWidth: 100 }}>
+                            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                              <img src={ssh} alt='' style={{ width: 25 }} onClick={() => this.setState({ host: detail.network_config?.ipv4, credentials: 'ssh' })} />
+                              <img src={vnc} alt='' style={{ width: 25 }} onClick={() => this.setState({ host: detail.network_config?.ipv4, credentials: 'vnc' })} />
+                              <img src={rdp} alt='' style={{ width: 25 }} onClick={() => this.setState({ host: detail.network_config?.ipv4, credentials: 'rdp' })} />
+                            </div>
+                          </td>
                           <td><button className='bn632-hover bn28' onClick={async () => !toBeDeleted && await this.deleteVirtualMachine(uniqueID)}>Delete</button></td>
                         </tr>
                       )
@@ -188,6 +239,56 @@ class VirtualMachineList extends Component {
                 }
               </tbody>
             </table>
+
+            <Modal
+              isOpen={smartViewerModal}
+              style={customStyle}
+              className='netmodal'
+              ariaHideApp={false}
+              onRequestClose={() => this.setState({ smartViewerModal: !smartViewerModal })}
+            >
+              <div style={{ width: window.innerWidth - 10, position: 'relative', top: 10, display: 'flex', justifyContent: 'flex-end' }} onClick={() => this.setState({ smartViewerModal: !smartViewerModal })}>
+                <img src={close} alt='' style={{ width: 40 }} />
+              </div>
+              <iframe title='SSH Viewer' src={viewerURL} style={{ width: window.innerWidth, height: window.innerHeight, marginTop: -35 }} />
+            </Modal>
+
+            <Modal
+              isOpen={credentials}
+              style={customStyle}
+              className='netmodal'
+              ariaHideApp={false}
+              onRequestClose={() => this.setState({ credentials: !credentials, username: null, password: null })}
+            >
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <span style={{ fontWeight: 'bold', color: '#f28e00' }}>Attention</span>
+                <span style={{ width: 250, marginTop: 8, marginBottom: 10, fontSize: 13 }}>To ensure the {credentials} remote connection can be opened, you must run elemento-remote-tools beforehand.</span>
+                <p className='loginregister' style={{ textAlign: 'center' }} onClick={() => this.openExternalLink()}>Download elemento-remote-tools here!</p>
+              </div>
+
+              <div className='stomodalinput'>
+                <span>Username</span>
+                <input type='text' value={username} onChange={e => this.setState({ username: e.target.value })} />
+              </div>
+              <div className='stomodalinput'>
+                <span>Password</span>
+                <input type='password' value={password} onChange={e => this.setState({ password: e.target.value })} />
+              </div>
+
+              {
+                username && password &&
+                  <div
+                    className='stobutton'
+                    onClick={async () => {
+                      credentials === 'ssh' && await this.openSSHViewer()
+                      credentials === 'vnc' && await this.openVNCViewer()
+                      credentials === 'rdp' && await this.openRDPViewer()
+                    }}
+                  >
+                    <span>Open Connection</span>
+                  </div>
+              }
+            </Modal>
           </div>
         </div>
 
@@ -195,6 +296,21 @@ class VirtualMachineList extends Component {
       </div>
     )
   }
+}
+
+const customStyle = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    position: 'absolute',
+    zIndex: 999999999999999,
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+    backgroundColor: 'white'
+  },
+  outline: 'none'
 }
 
 export default VirtualMachineList

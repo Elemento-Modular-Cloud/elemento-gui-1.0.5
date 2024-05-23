@@ -10,7 +10,7 @@ class Cpu extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      size: 0,
+      size: '250MB',
       ecc: false,
       value: 0
     }
@@ -18,13 +18,14 @@ class Cpu extends Component {
 
   async componentDidMount () {
     const { advancedSetup } = this.global
-    const size = advancedSetup.size || marks[0].label
+    const size = advancedSetup.size || marks[0].label || this.state.size
     const ecc = advancedSetup.ecc || 0
     this.setState({
       size,
       ecc,
       value: marks.filter(x => x.label === size)[0].value
     })
+    await this.updateState(size, ecc)
   }
 
   async updateState (size, ecc) {
@@ -73,7 +74,7 @@ class Cpu extends Component {
               this.updateState(size, e.target.checked)
             }}
           />
-          <span>Select this to enable ECC (Error-Correcting Code) memory. This particular kind of memory detects and corrects errors in data stored in computer memory to prevent data corruption.</span>
+          <span onClick={() => this.setState({ ecc: !ecc })}>Select this to enable ECC (Error-Correcting Code) memory. This particular kind of memory detects and corrects errors in data stored in computer memory to prevent data corruption.</span>
         </div>
       </div>
     )

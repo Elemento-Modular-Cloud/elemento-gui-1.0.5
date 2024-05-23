@@ -4,7 +4,7 @@ import { Cpu, Memory, Name, Os, Pci, Resume, Storage } from './Pages'
 import { Config } from '../../Global'
 import { getMemories } from '../../Global/Model'
 import './css/AdvancedSetup.css'
-import { Back, Sidebar, WithRouter } from '../../Components'
+import { Back, BillingModal, Sidebar, WithRouter } from '../../Components'
 import swal from 'sweetalert'
 import ResumeModal from '../../Components/ResumeModal'
 
@@ -31,13 +31,21 @@ class AdvancedSetup extends Component {
       },
       allowSMT: false,
       memory: {
-        size: 0,
+        size: '250MB',
         ecc: false
       },
-      os: '',
+      os: {
+        os: 'linux',
+        flavour: 'ubuntu'
+      },
+      pci: {
+        pci: null
+      },
       volumeIds: {
         volumeIds: []
-      }
+      },
+      mesos: null,
+      updated: false
     }
   }
 
@@ -64,8 +72,8 @@ class AdvancedSetup extends Component {
     let next = true
 
     if (page === NAME_PAGE) {
-      if (!/^[a-zA-Z0-9_-]*$/.test(name) || name === '') {
-        swal('Info', 'Please, insert a VM name before to continue', 'info', {
+      if (!/^[a-zA-Z0-9-]*$/.test(name) || name === '' || name.length > 15) {
+        swal('Info', 'Please, check the VM name before to continue', 'info', {
           buttons: false,
           timer: 3000
         })
@@ -103,7 +111,59 @@ class AdvancedSetup extends Component {
     next && this.setState({ page: (page + 1) <= 8 ? (page + 1) : 8 })
   }
 
-  async register () {
+  async updateBilling () {
+    const {
+      name,
+      cpu: {
+        cores: slots,
+        overprovision,
+        cpuFrequency,
+        archsList,
+        flags
+      },
+      allowSMT,
+      memory: {
+        size,
+        ecc: reqECC
+      },
+      os: {
+        os,
+        flavour
+      }
+    } = this.state
+
+    const memories = getMemories()
+    const ramsize = memories.filter(memory => memory.label === size)[0].amount
+    const archs = archsList.map(arch => arch.value)
+
+    const data = {
+      info: {
+        vm_name: name
+      },
+      slots,
+      overprovision,
+      allowSMT,
+      archs,
+      flags,
+      ramsize,
+      reqECC,
+      min_frequency: cpuFrequency,
+      misc: {
+        os_family: os,
+        os_flavour: flavour
+      },
+      pci: [],
+      volumes: []
+    }
+
+    Api.createClient(Config.API_URL_MATCHER)
+    const res = await Api.post('/marketprices', data)
+    if (res.ok) {
+      this.setState({ mesos: res.data.mesos, updated: true })
+    }
+  }
+
+  async register (provider) {
     try {
       const {
         name,
@@ -160,6 +220,7 @@ class AdvancedSetup extends Component {
       })
 
       if (res.ok) {
+        Api.createClient(Config.API_URL_MATCHER)
         const ret = await Api.post('/register', {
           info: {
             vm_name: name
@@ -177,7 +238,8 @@ class AdvancedSetup extends Component {
             os_flavour: flavour
           },
           pci: _pci,
-          volumes
+          volumes,
+          ip_address: provider !== 'elemento' ? `${provider}.mesos.elemento.cloud` : null
         })
 
         if (ret.ok) {
@@ -208,7 +270,7 @@ class AdvancedSetup extends Component {
   }
 
   render () {
-    const { page } = this.state
+    const { page, mesos, updated } = this.state
 
     return (
       <div className='advpage'>
@@ -219,6 +281,15 @@ class AdvancedSetup extends Component {
           <div className='advheader'>
             <span>Create new Virtual Machine</span>
             <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+              {
+                page > 1 && page < 7 &&
+                  <BillingModal
+                    mesos={mesos}
+                    updated={updated}
+                    detail={{ cores: this.state.cpu.cores, overprovision: this.state.cpu.overprovision, ramsize: this.state.memory.size }}
+                    setUpdated={() => this.setState({ updated: false })}
+                  />
+              }
               <ResumeModal />
               <Back page='/newvm' />
             </div>
@@ -228,13 +299,29 @@ class AdvancedSetup extends Component {
 
           <div className='advcenter'>
             {page === NAME_PAGE && <Name setName={name => this.setState({ name })} />}
-            {page === CPU_PAGE && <Cpu setCpu={cpu => this.setState({ cpu })} />}
-            {page === MEMORY_PAGE && <Memory setMemory={memory => this.setState({ memory })} />}
+            {
+              page === CPU_PAGE &&
+                <Cpu
+                  setCpu={async cpu => {
+                    this.setState({ cpu })
+                    await this.updateBilling()
+                  }}
+                />
+            }
+            {
+              page === MEMORY_PAGE &&
+                <Memory
+                  setMemory={async memory => {
+                    this.setState({ memory })
+                    await this.updateBilling()
+                  }}
+                />
+            }
             {page === OS_PAGE && <Os setOs={os => this.setState({ os })} />}
             {page === STORAGE_PAGE && <Storage setVolumeIds={volumeIds => this.setState({ volumeIds })} />}
             {page === PCI_PAGE && <Pci setPci={pci => this.setState({ pci })} />}
             {/* {page === NETWORK_PAGE && <Network />} */}
-            {page === RESUME_PAGE && <Resume register={async () => await this.register()} back={() => this.previous()} />}
+            {page === RESUME_PAGE && <Resume register={async ({ provider }) => await this.register(provider)} back={() => this.previous()} />}
 
             <div className='advtools'>
               {page > 1 && page !== RESUME_PAGE && <button className='advprevious' onClick={() => this.previous()}>Previous</button>}

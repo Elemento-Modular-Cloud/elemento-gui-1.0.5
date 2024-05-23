@@ -26,13 +26,12 @@ function toRGB (s) {
   return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`
 }
 
-function random (min, max) {
-  return Math.floor(Math.random() * (max - min + 1) + min)
-}
+// function random (min, max) {
+//   return Math.floor(Math.random() * (max - min + 1) + min)
+// }
 
 function compactString (s, size) {
-  const hash = md5(s || 'Elemento')
-  return `${hash.charAt(random(0, hash.length))}${hash.charAt(random(0, hash.length))}${hash.charAt(random(0, hash.length))}${hash.charAt(random(0, hash.length))}`
+  return md5(s || 'Elemento').substring(4, 8)
 }
 
 const Utils = {
