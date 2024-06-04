@@ -16,6 +16,8 @@ import aruba from '../../Assets/aruba.png'
 import aws from '../../Assets/aws.png'
 import linode from '../../Assets/linode.png'
 import azure from '../../Assets/azure.png'
+import ionos from '../../Assets/ionos.svg'
+import gigas from '../../Assets/gigas.png'
 import ssh from '../../Assets/utils/ssh.png'
 import vnc from '../../Assets/utils/vnc.png'
 import rdp from '../../Assets/utils/rdp.png'
@@ -184,6 +186,9 @@ class VirtualMachineList extends Component {
                     ? vms.map((vm, i) => {
                       const uniqueID = vm.uniqueID
                       const detail = vm.req_json
+                      console.log(vm.uniqueID)
+                      console.log(vm.uniqueID)
+                      console.log(detail)
 
                       const creationDate = this.getLocalTimezonDate(detail.creation_date)
 
@@ -199,6 +204,8 @@ class VirtualMachineList extends Component {
                             {detail.mesos && detail.mesos.provider === 'AWS' && <img src={aws} alt='' style={{ width: 45, height: 45, position: 'absolute', top: 5, right: 5 }} />}
                             {detail.mesos && detail.mesos.provider === 'LINODE' && <img src={linode} alt='' style={{ width: 45, height: 45, position: 'absolute', top: 5, right: 5 }} />}
                             {detail.mesos && detail.mesos.provider === 'AZURE' && <img src={azure} alt='' style={{ width: 45, height: 45, position: 'absolute', top: 5, right: 5 }} />}
+                            {detail.mesos && detail.mesos.provider === 'IONOS' && <img src={ionos} alt='' style={{ width: 45, height: 45, position: 'absolute', top: 5, right: 5 }} />}
+                            {detail.mesos && detail.mesos.provider === 'GIGAS' && <img src={gigas} alt='' style={{ width: 45, height: 45, position: 'absolute', top: 5, right: 5 }} />}
                             {(!detail.mesos || !detail.mesos.provider) && <AtomOS style={{ width: 35, height: 35, position: 'absolute', top: 5, right: 0 }} />}
                           </td>
                           <td style={{ minWidth: 180 }}>
