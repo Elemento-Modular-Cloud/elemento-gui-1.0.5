@@ -223,7 +223,7 @@ class Resume extends Component {
           }
         </div>
 
-        <div className='advtools' style={{ display: hideBottomBar ? 'none' : 'block' }}>
+        <div className='advtools' style={{ display: hideBottomBar ? 'none' : 'flex' }}>
           {!loading && !hideButtons &&
             <button
               className='advprevious'

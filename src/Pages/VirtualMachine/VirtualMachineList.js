@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, createRef } from 'react'
 import swal from 'sweetalert'
 import Modal from 'react-modal'
 import { Api } from '../../Services'
@@ -22,6 +22,7 @@ import ssh from '../../Assets/utils/ssh.png'
 import vnc from '../../Assets/utils/vnc.png'
 import rdp from '../../Assets/utils/rdp.png'
 import close from '../../Assets/utils/close.png'
+import ansible from '../../Assets/ansible.png'
 
 class VirtualMachineList extends Component {
   constructor (props) {
@@ -40,6 +41,7 @@ class VirtualMachineList extends Component {
 
   async componentDidMount () {
     await this.getStatus()
+    this.fileInputRef = createRef()
   }
 
   async getStatus () {
@@ -82,6 +84,8 @@ class VirtualMachineList extends Component {
   }
 
   getLocalTimezonDate (creationDate) {
+    console.log(creationDate)
+
     // Step 1: Parse the provided date string to a JavaScript Date object
     const dateParts = creationDate.split(/[\s,]+/) // Splitting the date and time parts
     const [month, day, year] = dateParts[0].split('/') // Extracting month, day, year
@@ -134,6 +138,29 @@ class VirtualMachineList extends Component {
     window.require('electron').ipcRenderer.send('open-external-link', 'https://github.com/Elemento-Modular-Cloud/elemento-smart-tools/releases')
   }
 
+  async fileUpload (event, ip) {
+    const file = event.target.files[0]
+    console.log(file)
+
+    Api.createClient(Config.API_URL_MATCHER)
+    const res = await Api.upload('/process_playbook/file', file, ip)
+
+    if (res.ok) {
+      swal('Success', 'Ansible file uploaded succesfully', 'success', {
+        buttons: false,
+        timer: 3000
+      })
+      await this.getStatus()
+    } else {
+      swal('Error', 'Could not upload file to the selected virtual machine', 'error', {
+        buttons: false,
+        timer: 3000
+      }).then(() => {
+        this.setState({ toBeDeleted: null, loading: false })
+      })
+    }
+  }
+
   render () {
     const { vms, loading, toBeDeleted, smartViewerModal, viewerURL, credentials, username, password } = this.state
 
@@ -177,6 +204,7 @@ class VirtualMachineList extends Component {
                   <td>Date</td>
                   <td>Network</td>
                   <td>Viewer</td>
+                  <td>Tools</td>
                   <td>Delete</td>
                 </tr>
               </thead>
@@ -235,6 +263,15 @@ class VirtualMachineList extends Component {
                               <img src={vnc} alt='' style={{ width: 25 }} onClick={() => this.setState({ host: detail.network_config?.ipv4, credentials: 'vnc' })} />
                               <img src={rdp} alt='' style={{ width: 25 }} onClick={() => this.setState({ host: detail.network_config?.ipv4, credentials: 'rdp' })} />
                             </div>
+                          </td>
+                          <td style={{ minWidth: 40 }}>
+                            <img
+                              alt=''
+                              src={ansible}
+                              style={{ width: 25 }}
+                              onClick={() => this.fileInputRef.current.click()}
+                            />
+                            <input type='file' style={{ display: 'none' }} ref={this.fileInputRef} onChange={e => this.fileUpload(e, detail.network_config?.ipv4)} />
                           </td>
                           <td><button className='bn632-hover bn28' onClick={async () => !toBeDeleted && await this.deleteVirtualMachine(uniqueID)}>Delete</button></td>
                         </tr>
