@@ -1,1 +1,1 @@
-/Applications/elemento_client_daemons.app/Contents/MacOS/elemento_client_daemons ; exit;
+/Applications/elemento_client_daemons.app/Contents/MacOS/elemento_client_daemons;
