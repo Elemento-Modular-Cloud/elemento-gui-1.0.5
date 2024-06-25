@@ -79,11 +79,7 @@ Api.upload = async (url, file, ip) => {
     formData.append('file', file)
     formData.append('ip', ip)
 
-    const response = await client.post(url, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    })
+    const response = await client.post(url, formData)
 
     return response
   } catch (err) {

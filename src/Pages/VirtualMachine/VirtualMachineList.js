@@ -23,6 +23,7 @@ import vnc from '../../Assets/utils/vnc.png'
 import rdp from '../../Assets/utils/rdp.png'
 import close from '../../Assets/utils/close.png'
 import ansible from '../../Assets/ansible.png'
+import ansibleLogo from '../../Assets/ansible_logo.png'
 
 class VirtualMachineList extends Component {
   constructor (props) {
@@ -32,10 +33,12 @@ class VirtualMachineList extends Component {
       loading: false,
       toBeDeleted: null,
       smartViewerModal: false,
+      showDragAndDrop: false,
       credentials: null,
       viewerURL: null,
       username: '',
-      password: ''
+      password: '',
+      targetIp: null
     }
   }
 
@@ -138,12 +141,21 @@ class VirtualMachineList extends Component {
     window.require('electron').ipcRenderer.send('open-external-link', 'https://github.com/Elemento-Modular-Cloud/elemento-smart-tools/releases')
   }
 
-  async fileUpload (event, ip) {
-    const file = event.target.files[0]
-    console.log(file)
+  async fileUpload (file) {
+    const { targetIp } = this.state
+    if (!targetIp) {
+      swal('Error', 'Could not retrieve machine target ip.', 'error', {
+        buttons: false,
+        timer: 3000
+      }).then(() => {
+        this.setState({ loading: false })
+        this.setState({ showDragAndDrop: false })
+      })
+      return
+    }
 
     Api.createClient(Config.API_URL_MATCHER)
-    const res = await Api.upload('/process_playbook/file', file, ip)
+    const res = await Api.upload('/process_playbook/file', file, '192.168.3.6')
 
     if (res.ok) {
       swal('Success', 'Ansible file uploaded succesfully', 'success', {
@@ -151,18 +163,21 @@ class VirtualMachineList extends Component {
         timer: 3000
       })
       await this.getStatus()
+      this.setState({ showDragAndDrop: false })
     } else {
       swal('Error', 'Could not upload file to the selected virtual machine', 'error', {
         buttons: false,
         timer: 3000
       }).then(() => {
-        this.setState({ toBeDeleted: null, loading: false })
+        this.setState({ loading: false })
+        this.setState({ showDragAndDrop: false })
       })
     }
   }
 
   render () {
-    const { vms, loading, toBeDeleted, smartViewerModal, viewerURL, credentials, username, password } = this.state
+    const { vms, loading, toBeDeleted, smartViewerModal, viewerURL, credentials, username, password, showDragAndDrop, isDragOver } = this.state
+    const { containerStyle, browseStyle } = styles
 
     return (
       <div className='vmlpage'>
@@ -269,9 +284,8 @@ class VirtualMachineList extends Component {
                               alt=''
                               src={ansible}
                               style={{ width: 25 }}
-                              onClick={() => this.fileInputRef.current.click()}
+                              onClick={() => this.setState({ showDragAndDrop: true, targetIp: detail.network_config?.ipv4 })}
                             />
-                            <input type='file' style={{ display: 'none' }} ref={this.fileInputRef} onChange={e => this.fileUpload(e, detail.network_config?.ipv4)} />
                           </td>
                           <td><button className='bn632-hover bn28' onClick={async () => !toBeDeleted && await this.deleteVirtualMachine(uniqueID)}>Delete</button></td>
                         </tr>
@@ -283,6 +297,49 @@ class VirtualMachineList extends Component {
                 }
               </tbody>
             </table>
+
+            <Modal
+              isOpen={showDragAndDrop}
+              style={customStyle}
+              className='netmodal'
+              ariaHideApp={false}
+              onRequestClose={() => this.setState({ showDragAndDrop: !showDragAndDrop })}
+            >
+              <div
+                style={{ ...containerStyle, backgroundColor: isDragOver ? '#e0e0e0' : '#ffffff' }}
+                onDragEnter={e => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  this.setState({ isDragOver: true })
+                }}
+                onDragLeave={e => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  this.setState({ isDragOver: false })
+                }}
+                onDrop={e => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  this.fileUpload(e.dataTransfer.files[0])
+                }}
+                onDragOver={e => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                }}
+              >
+                <img src={ansibleLogo} alt='Upload' style={{ width: 200, marginTop: 20 }} />
+                <p>Upload your ansible configuration file:</p>
+                <div style={{ textAlign: 'center', marginTop: 20 }}>
+                  <div style={{ marginTop: '10px' }}>
+                    <span>Drag & Drop</span> or <span style={browseStyle} onClick={() => this.fileInputRef.current.click()}>browse</span>
+                    <input type='file' style={{ display: 'none' }} ref={this.fileInputRef} onChange={e => this.fileUpload(e.target.files[0])} />
+                  </div>
+                  <div style={{ fontSize: '12px', marginTop: '10px' }}>
+                    Supports: JPG, JPEG, PNG
+                  </div>
+                </div>
+              </div>
+            </Modal>
 
             <Modal
               isOpen={smartViewerModal}
@@ -339,6 +396,26 @@ class VirtualMachineList extends Component {
         <Daemons />
       </div>
     )
+  }
+}
+
+const styles = {
+  containerStyle: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '400px',
+    height: '300px',
+    border: '2px dashed #cccccc',
+    borderRadius: '10px',
+    backgroundColor: '#ffffff',
+    margin: '0 auto',
+    padding: '20px'
+  },
+  browseStyle: {
+    color: '#007bff',
+    cursor: 'pointer'
   }
 }
 
