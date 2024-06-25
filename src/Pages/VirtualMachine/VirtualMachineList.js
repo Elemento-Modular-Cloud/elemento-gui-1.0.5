@@ -225,15 +225,15 @@ class VirtualMachineList extends Component {
                           <td style={{ position: 'relative', minWidth: 150 }}>
                             <span style={{ fontWeight: 'bold' }}>{detail.vm_name}</span><br />
                             <span style={{ fontStyle: 'italic', fontSize: 12, display: 'block', paddingTop: 8 }}>{uniqueID}</span>
-                            {detail.mesos && detail.mesos.provider === 'GOOGLE' && <img src={google} alt='' style={{ width: 25, height: 25, position: 'absolute', top: 5, right: 5 }} />}
-                            {detail.mesos && detail.mesos.provider === 'OVH' && <img src={ovh} alt='' style={{ width: 45, height: 45, position: 'absolute', top: 5, right: 5 }} />}
-                            {detail.mesos && detail.mesos.provider === 'UPCLOUD' && <img src={upcloud} alt='' style={{ width: 45, height: 45, position: 'absolute', top: 5, right: 5 }} />}
-                            {detail.mesos && detail.mesos.provider === 'ARUBA' && <img src={aruba} alt='' style={{ width: 45, height: 45, position: 'absolute', top: 5, right: 5 }} />}
-                            {detail.mesos && detail.mesos.provider === 'AWS' && <img src={aws} alt='' style={{ width: 45, height: 45, position: 'absolute', top: 5, right: 5 }} />}
-                            {detail.mesos && detail.mesos.provider === 'LINODE' && <img src={linode} alt='' style={{ width: 45, height: 45, position: 'absolute', top: 5, right: 5 }} />}
-                            {detail.mesos && detail.mesos.provider === 'AZURE' && <img src={azure} alt='' style={{ width: 45, height: 45, position: 'absolute', top: 5, right: 5 }} />}
-                            {detail.mesos && detail.mesos.provider === 'IONOS' && <img src={ionos} alt='' style={{ width: 45, height: 45, position: 'absolute', top: 5, right: 5 }} />}
-                            {detail.mesos && detail.mesos.provider === 'GIGAS' && <img src={gigas} alt='' style={{ width: 45, height: 45, position: 'absolute', top: 5, right: 5 }} />}
+                            {detail.mesos && detail.mesos.provider.toLowerCase() === 'google' && <img src={google} alt='' style={{ width: 25, height: 25, position: 'absolute', top: 5, right: 5 }} />}
+                            {detail.mesos && detail.mesos.provider.toLowerCase() === 'ovh' && <img src={ovh} alt='' style={{ width: 45, height: 45, position: 'absolute', top: 5, right: 5 }} />}
+                            {detail.mesos && detail.mesos.provider.toLowerCase() === 'upcloud' && <img src={upcloud} alt='' style={{ width: 45, height: 45, position: 'absolute', top: 5, right: 5 }} />}
+                            {detail.mesos && detail.mesos.provider.toLowerCase() === 'aruba' && <img src={aruba} alt='' style={{ width: 45, height: 45, position: 'absolute', top: 5, right: 5 }} />}
+                            {detail.mesos && detail.mesos.provider.toLowerCase() === 'aws' && <img src={aws} alt='' style={{ width: 45, height: 45, position: 'absolute', top: 5, right: 5 }} />}
+                            {detail.mesos && detail.mesos.provider.toLowerCase() === 'linode' && <img src={linode} alt='' style={{ width: 45, height: 45, position: 'absolute', top: 5, right: 5 }} />}
+                            {detail.mesos && detail.mesos.provider.toLowerCase() === 'azure' && <img src={azure} alt='' style={{ width: 45, height: 45, position: 'absolute', top: 5, right: 5 }} />}
+                            {detail.mesos && detail.mesos.provider.toLowerCase() === 'ionos' && <img src={ionos} alt='' style={{ width: 45, height: 45, position: 'absolute', top: 5, right: 5 }} />}
+                            {detail.mesos && detail.mesos.provider.toLowerCase() === 'gigas' && <img src={gigas} alt='' style={{ width: 45, height: 45, position: 'absolute', top: 5, right: 5 }} />}
                             {(!detail.mesos || !detail.mesos.provider) && <AtomOS style={{ width: 35, height: 35, position: 'absolute', top: 5, right: 0 }} />}
                           </td>
                           <td style={{ minWidth: 180 }}>
