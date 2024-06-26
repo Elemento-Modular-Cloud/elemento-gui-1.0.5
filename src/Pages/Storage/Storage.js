@@ -185,16 +185,16 @@ class Storage extends Component {
 
           <div className='stoselector'>
             <span
-              style={{ color: selector === 'personal' ? '#f28e00' : '#898C8A', textDecorationLine: selector === 'personal' ? 'underline' : 'none' }}
-              onClick={() => this.setState({ selector: 'personal' })}
-            >
-              Personal Volumes
-            </span>
-            <span
               style={{ marginLeft: 20, color: selector === 'public' ? '#f28e00' : '#898C8A', textDecorationLine: selector === 'public' ? 'underline' : 'none' }}
               onClick={() => this.setState({ selector: 'public' })}
             >
               Public Volumes
+            </span>
+            <span
+              style={{ color: selector === 'personal' ? '#f28e00' : '#898C8A', textDecorationLine: selector === 'personal' ? 'underline' : 'none' }}
+              onClick={() => this.setState({ selector: 'personal' })}
+            >
+              Personal Volumes
             </span>
           </div>
 
