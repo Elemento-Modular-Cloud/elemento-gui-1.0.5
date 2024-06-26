@@ -46,13 +46,13 @@ const Sidebar = ({ selected }) => {
         </div>
       </div>
 
-      <div className={selected === 'vms' ? 'sideitemboxselected' : 'sideitembox'} onClick={() => navigate('/vmlist')}>
-        <Pc />
-        <span>Virtual Machines</span>
-      </div>
       <div className={selected === 'storage' ? 'sideitemboxselected' : 'sideitembox'} onClick={() => navigate('/storage')}>
         <Storage />
         <span>Storage</span>
+      </div>
+      <div className={selected === 'vms' ? 'sideitemboxselected' : 'sideitembox'} onClick={() => navigate('/vmlist')}>
+        <Pc />
+        <span>Virtual Machines</span>
       </div>
       <div className={selected === 'network' ? 'sideitemboxselected' : 'sideitembox'} onClick={() => navigate('/network')}>
         <Network />

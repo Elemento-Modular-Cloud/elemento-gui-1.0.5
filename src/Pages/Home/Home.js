@@ -8,7 +8,7 @@ import './Home.css'
 import { ReactComponent as Pc } from '../../Assets/main/pc.svg'
 import { ReactComponent as License } from '../../Assets/main/license.svg'
 import { ReactComponent as Storage } from '../../Assets/main/storage.svg'
-// import { ReactComponent as Network } from '../../Assets/main/network.svg'
+import { ReactComponent as Network } from '../../Assets/main/network.svg'
 import { ReactComponent as Logout } from '../../Assets/utils/logout.svg'
 import { ReactComponent as Help } from '../../Assets/utils/help.svg'
 import swal from 'sweetalert'
@@ -90,9 +90,9 @@ class Home extends Component {
           </div>
           <div className='homebody'>
             <div className='homebuttons'>
-              <Button Icon={Pc} page='/vmlist' name='Virtual Machines' text='Virtual machines management and visualization' />
               <Button Icon={Storage} page='/storage' name='Storage' text='Volumes creation to mount in your virtual machines' />
-              {/* <Button Icon={Network} page='/network' name='Network' text='' /> */}
+              <Button Icon={Pc} page='/vmlist' name='Virtual Machines' text='Virtual machines management and visualization' />
+              <Button Icon={Network} page='/network' name='Network' text='Network Management' />
               <Button Icon={License} page='/licences' name='Licences' text='License management of Elemento Cloud' />
             </div>
 
