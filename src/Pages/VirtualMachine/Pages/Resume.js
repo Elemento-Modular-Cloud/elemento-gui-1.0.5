@@ -145,7 +145,7 @@ class Resume extends Component {
           </div>
         </div>
 
-        <div className='resprices' style={{ display: hideProviders ? 'none' : 'block' }}>
+        <div className='resprices' style={{ display: hideProviders ? 'none' : 'flex' }}>
           <div className='respriceitem'>
             <><AtomOS style={{ width: 60, height: 60, position: 'absolute', top: 10, right: 10 }} /><br /></>
             <span style={{ fontWeight: 'bold' }}>On Premises</span><br /><br />
