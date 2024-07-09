@@ -110,6 +110,7 @@ class BasicSetup extends Component {
     const flags = template.cpu.flags
     const ramsize = template.ram.ramsize
     const reqECC = template.ram.reqECC
+    const pci = template.pci
     const volumeIds = storagesSelected.map(storage => { return { vid: storage.volumeID } })
 
     Api.createClient(Config.API_URL_MATCHER)
@@ -125,7 +126,7 @@ class BasicSetup extends Component {
         os_family: osFamily,
         os_flavour: osFamily === 'linux' ? 'ubuntu' : 'windows'
       },
-      pci: []
+      pci
     })
 
     if (res.ok) {
@@ -144,7 +145,7 @@ class BasicSetup extends Component {
           os_family: osFamily,
           os_flavour: osFamily === 'linux' ? 'ubuntu' : 'windows'
         },
-        pci: [],
+        pci,
         volumes: volumeIds
       })
 
