@@ -233,7 +233,7 @@ class VirtualMachineList extends Component {
                       console.log(vm.uniqueID)
                       console.log(detail)
 
-                      const creationDate = this.getLocalTimezonDate(detail.creation_date)
+                      const creationDate = detail.creation_date ? this.getLocalTimezonDate(detail.creation_date) : ''
 
                       return (
                         <tr key={i} style={{ backgroundColor: toBeDeleted === vm.uniqueID ? '#898C8A99' : '' }}>
