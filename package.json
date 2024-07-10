@@ -50,8 +50,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "lint": "standard --verbose | snazzy",
-    "lint:fix": "standard --fix",
+    "lint": "standard --fix",
     "build": "GENERATE_SOURCEMAP=false react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
