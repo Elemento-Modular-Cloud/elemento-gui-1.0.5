@@ -19,7 +19,8 @@ class Settings extends Component {
       useTCPList: false,
       useDiscovery: false,
       timeout: 0.1,
-      ipv4List: ['']
+      ipv4List: [''],
+      sshKey: ''
     }
   }
 
@@ -28,9 +29,17 @@ class Settings extends Component {
       window.require('electron').ipcRenderer.send('get-settings')
 
       window.require('electron').ipcRenderer.on('settings-data', async (event, arg) => {
-        if (arg.data) {
-          const { useTCPList, useDiscovery, timeout, ipv4List, sshKey } = arg.data
-          this.setState({ useTCPList, useDiscovery, timeout, ipv4List, sshKey })
+        if (arg) {
+          const { useTCPList, useDiscovery, timeout, ipv4List, sshKey } = arg
+          const _ipv4List = ipv4List.map(ip => ip !== '' && ip)
+
+          this.setState({
+            useTCPList: useTCPList || false,
+            useDiscovery: useDiscovery || false,
+            timeout: timeout || 0.1,
+            ipv4List: _ipv4List.length > 0 ? _ipv4List : [''],
+            sshKey: sshKey || ''
+          })
         }
       })
     } catch (error) {
@@ -104,7 +113,7 @@ class Settings extends Component {
                 Save
               </div>
 
-              <Back page='/' refresh={async () => await this.refreshData()} />
+              <Back page='/' />
             </div>
           </div>
 
@@ -115,7 +124,7 @@ class Settings extends Component {
                 <input
                   type='checkbox'
                   checked={useTCPList}
-                  onChange={(e) => this.setState({ seTCPList: e.target.checked })}
+                  onChange={(e) => this.setState({ useTCPList: e.target.checked })}
                 />
               </div>
               <div className='form-group'>
@@ -123,7 +132,7 @@ class Settings extends Component {
                 <input
                   type='checkbox'
                   checked={useDiscovery}
-                  onChange={(e) => this.setState({ seDiscovery: e.target.checked })}
+                  onChange={(e) => this.setState({ useDiscovery: e.target.checked })}
                 />
               </div>
               <div className='form-group'>
