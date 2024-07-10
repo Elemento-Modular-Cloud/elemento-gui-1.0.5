@@ -4,7 +4,7 @@ import { restoreState } from './Services'
 import {
   Home, Licences, Login, Network,
   Storage, BasicSetup, AdvancedSetup, Setup,
-  VirtualMachineList, VirtualMachineNew
+  VirtualMachineList, VirtualMachineNew, Settings
 } from './Pages'
 
 export default class App extends Component {
@@ -28,6 +28,7 @@ export default class App extends Component {
         <Routes>
           <Route path='/' exact element={<Home />} />
           <Route path='/licences' element={<Licences />} />
+          <Route path='/settings' element={<Settings />} />
           <Route path='/network' element={<Network />} />
           <Route path='/storage' element={<Storage />} />
           <Route path='/vmlist' element={<VirtualMachineList />} />
@@ -39,14 +40,6 @@ export default class App extends Component {
     )
   }
 
-  // render () {
-  //   const { loggedIn } = this.state
-  //   return (
-  //     loggedIn
-  //       ? this.renderApp()
-  //       : <Login postLogin={() => this.setState({ loggedIn: true })} />
-  //   )
-  // }
   render () {
     const { setup, loggedIn } = this.state
     return (

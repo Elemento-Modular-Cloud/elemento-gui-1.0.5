@@ -10,6 +10,7 @@ import { ReactComponent as License } from '../Assets/main/license.svg'
 import { ReactComponent as Storage } from '../Assets/main/storage.svg'
 import { ReactComponent as Network } from '../Assets/main/network.svg'
 import { ReactComponent as Logout } from '../Assets/utils/logout.svg'
+import { ReactComponent as Settings } from '../Assets/main/settings.svg'
 import swal from 'sweetalert'
 
 const Sidebar = ({ selected }) => {
@@ -61,6 +62,10 @@ const Sidebar = ({ selected }) => {
       <div className={selected === 'licences' ? 'sideitemboxselected' : 'sideitembox'} onClick={() => navigate('/licences')}>
         <License />
         <span>Licenses</span>
+      </div>
+      <div className={selected === 'settings' ? 'sideitemboxselected' : 'sideitembox'} onClick={() => navigate('/settings')}>
+        <Settings />
+        <span>Settings</span>
       </div>
 
       <div className='sidefooter' onClick={async () => await logout()}>
