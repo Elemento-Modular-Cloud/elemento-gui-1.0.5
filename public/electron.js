@@ -43,6 +43,31 @@ app.on('ready', () => {
     fs.writeFileSync(filepath, licence)
   })
 
+  ipcMain.on('save-settings', (event, payload) => {
+    const filepath = path.join(os.homedir(), '.elemento', 'settings')
+    fs.writeFileSync(filepath, JSON.stringify(payload))
+  })
+
+  ipcMain.on('save-hosts', (event, payload) => {
+    const filepath = path.join(os.homedir(), '.elemento', 'hosts')
+    let ipv4List = ''
+    for (const ip of payload) {
+      ipv4List += ip + '\n'
+    }
+    fs.writeFileSync(filepath, ipv4List)
+  })
+
+  ipcMain.on('get-settings', () => {
+    const settingsPath = path.join(os.homedir(), '.elemento', 'settings')
+    const hostsPath = path.join(os.homedir(), '.elemento', 'hosts')
+
+    const settings = JSON.parse(fs.readFileSync(settingsPath).toString())
+    const hosts = fs.readFileSync(hostsPath).toString()
+    const ipv4List = hosts.split('\n').map(ip => ip)
+
+    mainWindow.webContents.send('settings-data', { ...settings, ipv4List })
+  })
+
   ipcMain.on('download-daemons', () => {
     let url
     let filepath
