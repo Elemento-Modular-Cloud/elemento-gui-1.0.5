@@ -84,7 +84,7 @@ class Licences extends Component {
   async saveLicenceLocally (file) {
     window.require('electron').ipcRenderer.send('save-licence', file)
 
-    swal('Success!', 'The license has beed successfully saved under ~/Downloads folder.', 'success', {
+    swal('Success!', 'The license has been successfully saved under ~/Downloads folder.', 'success', {
       buttons: false,
       timer: 3000
     })
