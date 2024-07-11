@@ -31,7 +31,7 @@ class Settings extends Component {
       window.require('electron').ipcRenderer.on('settings-data', async (event, arg) => {
         if (arg) {
           const { useTCPList, useDiscovery, timeout, ipv4List, sshKey } = arg
-          const _ipv4List = ipv4List.map(ip => ip !== '' && ip)
+          const _ipv4List = ipv4List.filter(Boolean)
 
           this.setState({
             useTCPList: useTCPList || false,
@@ -93,7 +93,7 @@ class Settings extends Component {
   }
 
   render () {
-    const { loading, useTCPList, useDiscovery, timeout, ipv4List } = this.state
+    const { loading, useTCPList, useDiscovery, timeout, ipv4List, sshKey } = this.state
 
     return (
       <div className='licpage'>
@@ -184,7 +184,13 @@ class Settings extends Component {
 
           <div className='filebox'>
             <span>Please add your public SSH key to be sent to the virtual machine during its creation.</span>
-            <textarea className='filearea' rows={20} cols={100} onChange={(e) => this.setState({ sshKey: e.target.value })} />
+            <textarea
+              rows={20}
+              cols={100}
+              className='filearea'
+              value={sshKey}
+              onChange={(e) => this.setState({ sshKey: e.target.value })}
+            />
           </div>
         </div>
 
