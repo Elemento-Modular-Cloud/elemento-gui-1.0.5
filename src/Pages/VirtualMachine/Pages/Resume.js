@@ -296,7 +296,7 @@ class Resume extends Component {
           onRequestClose={() => this.setState({ ipModal: !ipModal })}
         >
           <AtomOS style={{ width: 80, height: 80, marginBottom: 20 }} />
-          <span style={{ fontSize: 16 }}>Please, provide IPv4 address<br />for On Premises server</span>
+          <span style={{ fontSize: 16 }}>Please provide the IPv4 address<br /> for the On-Premises server, if available</span>
           <input
             type='text'
             value={ipv4}
@@ -310,9 +310,9 @@ class Resume extends Component {
             className='btnregister'
             style={{ marginTop: 20 }}
             onClick={async () => {
-              if (validateIPv4(ipv4)) {
-                this.setState({ loading: true })
-                await this.props.register({ provider: this.state.provider })
+              if (ipv4 === '' || validateIPv4(ipv4)) {
+                this.setState({ loading: true, ipModal: !ipModal })
+                await this.props.register({ provider: this.state.provider, ipv4: ipv4 === '' ? null : ipv4 })
                 this.setState({ loading: false })
               } else {
                 swal('Error', 'One or more IPv4 addresses are not in the correct format (eg. 192.168.1.1)', 'error', {
