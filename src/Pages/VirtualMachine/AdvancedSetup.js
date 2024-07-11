@@ -163,7 +163,7 @@ class AdvancedSetup extends Component {
     }
   }
 
-  async register (provider) {
+  async register (provider, ipv4) {
     try {
       const {
         name,
@@ -239,7 +239,7 @@ class AdvancedSetup extends Component {
           },
           pci: _pci,
           volumes,
-          ip_address: provider !== 'elemento' ? `${provider}.mesos.elemento.cloud` : null
+          ip_address: provider !== 'elemento' ? `${provider}.mesos.elemento.cloud` : ipv4
         })
 
         if (ret.ok) {
