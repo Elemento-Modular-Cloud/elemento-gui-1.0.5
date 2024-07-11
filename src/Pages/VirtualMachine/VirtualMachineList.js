@@ -87,8 +87,6 @@ class VirtualMachineList extends Component {
   }
 
   getLocalTimezonDate (creationDate) {
-    console.log(creationDate)
-
     // Step 1: Parse the provided date string to a JavaScript Date object
     const dateParts = creationDate.split(/[\s,]+/) // Splitting the date and time parts
     const [month, day, year] = dateParts[0].split('/') // Extracting month, day, year
@@ -229,10 +227,6 @@ class VirtualMachineList extends Component {
                     ? vms.map((vm, i) => {
                       const uniqueID = vm.uniqueID
                       const detail = vm.req_json
-                      console.log(vm.uniqueID)
-                      console.log(vm.uniqueID)
-                      console.log(detail)
-
                       const creationDate = detail.creation_date ? this.getLocalTimezonDate(detail.creation_date) : ''
 
                       return (
