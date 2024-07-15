@@ -8,6 +8,7 @@ import {
   VirtualMachineNew, VirtualMachineList,
   BasicSetup, AdvancedSetup
 } from './VirtualMachine'
+import Settings from './Settings/Settings'
 
 export {
   Home,
@@ -19,5 +20,6 @@ export {
   VirtualMachineList,
   VirtualMachineNew,
   BasicSetup,
-  AdvancedSetup
+  AdvancedSetup,
+  Settings
 }

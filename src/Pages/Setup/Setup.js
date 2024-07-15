@@ -1,10 +1,10 @@
 import React, { Component } from 'reactn'
 import LinearProgress from '@mui/material/LinearProgress'
-import onde from '../../Assets/onde.svg'
-import logobigwhite from '../../Assets/logobigwhite.svg'
-import { Api, persistState } from '../../Services'
 import './Setup.css'
+import onde from '../../Assets/onde.svg'
+import { Api, persistState } from '../../Services'
 import { Background, Loader } from '../../Components'
+import logobigwhite from '../../Assets/logobigwhite.svg'
 
 class Setup extends Component {
   constructor (props) {
@@ -21,18 +21,30 @@ class Setup extends Component {
   async componentDidMount () {
     this.intervalServices()
 
-    window.require('electron').ipcRenderer.on('download-progress', async (event, arg) => {
-      const { chunk, docker } = arg.data
-      this.setState({ chunk, docker })
+    try {
+      window.require('electron').ipcRenderer.on('download-progress', async (event, arg) => {
+        const { chunk, docker } = arg.data
+        this.setState({ chunk, docker })
 
-      if (chunk === 100) {
-        this.setState({ downloaded: true, loading: false })
-      }
-    })
+        if (chunk === 100) {
+          this.setState({ downloaded: true, loading: false })
+        }
+      })
+    } catch (error) {
+      console.log(error.message)
+    }
   }
 
   async intervalServices () {
+    let proceedToLogin = false
     while (true) {
+      const data = await Api.checkDaemonsAuthentication()
+
+      if (data.authenticated) {
+        proceedToLogin = true
+        break
+      }
+
       const running = await this.checkServices()
       if (running) {
         this.setState({ downloaded: true, loading: false, installed: true })
@@ -40,6 +52,10 @@ class Setup extends Component {
       } else {
         await this.wait(2000)
       }
+    }
+
+    if (proceedToLogin) {
+      await this.continue()
     }
   }
 

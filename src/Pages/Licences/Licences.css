@@ -53,9 +53,6 @@
   flex-direction: column;
   margin-top: 20px;
 }
-.filebox span {
-  margin-left: 10px;
-}
 .filearea {
   border-radius: 10px;
   margin: 10px;

@@ -20,6 +20,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "apisauce": "^2.1.6",
+    "darkreader": "^4.9.87",
     "electron-squirrel-startup": "^1.0.0",
     "jwt-decode": "^3.1.2",
     "md5": "^2.3.0",
@@ -50,8 +51,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "lint": "standard --verbose | snazzy",
-    "lint:fix": "standard --fix",
+    "lint": "standard --fix",
     "build": "GENERATE_SOURCEMAP=false react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
