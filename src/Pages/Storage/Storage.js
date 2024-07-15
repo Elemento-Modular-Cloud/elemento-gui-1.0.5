@@ -188,13 +188,13 @@ class Storage extends Component {
               style={{ marginLeft: 20, color: selector === 'public' ? '#f28e00' : '#898C8A', textDecorationLine: selector === 'public' ? 'underline' : 'none' }}
               onClick={() => this.setState({ selector: 'public' })}
             >
-              Public Volumes
+              Common Volumes
             </span>
             <span
               style={{ color: selector === 'personal' ? '#f28e00' : '#898C8A', textDecorationLine: selector === 'personal' ? 'underline' : 'none' }}
               onClick={() => this.setState({ selector: 'personal' })}
             >
-              Personal Volumes
+              Own Volumes
             </span>
           </div>
 
