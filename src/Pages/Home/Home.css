@@ -48,8 +48,8 @@
   overflow: hidden;
 }
 .btnlogout {
-  width: 100px;
-  height: 30px;
+  width: 140px;
+  height: 40px;
   background-color: #F28E00;
   color: white;
   border-radius: 20px;
@@ -64,8 +64,8 @@
 }
 .btnhelp {
   cursor: pointer;
-  width: 100px;
-  height: 30px;
+  width: 140px;
+  height: 40px;
   background-color: transparent;
   border: solid 1px white;
   color: white;
@@ -78,4 +78,33 @@
 .btnhelp svg {
   width: 15px;
   margin-right: 5px;
+}
+
+.btnsettings {
+  width: 140px;
+  height: 40px;
+  background-color: white;
+  color: #f28e00;
+  border-radius: 20px;
+  position: absolute;
+  font-size: 18px;
+  bottom: 20px;
+  right: 20px;
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.btnsettings:hover {
+  background-color: #f28e00;
+  color: white;
+}
+.btnsettings svg {
+  width: 18px;
+  margin-right: 5px;
+}
+.btnsettings:hover svg path {
+  fill: white !important;
+  stroke: white !important;
 }
