@@ -1,29 +1,26 @@
 import React, { Component } from 'reactn'
+import {
+  enable as enableDarkMode,
+  disable as disableDarkMode,
+  isEnabled as isDarkReaderEnabled
+} from 'darkreader'
 import { Api, clearState, persistState } from '../../Services'
 import { Config } from '../../Global'
-import { Background, Button, Daemons } from '../../Components'
+import { Background, Button, Daemons, Navigate, ToggleSwitch } from '../../Components'
 import onde from '../../Assets/onde.svg'
 import logobigwhite from '../../Assets/logobigwhite.svg'
-import './Home.css'
 import { ReactComponent as Pc } from '../../Assets/main/pc.svg'
 import { ReactComponent as License } from '../../Assets/main/license.svg'
 import { ReactComponent as Storage } from '../../Assets/main/storage.svg'
 // import { ReactComponent as Network } from '../../Assets/main/network.svg'
 import { ReactComponent as Logout } from '../../Assets/utils/logout.svg'
 import { ReactComponent as Help } from '../../Assets/utils/help.svg'
+import { ReactComponent as Settings } from '../../Assets/main/settings.svg'
+import './Home.css'
 import swal from 'sweetalert'
 
 class Home extends Component {
-  async navigate () {
-    await this.setGlobal({}, persistState)
-    this.props.history.push('/calendar')
-  }
-
   async componentDidMount () {
-    await this.checkLoggedIn()
-  }
-
-  async checkLoggedIn () {
     try {
       const { username, password } = this.global
       Api.createClient(Config.API_URL_AUTHENT)
@@ -70,13 +67,41 @@ class Home extends Component {
     window.require('electron').ipcRenderer.send('open-external-link', 'https://github.com/elemento-Modular-Cloud/helpcenter')
   }
 
+  toggleDarkMode () {
+    if (isDarkReaderEnabled()) {
+      disableDarkMode()
+    } else {
+      enableDarkMode({
+        brightness: 100,
+        contrast: 100,
+        sepia: 0,
+        darkSchemeBackgroundColor: '#202020',
+        darkSchemeTextColor: 'lightgray',
+        lightSchemeBackgroundColor: '#dcdad7',
+        lightSchemeTextColor: '#202020'
+      })
+    }
+  }
+
   render () {
     return (
       <Background
         backgroundColor='rgba(30, 30, 30, 1)'
         backgroundImage={onde}
       >
+        <Navigate page='/settings'>
+          <div className='btnsettings'>
+            <Settings />
+            <span>Settings</span>
+          </div>
+        </Navigate>
+
+        <div style={{ position: 'absolute', top: 20, right: 20, width: '100%', height: 40, display: 'flex', justifyContent: 'flex-end' }}>
+          <ToggleSwitch toggle={() => this.toggleDarkMode()} />
+        </div>
+
         <div className='homepage'>
+
           <div className='homeheader'>
             <div
               className='logobigwhite'
@@ -94,6 +119,7 @@ class Home extends Component {
               <Button Icon={Pc} page='/vmlist' name='Virtual Machines' text='Virtual machines management and visualization' />
               {/* <Button Icon={Network} page='/network' name='Network' text='Network Management' /> */}
               <Button Icon={License} page='/licences' name='Licences' text='License management of Elemento Cloud' />
+              {/* <Button Icon={Settings} page='/settings' name='Settings' text='App settings and management' /> */}
             </div>
 
             <div className='homefooter'>
