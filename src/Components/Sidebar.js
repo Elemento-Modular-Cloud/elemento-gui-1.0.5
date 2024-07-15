@@ -7,28 +7,10 @@ import { ReactComponent as Pc } from '../Assets/main/pc.svg'
 import { ReactComponent as License } from '../Assets/main/license.svg'
 import { ReactComponent as Storage } from '../Assets/main/storage.svg'
 import { ReactComponent as Settings } from '../Assets/main/settings.svg'
-// import { ReactComponent as Logout } from '../Assets/utils/logout.svg'
-// import { ReactComponent as Network } from '../Assets/main/network.svg'
 
 const Sidebar = ({ selected }) => {
   const { username } = getGlobal()
   const navigate = useNavigate()
-
-  // const logout = async () => {
-  //   Api.createClient(Config.API_URL_AUTHENT)
-  //   const res = await Api.post('/logout', {})
-
-  //   if (res.ok) {
-  //     await setGlobal({ loggedIn: false }, persistState)
-  //     await clearState()
-  //     window.location.reload()
-  //   } else {
-  //     swal('Error', 'Could not logout from services', 'error', {
-  //       buttons: false,
-  //       timer: 3000
-  //     })
-  //   }
-  // }
 
   return (
     <div className='sidebar'>
@@ -64,13 +46,6 @@ const Sidebar = ({ selected }) => {
         <Settings />
         <span>Settings</span>
       </div>
-
-      {/* <div className='sidefooter' onClick={async () => await logout()}>
-        <div className='sidefooterlogout'>
-          <Logout />
-          <span>Logout</span>
-        </div>
-      </div> */}
     </div>
   )
 }
