@@ -27,6 +27,19 @@ class Login extends Component {
     if (!status) {
       await this.setGlobal({ setup: false }, persistState)
       window.location.reload()
+    } else {
+      const data = await Api.checkDaemonsAuthentication()
+
+      if (data.authenticated) {
+        const { username, password } = this.global
+
+        if (username && password) {
+          this.setState({ username, password })
+          await this.login()
+        } else {
+          this.setState({ username: data.username })
+        }
+      }
     }
   }
 
