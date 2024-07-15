@@ -107,4 +107,21 @@ Api.servicesStatus = async () => {
   }
 }
 
+Api.checkDaemonsAuthentication = async () => {
+  Api.createClient(Config.API_URL_AUTHENT)
+  const res = await client.get('/status')
+
+  if (res.ok && res.data) {
+    const { authenticated, username } = res.data
+    return {
+      authenticated,
+      username
+    }
+  }
+  return {
+    authenticated: null,
+    username: null
+  }
+}
+
 export default Api
