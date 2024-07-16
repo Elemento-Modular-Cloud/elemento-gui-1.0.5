@@ -1,81 +1,30 @@
-# elemento-gui-v2
-Elemento GUI
+# ElectrOS
 
+ElectrOS is the official desktop client application for [Elemento](https://elemento.cloud), designed to enhance your cloud computing experience with seamless integration and advanced features. Built with Electron, it offers a rich, native user interface that bridges the gap between cloud resources and desktop convenience.
 
+## Features
 
-# API endpoints
+- **Seamless Cloud Integration**: Directly manage your Elemento cloud resources without the need for a web browser.
+- **Cross-Platform Support**: Available for Windows, macOS, and Linux.
+- **Advanced Security**: Incorporates the latest security protocols to ensure your data and operations are safe.
+- **Customizable Interface**: Tailor the app to your needs with customizable settings and themes.
+- **Offline Capabilities**: Some features are available offline, providing flexibility in how and where you work.
 
-Authenticator client    ```/api/v1/authenticate```
+## Getting Started
 
----
+To get started with ElectrOS, follow these simple steps:
 
-- [x]   POST /login
-- [x]   POST /logout
-- [x]   POST /license/list
-- [x]   POST /license/arm
-- [x]   POST /license/delete
-- [x]   POST /account/register
+1. **Download the Application**: Visit the [releases page](https://github.com/Elemento-Modular-Cloud/electros/releases) to download the latest version of ElectrOS for your operating system.
+2. **Install**: Open the downloaded file and follow the installation instructions.
+3. **Launch ElectrOS**: Once installed, launch ElectrOS and log in with your Elemento credentials.
 
-Matcher client           ```/api/v1.0/client/vm```
+## Building from Source
 
----
+If you prefer to build ElectrOS from source, ensure you have Node.js and Yarn installed, then follow these steps:
 
-- [x]   POST /canallocate
-- [x]   POST /register
-- [x]   POST /unregister
-- [x]   POST /status
-- [x]   POST /templates
-
-Storage client          ```/api/v1.0/client/volume```
-
----
-
-- [x]   GET  /accessibile
-- [ ]   POST /info
-- [x]   POST /cancreate
-- [x]   POST /create
-- [x]   POST /destroy
-
-Network client          ```/api/v1.0/client/network```
-
----
-
-- [x]   POST /create
-- [ ]   POST /delete
-- [ ]   POST /info
-- [x]   POST /list
-
-
-# Screens
-
-- [ ]   Login
-- [ ]   Register
-- [ ]   Home page
-- [ ]   Intro and tutorial
-- [ ]   User data with logout
-- [ ]   Create storage
-- [ ]   Create VM Basic
-- [ ]   Create VM Advanced
-- [ ]   Create network
-- [ ]   Manage storage
-- [ ]   Manage VM
-- [ ]   Manage Network
-- [ ]   Sysadmin stack
-- [ ]   Sysadmin templates
-- [ ]   Mechanic engines
-- [ ]   Mechanic vaults
-
-### Note
-
-- it will be safer to authenticate the user through the login process sending the password encrypted with a simple hash function to prevent man-in-the-middle attach;
-this is very important if we plan to put this web app on a remote web server and let users access it through internet
-
-________________________
-
-- missing netdevs from register new vm payload
-- allow SMT for advanced mode
-
-
-# TODO
-
-https://github.com/Elemento-Modular-Cloud/elemento-pciid-mapper/blob/master/javascript_vendor_models.json
+```sh
+git clone https://github.com/Elemento-Modular-Cloud/electros.git
+cd electros
+yarn install
+yarn build
+```
