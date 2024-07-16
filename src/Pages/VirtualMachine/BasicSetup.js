@@ -9,6 +9,7 @@ import { ReactComponent as Linux } from '../../Assets/os/linux.svg'
 import { ReactComponent as CheckGreen } from '../../Assets/utils/checkgreen.svg'
 import { ReactComponent as CheckRed } from '../../Assets/utils/checkred.svg'
 import swal from 'sweetalert'
+import iso from '../../Data/iso-templates/iso.json'
 
 class BasicSetup extends Component {
   constructor (props) {
@@ -22,6 +23,7 @@ class BasicSetup extends Component {
       storage: null,
       storageServer: '',
       osFamily: '',
+      flavour: '',
       bootable: false,
       writable: false,
       shareable: false,
@@ -72,6 +74,7 @@ class BasicSetup extends Component {
       name,
       template,
       osFamily,
+      flavour,
       storagesSelected
     } = this.state
 
@@ -110,6 +113,7 @@ class BasicSetup extends Component {
     const flags = template.cpu.flags
     const ramsize = template.ram.ramsize
     const reqECC = template.ram.reqECC
+    const pci = template.pci
     const volumeIds = storagesSelected.map(storage => { return { vid: storage.volumeID } })
 
     Api.createClient(Config.API_URL_MATCHER)
@@ -123,9 +127,9 @@ class BasicSetup extends Component {
       reqECC,
       misc: {
         os_family: osFamily,
-        os_flavour: osFamily === 'linux' ? 'ubuntu' : 'windows'
+        os_flavour: flavour
       },
-      pci: []
+      pci
     })
 
     if (res.ok) {
@@ -142,9 +146,9 @@ class BasicSetup extends Component {
         reqECC,
         misc: {
           os_family: osFamily,
-          os_flavour: osFamily === 'linux' ? 'ubuntu' : 'windows'
+          os_flavour: flavour
         },
-        pci: [],
+        pci,
         volumes: volumeIds
       })
 
@@ -190,9 +194,9 @@ class BasicSetup extends Component {
 
   render () {
     const {
-      loading, templates, template, storages, storageServer,
-      bootable, writable, shareable, visibility, ownership,
-      storage, osFamily, storagesSelected, storageSelected // volumeIds
+      loading, templates, template, storages, storageServer, bootable,
+      writable, shareable, visibility, ownership, storage, osFamily,
+      storagesSelected, storageSelected, flavour
     } = this.state
 
     return (
@@ -244,6 +248,23 @@ class BasicSetup extends Component {
                 >
                   <Windows fill={osFamily === 'windows' ? 'white' : 'black'} />
                 </div>
+
+                {
+                  osFamily && (
+                    <div style={{ display: 'flex', flexDirection: 'column', width: '50%', marginLeft: 20 }}>
+                      <span style={{ marginBottom: 10 }}>OS Flavour</span>
+                      <CustomSelect
+                        value={flavour}
+                        options={iso.filter(j => j.os_family === osFamily).map(i => i.os_flavour)}
+                        onChange={async (event, flavour) => {
+                          if (flavour) {
+                            await this.setState({ flavour })
+                          }
+                        }}
+                      />
+                    </div>
+                  )
+                }
               </div>
 
               <div className='basstorage'>

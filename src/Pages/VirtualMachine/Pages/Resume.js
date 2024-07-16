@@ -1,4 +1,6 @@
 import React, { Component } from 'reactn'
+import Modal from 'react-modal'
+import swal from 'sweetalert'
 import { ReactComponent as CheckGreen } from '../../../Assets/utils/checkgreen.svg'
 import { ReactComponent as CheckRed } from '../../../Assets/utils/checkred.svg'
 import { Config, Utils } from '../../../Global'
@@ -10,9 +12,15 @@ import upcloud from '../../../Assets/upcloud.png'
 import aws from '../../../Assets/aws.png'
 import aruba from '../../../Assets/aruba.png'
 import azure from '../../../Assets/azure.png'
-import '../css/Pages.css'
 import { Api } from '../../../Services'
 import { getMemories } from '../../../Global/Model'
+import '../css/Pages.css'
+
+const ipv4Regex = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/
+
+const validateIPv4 = (ip) => {
+  return ipv4Regex.test(ip)
+}
 
 class Resume extends Component {
   constructor (props) {
@@ -22,7 +30,9 @@ class Resume extends Component {
       compactName: '',
       loading: false,
       allocate: null,
-      provider: 'elemento'
+      provider: 'elemento',
+      ipModal: false,
+      ipv4: ''
     }
   }
 
@@ -90,7 +100,7 @@ class Resume extends Component {
 
   render () {
     const { hideButtons, hideProviders, hideBottomBar } = this.props
-    const { advancedSetup: x, compactName, loading, allocate } = this.state
+    const { advancedSetup: x, compactName, loading, allocate, ipModal, ipv4 } = this.state
 
     if (!x) { return (<p>Error</p>) }
 
@@ -145,7 +155,7 @@ class Resume extends Component {
           </div>
         </div>
 
-        <div className='resprices' style={{ display: hideProviders ? 'none' : 'block' }}>
+        <div className='resprices' style={{ display: hideProviders ? 'none' : 'flex' }}>
           <div className='respriceitem'>
             <><AtomOS style={{ width: 60, height: 60, position: 'absolute', top: 10, right: 10 }} /><br /></>
             <span style={{ fontWeight: 'bold' }}>On Premises</span><br /><br />
@@ -223,7 +233,7 @@ class Resume extends Component {
           }
         </div>
 
-        <div className='advtools' style={{ display: hideBottomBar ? 'none' : 'block' }}>
+        <div className='advtools' style={{ display: hideBottomBar ? 'none' : 'flex' }}>
           {!loading && !hideButtons &&
             <button
               className='advprevious'
@@ -257,10 +267,15 @@ class Resume extends Component {
           {!loading && !hideButtons &&
             <button
               className='btnregister'
+              style={{ marginRight: 20 }}
               onClick={async () => {
-                this.setState({ loading: true })
-                await this.props.register({ provider: this.state.provider })
-                this.setState({ loading: false })
+                if (this.state.provider === 'elemento') {
+                  this.setState({ ipModal: true })
+                } else {
+                  this.setState({ loading: true })
+                  await this.props.register({ provider: this.state.provider, ipv4 })
+                  this.setState({ loading: false })
+                }
               }}
             >
               Register
@@ -272,9 +287,69 @@ class Resume extends Component {
               <Loader style={{ height: 90, marginBottom: 10 }} />
             </div>
         }
+
+        <Modal
+          isOpen={ipModal}
+          style={customStyle}
+          className='netmodal'
+          ariaHideApp={false}
+          onRequestClose={() => this.setState({ ipModal: !ipModal })}
+        >
+          <AtomOS style={{ width: 80, height: 80, marginBottom: 20 }} />
+          <span style={{ fontSize: 16 }}>Please provide the IPv4 address<br /> for the On-Premises server, if available</span>
+          <input
+            type='text'
+            value={ipv4}
+            style={{ width: 200, height: 30, marginTop: 20 }}
+            onChange={(e) => {
+              this.setState({ ipv4: e.target.value })
+            }}
+            placeholder='Enter IPv4 address'
+          />
+          <button
+            className='btnregister'
+            style={{ marginTop: 20 }}
+            onClick={async () => {
+              if (ipv4 === '' || validateIPv4(ipv4)) {
+                this.setState({ loading: true, ipModal: !ipModal })
+                await this.props.register({ provider: this.state.provider, ipv4: ipv4 === '' ? null : ipv4 })
+                this.setState({ loading: false })
+              } else {
+                swal('Error', 'One or more IPv4 addresses are not in the correct format (eg. 192.168.1.1)', 'error', {
+                  buttons: false,
+                  timer: 2500
+                })
+              }
+            }}
+          >
+            Continue
+          </button>
+        </Modal>
       </div>
     )
   }
+}
+
+const customStyle = {
+  content: {
+    width: 230,
+    height: 250,
+    padding: 20,
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    position: 'absolute',
+    zIndex: 99999,
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+    backgroundColor: 'white',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  outline: 'none'
 }
 
 export default Resume

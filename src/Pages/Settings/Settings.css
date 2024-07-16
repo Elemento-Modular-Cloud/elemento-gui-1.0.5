@@ -1,0 +1,102 @@
+.settbody {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.form-container {
+  width: 500px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-group input[type="checkbox"] {
+  width: 25px;
+}
+
+.ipv4-input-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.ipv4-input-group .cls-1 {
+  fill: #c82333 !important;
+}
+
+.ipv4-input-group input {
+  min-width: 180px;
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.add-button,
+.delete-button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  background-color: #f28e00;
+  color: #fff;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.add-button:hover {
+  background-color: #f28e00;
+}
+
+.delete-button {
+  background-color: rgba(20, 20, 20, 0.8);
+}
+
+.delete-button:hover {
+  background-color: #c82333;
+}
+
+.submit-button {
+  display: block;
+  width: 180px;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #f28e00;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.submit-button:hover {
+  background-color: #218838;
+}
+
+.addrlist {
+  display: flex;
+  flex-direction: column;
+}
+
+.settheader {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+.settlateral {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}

@@ -1,7 +1,7 @@
 module.exports = {
   packagerConfig: {
     name: 'ElectrOS',
-    icon: './icons/icon',
+    icon: './public/icon',
     osxSign: {
       identity: 'Developer ID Application: Elemento SRL (9WTDB7G2C7)', // the name of your Developer ID certificate
       optionsForFile: (filePath) => {
@@ -45,7 +45,7 @@ module.exports = {
       name: '@electron-forge/maker-deb',
       config: {
         options: {
-          icon: './icons/icon.png'
+          icon: './public/icon.png'
         }
       }
     },

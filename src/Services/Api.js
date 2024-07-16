@@ -73,13 +73,17 @@ Api.setJWT = jwt => {
   Api.jwt = `Bearer ${jwt}`
 }
 
-Api.upload = async file => {
+Api.upload = async (url, file, ip) => {
   try {
-    const files = new FormData()
-    files.append('image', file)
-    const response = await client.post('/upload', files)
+    const formData = new FormData()
+    formData.append('file', file)
+    formData.append('ip', ip)
+
+    const response = await client.post(url, formData)
+
     return response
   } catch (err) {
+    console.error('File upload failed:', err)
     return false
   }
 }
@@ -100,6 +104,23 @@ Api.servicesStatus = async () => {
     storage: storage.ok,
     network: network.ok,
     authent: authent.ok
+  }
+}
+
+Api.checkDaemonsAuthentication = async () => {
+  Api.createClient(Config.API_URL_AUTHENT)
+  const res = await client.get('/status')
+
+  if (res.ok && res.data) {
+    const { authenticated, username } = res.data
+    return {
+      authenticated,
+      username
+    }
+  }
+  return {
+    authenticated: null,
+    username: null
   }
 }
 

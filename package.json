@@ -5,7 +5,7 @@
     "email": "hello@elemento.cloud"
   },
   "description": "ElectrOS",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "private": true,
   "main": "public/electron.js",
   "homepage": "./",
@@ -20,6 +20,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "apisauce": "^2.1.6",
+    "darkreader": "^4.9.87",
     "electron-squirrel-startup": "^1.0.0",
     "jwt-decode": "^3.1.2",
     "md5": "^2.3.0",
@@ -50,8 +51,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "lint": "standard --verbose | snazzy",
-    "lint:fix": "standard --fix",
+    "lint": "standard --fix",
     "build": "GENERATE_SOURCEMAP=false react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -66,9 +66,9 @@
     "electron:notarize": "DEBUG=* node notarize.js",
     "package": "electron-forge package",
     "electron-forge:make-macos-arm": "electron-forge make",
-    "electron-forge:arm-installer-dmg": "cd out && npx electron-installer-dmg --icon=../icons/icon.png --background=../public/background.png --title=ElectrOS ./electrOS-darwin-arm64/ElectrOS.app 'ElectrOS-arm64'",
+    "electron-forge:arm-installer-dmg": "cd out && npx electron-installer-dmg --icon=../public/icon.png --background=../public/background.png --title=ElectrOS ./electrOS-darwin-arm64/ElectrOS.app 'ElectrOS-arm64'",
     "electron-forge:make-macos-intel": "electron-forge make --arch=x64 --platform=darwin",
-    "electron-forge:intel-installer-dmg": "cd out && npx electron-installer-dmg --icon=../icons/icon.png --background=../public/background.png --title=ElectrOS ./electrOS-darwin-x64/ElectrOS.app 'ElectrOS-x64'",
+    "electron-forge:intel-installer-dmg": "cd out && npx electron-installer-dmg --icon=../public/icon.png --background=../public/background.png --title=ElectrOS ./electrOS-darwin-x64/ElectrOS.app 'ElectrOS-x64'",
     "git:pull-iso.json": "cd ./src/Data && git clone https://github.com/Elemento-Modular-Cloud/iso-templates.git"
   },
   "build": {

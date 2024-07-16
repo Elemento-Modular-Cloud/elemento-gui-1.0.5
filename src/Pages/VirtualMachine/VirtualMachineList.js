@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, createRef } from 'react'
 import swal from 'sweetalert'
 import Modal from 'react-modal'
 import { Api } from '../../Services'
@@ -16,10 +16,14 @@ import aruba from '../../Assets/aruba.png'
 import aws from '../../Assets/aws.png'
 import linode from '../../Assets/linode.png'
 import azure from '../../Assets/azure.png'
+import ionos from '../../Assets/ionos.png'
+import gigas from '../../Assets/gigas.png'
 import ssh from '../../Assets/utils/ssh.png'
 import vnc from '../../Assets/utils/vnc.png'
 import rdp from '../../Assets/utils/rdp.png'
 import close from '../../Assets/utils/close.png'
+import ansible from '../../Assets/ansible.png'
+import ansibleLogo from '../../Assets/ansible_logo.png'
 
 class VirtualMachineList extends Component {
   constructor (props) {
@@ -29,15 +33,18 @@ class VirtualMachineList extends Component {
       loading: false,
       toBeDeleted: null,
       smartViewerModal: false,
+      showDragAndDrop: false,
       credentials: null,
       viewerURL: null,
       username: '',
-      password: ''
+      password: '',
+      targetIp: null
     }
   }
 
   async componentDidMount () {
     await this.getStatus()
+    this.fileInputRef = createRef()
   }
 
   async getStatus () {
@@ -132,8 +139,43 @@ class VirtualMachineList extends Component {
     window.require('electron').ipcRenderer.send('open-external-link', 'https://github.com/Elemento-Modular-Cloud/elemento-smart-tools/releases')
   }
 
+  async fileUpload (file) {
+    const { targetIp } = this.state
+    if (!targetIp) {
+      swal('Error', 'Could not retrieve machine target ip.', 'error', {
+        buttons: false,
+        timer: 3000
+      }).then(() => {
+        this.setState({ loading: false })
+        this.setState({ showDragAndDrop: false })
+      })
+      return
+    }
+
+    Api.createClient(Config.API_URL_MATCHER)
+    const res = await Api.upload('/process_playbook/file', file, '192.168.3.6')
+
+    if (res.ok) {
+      swal('Success', 'Ansible file uploaded succesfully', 'success', {
+        buttons: false,
+        timer: 3000
+      })
+      await this.getStatus()
+      this.setState({ showDragAndDrop: false })
+    } else {
+      swal('Error', 'Could not upload file to the selected virtual machine', 'error', {
+        buttons: false,
+        timer: 3000
+      }).then(() => {
+        this.setState({ loading: false })
+        this.setState({ showDragAndDrop: false })
+      })
+    }
+  }
+
   render () {
-    const { vms, loading, toBeDeleted, smartViewerModal, viewerURL, credentials, username, password } = this.state
+    const { vms, loading, toBeDeleted, smartViewerModal, viewerURL, credentials, username, password, showDragAndDrop, isDragOver } = this.state
+    const { containerStyle, browseStyle } = styles
 
     return (
       <div className='vmlpage'>
@@ -175,6 +217,7 @@ class VirtualMachineList extends Component {
                   <td>Date</td>
                   <td>Network</td>
                   <td>Viewer</td>
+                  <td>Tools</td>
                   <td>Delete</td>
                 </tr>
               </thead>
@@ -184,21 +227,22 @@ class VirtualMachineList extends Component {
                     ? vms.map((vm, i) => {
                       const uniqueID = vm.uniqueID
                       const detail = vm.req_json
-
-                      const creationDate = this.getLocalTimezonDate(detail.creation_date)
+                      const creationDate = detail.creation_date ? this.getLocalTimezonDate(detail.creation_date) : ''
 
                       return (
                         <tr key={i} style={{ backgroundColor: toBeDeleted === vm.uniqueID ? '#898C8A99' : '' }}>
                           <td style={{ position: 'relative', minWidth: 150 }}>
                             <span style={{ fontWeight: 'bold' }}>{detail.vm_name}</span><br />
                             <span style={{ fontStyle: 'italic', fontSize: 12, display: 'block', paddingTop: 8 }}>{uniqueID}</span>
-                            {detail.mesos && detail.mesos.provider === 'GOOGLE' && <img src={google} alt='' style={{ width: 25, height: 25, position: 'absolute', top: 5, right: 5 }} />}
-                            {detail.mesos && detail.mesos.provider === 'OVH' && <img src={ovh} alt='' style={{ width: 45, height: 45, position: 'absolute', top: 5, right: 5 }} />}
-                            {detail.mesos && detail.mesos.provider === 'UPCLOUD' && <img src={upcloud} alt='' style={{ width: 45, height: 45, position: 'absolute', top: 5, right: 5 }} />}
-                            {detail.mesos && detail.mesos.provider === 'ARUBA' && <img src={aruba} alt='' style={{ width: 45, height: 45, position: 'absolute', top: 5, right: 5 }} />}
-                            {detail.mesos && detail.mesos.provider === 'AWS' && <img src={aws} alt='' style={{ width: 45, height: 45, position: 'absolute', top: 5, right: 5 }} />}
-                            {detail.mesos && detail.mesos.provider === 'LINODE' && <img src={linode} alt='' style={{ width: 45, height: 45, position: 'absolute', top: 5, right: 5 }} />}
-                            {detail.mesos && detail.mesos.provider === 'AZURE' && <img src={azure} alt='' style={{ width: 45, height: 45, position: 'absolute', top: 5, right: 5 }} />}
+                            {detail.mesos && detail.mesos.provider.toLowerCase() === 'google' && <img src={google} alt='' style={{ width: 45, maxheight: 25, position: 'absolute', top: 5, right: 5 }} />}
+                            {detail.mesos && detail.mesos.provider.toLowerCase() === 'ovh' && <img src={ovh} alt='' style={{ width: 45, maxheight: 25, position: 'absolute', top: 5, right: 5 }} />}
+                            {detail.mesos && detail.mesos.provider.toLowerCase() === 'upcloud' && <img src={upcloud} alt='' style={{ width: 45, maxheight: 25, position: 'absolute', top: 5, right: 5 }} />}
+                            {detail.mesos && detail.mesos.provider.toLowerCase() === 'aruba' && <img src={aruba} alt='' style={{ width: 45, maxheight: 25, position: 'absolute', top: 5, right: 5 }} />}
+                            {detail.mesos && detail.mesos.provider.toLowerCase() === 'aws' && <img src={aws} alt='' style={{ width: 45, maxheight: 25, position: 'absolute', top: 5, right: 5 }} />}
+                            {detail.mesos && detail.mesos.provider.toLowerCase() === 'linode' && <img src={linode} alt='' style={{ width: 45, maxheight: 25, position: 'absolute', top: 5, right: 5 }} />}
+                            {detail.mesos && detail.mesos.provider.toLowerCase() === 'azure' && <img src={azure} alt='' style={{ width: 45, maxheight: 25, position: 'absolute', top: 5, right: 5 }} />}
+                            {detail.mesos && detail.mesos.provider.toLowerCase() === 'ionos' && <img src={ionos} alt='' style={{ width: 45, maxheight: 25, position: 'absolute', top: 5, right: 5 }} />}
+                            {detail.mesos && detail.mesos.provider.toLowerCase() === 'gigas' && <img src={gigas} alt='' style={{ width: 45, maxheight: 25, position: 'absolute', top: 5, right: 5 }} />}
                             {(!detail.mesos || !detail.mesos.provider) && <AtomOS style={{ width: 35, height: 35, position: 'absolute', top: 5, right: 0 }} />}
                           </td>
                           <td style={{ minWidth: 180 }}>
@@ -229,6 +273,14 @@ class VirtualMachineList extends Component {
                               <img src={rdp} alt='' style={{ width: 25 }} onClick={() => this.setState({ host: detail.network_config?.ipv4, credentials: 'rdp' })} />
                             </div>
                           </td>
+                          <td style={{ minWidth: 40 }}>
+                            <img
+                              alt=''
+                              src={ansible}
+                              style={{ width: 25 }}
+                              onClick={() => this.setState({ showDragAndDrop: true, targetIp: detail.network_config?.ipv4 })}
+                            />
+                          </td>
                           <td><button className='bn632-hover bn28' onClick={async () => !toBeDeleted && await this.deleteVirtualMachine(uniqueID)}>Delete</button></td>
                         </tr>
                       )
@@ -239,6 +291,49 @@ class VirtualMachineList extends Component {
                 }
               </tbody>
             </table>
+
+            <Modal
+              isOpen={showDragAndDrop}
+              style={customStyle}
+              className='netmodal'
+              ariaHideApp={false}
+              onRequestClose={() => this.setState({ showDragAndDrop: !showDragAndDrop })}
+            >
+              <div
+                style={{ ...containerStyle, backgroundColor: isDragOver ? '#e0e0e0' : '#ffffff' }}
+                onDragEnter={e => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  this.setState({ isDragOver: true })
+                }}
+                onDragLeave={e => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  this.setState({ isDragOver: false })
+                }}
+                onDrop={e => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  this.fileUpload(e.dataTransfer.files[0])
+                }}
+                onDragOver={e => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                }}
+              >
+                <img src={ansibleLogo} alt='Upload' style={{ width: 200, marginTop: 20 }} />
+                <p>Upload your ansible configuration file:</p>
+                <div style={{ textAlign: 'center', marginTop: 20 }}>
+                  <div style={{ marginTop: '10px' }}>
+                    <span>Drag & Drop</span> or <span style={browseStyle} onClick={() => this.fileInputRef.current.click()}>browse</span>
+                    <input type='file' style={{ display: 'none' }} ref={this.fileInputRef} onChange={e => this.fileUpload(e.target.files[0])} />
+                  </div>
+                  <div style={{ fontSize: '12px', marginTop: '10px' }}>
+                    Supports: JPG, JPEG, PNG
+                  </div>
+                </div>
+              </div>
+            </Modal>
 
             <Modal
               isOpen={smartViewerModal}
@@ -295,6 +390,26 @@ class VirtualMachineList extends Component {
         <Daemons />
       </div>
     )
+  }
+}
+
+const styles = {
+  containerStyle: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '400px',
+    height: '300px',
+    border: '2px dashed #cccccc',
+    borderRadius: '10px',
+    backgroundColor: '#ffffff',
+    margin: '0 auto',
+    padding: '20px'
+  },
+  browseStyle: {
+    color: '#007bff',
+    cursor: 'pointer'
   }
 }
 
