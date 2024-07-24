@@ -114,6 +114,11 @@ jobs:
         with:
           node-version: 16.x
 
+      - name: Electros Version
+        run: |
+          ELECTROS_VERSION=$( cat package.json | grep '"version":' | cut -d '"' -f 4 )
+          echo "ELECTROS_VERSION=$(echo $ELECTROS_VERSION)" >> $GITHUB_ENV
+
       - name: Install Dependencies
         uses: borales/actions-yarn@v4
         with:
