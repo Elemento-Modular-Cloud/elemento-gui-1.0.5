@@ -149,7 +149,7 @@ jobs:
       #     source: dist/electron/ElectrOS-win32-x64
       #     target:
 
-  linux_build_arm?:
+  linux_build_arm:
     runs-on:
       ubuntu-latest
     steps:
