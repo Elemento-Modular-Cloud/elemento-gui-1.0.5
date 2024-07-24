@@ -135,12 +135,14 @@ jobs:
         uses: borales/actions-yarn@v4
         with:
           cmd: electron:dist-windows
+        env:
+          GH_TOKEN: ${{ secrets.REPO_KEY }}
 
       - name: Push Win artifact
         uses: actions/upload-artifact@v2
         with:
           name: Elemento_Cloud_App.exe
-          path: electrOS/Setup/{{ env.VERSION }}.exe
+          path: dist/ElectrOS\ Setup\ {{ env.VERSION }}.exe
 
       # - name: Push Executable
       #   uses: appleboy/scp-action@master
