@@ -162,6 +162,11 @@ jobs:
         with:
           node-version: 16.x
 
+      - name: Electros Version
+        run: |
+          ELECTROS_VERSION=$( cat package.json | grep '"version":' | cut -d '"' -f 4 )
+          echo "ELECTROS_VERSION=$(echo $ELECTROS_VERSION)" >> $GITHUB_ENV
+
       - name: Install Dependencies
         uses: borales/actions-yarn@v4
         with:
@@ -183,7 +188,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: Elemento_Cloud_App.AppImage
-          path: electrOS-linux-x64.AppImage
+          path: dist/ElectrOS-${{ env.ELECTROS_VERSION }}.AppImage
           overwrite: true
 
       # - name: Push Executable
