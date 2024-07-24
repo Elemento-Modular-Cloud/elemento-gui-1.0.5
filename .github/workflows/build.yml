@@ -17,10 +17,15 @@ jobs:
           token: ${{ secrets.REPO_KEY }}
           submodules: recursive
 
+      - name: Get Node Version
+        run: |
+          NODEVERSION=$(cat .nvmrc | cut -d 'v' -f 2)
+          echo "NODEVERSION=$(echo $NODEVERSION)" >> $GITHUB_ENV
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 16.x
+          node-version: ${{ env.NODEVERSION }}
 
       - name: Install Dependencies
         uses: borales/actions-yarn@v4
@@ -73,10 +78,15 @@ jobs:
           token: ${{ secrets.REPO_KEY }}
           submodules: recursive
 
+      - name: Get Node Version
+        run: |
+          NODEVERSION=$(cat .nvmrc | cut -d 'v' -f 2)
+          echo "NODEVERSION=$(echo $NODEVERSION)" >> $GITHUB_ENV
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 16.x
+          node-version: ${{ env.NODEVERSION }}
 
       - name: Install Dependencies
         uses: borales/actions-yarn@v4
@@ -129,10 +139,15 @@ jobs:
           token: ${{ secrets.REPO_KEY }}
           submodules: recursive
 
+      - name: Get Node Version
+        run: |
+          NODEVERSION=$(cat .nvmrc | cut -d 'v' -f 2)
+          echo "NODEVERSION=$(echo $NODEVERSION)" >> $GITHUB_ENV
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 16.x
+          node-version: ${{ env.NODEVERSION }}
 
       - name: Install Dependencies
         uses: borales/actions-yarn@v4
@@ -185,10 +200,15 @@ jobs:
           token: ${{ secrets.REPO_KEY }}
           submodules: recursive
 
+      - name: Get Node Version
+        run: |
+          NODEVERSION=$(cat .nvmrc | cut -d 'v' -f 2)
+          echo "NODEVERSION=$(echo $NODEVERSION)" >> $GITHUB_ENV
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 16.x
+          node-version: ${{ env.NODEVERSION }}
 
       - name: Electros Version
         run: |
@@ -244,10 +264,15 @@ jobs:
           token: ${{ secrets.REPO_KEY }}
           submodules: recursive
 
+      - name: Get Node Version
+        run: |
+          NODEVERSION=$(cat .nvmrc | cut -d 'v' -f 2)
+          echo "NODEVERSION=$(echo $NODEVERSION)" >> $GITHUB_ENV
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 16.x
+          node-version: ${{ env.NODEVERSION }}
 
       - name: Electros Version
         run: |
