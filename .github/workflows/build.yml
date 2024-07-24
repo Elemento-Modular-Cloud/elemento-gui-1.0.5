@@ -149,7 +149,7 @@ jobs:
       #     source: dist/electron/ElectrOS-win32-x64
       #     target:
 
-  linux_build_arm:
+  linux_arm_build:
     runs-on:
       ubuntu-latest
     steps:
@@ -196,10 +196,7 @@ jobs:
       #     target:
 
   release:
-    needs: |
-      mac_build
-      win_build
-      linux_build
+    needs: [mac_arm_build, mac_x86_build, win_build, linux_arm_build]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
