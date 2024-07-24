@@ -1,4 +1,4 @@
-name: ElectrOS Build and Distribute
+name: ElectrOS Build and Distribute RELEASE
 
 on:
   pull_request_review:
