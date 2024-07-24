@@ -2,6 +2,9 @@ name: ElectrOS Build and Distribute
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - 'develop'
 
 jobs:
   mac_x86_build:
