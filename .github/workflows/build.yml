@@ -36,8 +36,7 @@ jobs:
         uses: borales/actions-yarn@v4
         with:
           cmd: | 
-            electron-forge:make-macos-intel
-            electron-forge:intel-installer-dmg
+            electron-forge:make-macos-intel && electron-forge:intel-installer-dmg
 
       - name: Push x86-Mac artifact
         uses: actions/upload-artifact@v2
@@ -84,8 +83,7 @@ jobs:
         uses: borales/actions-yarn@v4
         with:
           cmd: | 
-            electron-forge:make-macos-arm
-            electron-forge:arm-installer-dmg
+            electron-forge:make-macos-arm && electron-forge:arm-installer-dmg
 
       - name: Push ARM-Mac artifact
         uses: actions/upload-artifact@v2
@@ -149,7 +147,7 @@ jobs:
       #     source: dist/electron/ElectrOS-win32-x64
       #     target:
 
-  linux_arm_build:
+  linux_x86_build:
     runs-on:
       ubuntu-latest
     steps:
@@ -196,7 +194,7 @@ jobs:
       #     target:
 
   release:
-    needs: [mac_arm_build, mac_x86_build, win_build, linux_arm_build]
+    needs: [mac_arm_build, mac_x86_build, win_build, linux_x86_build]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
