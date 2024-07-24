@@ -157,6 +157,9 @@ jobs:
           token: ${{ secrets.REPO_KEY }}
           submodules: recursive
 
+      - name: Setup GH_TOKEN
+        run: export GH_TOKEN=${{ secrets.GITHUB_TOKEN }}
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
