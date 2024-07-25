@@ -60,15 +60,6 @@ jobs:
           name: Elemento_Cloud_App_intel.dmg
           path: electrOS-x64.dmg
 
-      # - name: Push Executable
-      #   uses: appleboy/scp-action@master
-      #   with:
-      #     host: ${{ secrets.SCP_HOST }}
-      #     username: ${{ secrets.SCP_USER }}
-      #     key: ${{ secrets.SCP_KEY }}
-      #     source: dist/electron/ElectrOS-darwin-x64
-      #     target:
-
   mac_arm_build:
     runs-on:
       macos-latest
@@ -121,15 +112,6 @@ jobs:
         with:
           name: Elemento_Cloud_App_arm.dmg
           path: electrOS-arm64.dmg
-
-      # - name: Push Executable
-      #   uses: appleboy/scp-action@master
-      #   with:
-      #     host: ${{ secrets.SCP_HOST }}
-      #     username: ${{ secrets.SCP_USER }}
-      #     key: ${{ secrets.SCP_KEY }}
-      #     source: dist/electron/ElectrOS-darwin-x64
-      #     target:
 
   linux_arm_build:
     runs-on:
@@ -184,16 +166,13 @@ jobs:
           name: Elemento_Cloud_App_arm.AppImage
           path: dist/electr-os_${{ env.ELECTROS_VERSION }}-arm64.AppImage
 
-      # - name: Push Executable
-      #   uses: appleboy/scp-action@master
-      #   with:
-      #     host: ${{ secrets.SCP_HOST }}
-      #     username: ${{ secrets.SCP_USER }}
-      #     key: ${{ secrets.SCP_KEY }}
-      #     source: dist/electron/ElectrOS-darwin-x6
-      #     target:
+      - name: Push ARM-Mac artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: Elemento_Cloud_App_arm.deb
+          path: dist/electr-os_${{ env.ELECTROS_VERSION }}-arm64.deb
 
-  win_build:
+  win_x86_build:
     runs-on:
       ubuntu-latest
     steps:
@@ -246,17 +225,61 @@ jobs:
       - name: Push Win artifact
         uses: actions/upload-artifact@v2
         with:
-          name: Elemento_Cloud_App.exe
+          name: Elemento_Cloud_App_x86.exe
           path: dist/ElectrOS\ Setup\ ${{ env.ELECTROS_VERSION }}.exe
 
-      # - name: Push Executable to prod
-      #   uses: appleboy/scp-action@master
-      #   with:
-      #     host: ${{ secrets.SCP_HOST }}
-      #     username: ${{ secrets.SCP_USER }}
-      #     key: ${{ secrets.SCP_KEY }}
-      #     source: dist/ElectrOS\ Setup\ ${{ env.ELECTROS_VERSION }}.exe
-      #     target:
+  win_arm_build:
+    runs-on:
+      macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.REPO_KEY }}
+          submodules: recursive
+          ref: develop
+
+      - name: Get Node Version
+        run: |
+          NODEVERSION=$(cat .nvmrc | cut -d 'v' -f 2)
+          echo "NODEVERSION=$(echo $NODEVERSION)" >> $GITHUB_ENV
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODEVERSION }}
+
+      - name: Install Dependencies
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: install
+
+      - name: Decode and Install macOS certificates
+        run: |
+          echo "${{ secrets.MAC_CERTIFICATE }}" | base64 --decode > cert.p12
+          security create-keychain -p "" build.keychain
+          security import cert.p12 -k build.keychain -P ${{ secrets.MAC_CERTIFICATE_PASSWORD }} -T /usr/bin/codesign
+          security set-key-partition-list -S apple-tool:,apple: -s -k "" build.keychain
+          security find-identity -v -p codesigning
+
+      - name: Build ElectrOS
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: build
+
+      - name: Create Executable
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: | 
+            electron:dist-windows
+        env:
+          GH_TOKEN: ${{ secrets.REPO_KEY }}
+
+      - name: Push ARM-Mac artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: Elemento_Cloud_App_arm.exe
+          path: dist/ElectrOS\ Setup\ ${{ env.ELECTROS_VERSION }}.exe
 
   linux_x86_build:
     runs-on:
@@ -304,35 +327,17 @@ jobs:
       - name: Push Linux appImage artifact
         uses: actions/upload-artifact@v2
         with:
-          name: Elemento_Cloud_App.AppImage
+          name: Elemento_Cloud_App_amd64.AppImage
           path: dist/ElectrOS-${{ env.ELECTROS_VERSION }}.AppImage
 
       - name: Push Linux deb artifact
         uses: actions/upload-artifact@v2
         with:
-          name: Elemento_Cloud_App.deb
+          name: Elemento_Cloud_App_amd64.deb
           path: dist/electr-os_${{ env.ELECTROS_VERSION }}_amd64.deb
 
-      # - name: Push Executable deb to prod
-      #   uses: appleboy/scp-action@master
-      #   with:
-      #     host: ${{ secrets.SCP_HOST }}
-      #     username: ${{ secrets.SCP_USER }}
-      #     key: ${{ secrets.SCP_KEY }}
-      #     source: dist/electr-os_${{ env.ELECTROS_VERSION }}_amd64.deb
-      #     target:
-
-      # - name: Push Executable appImage to prod
-      #   uses: appleboy/scp-action@master
-      #   with:
-      #     host: ${{ secrets.SCP_HOST }}
-      #     username: ${{ secrets.SCP_USER }}
-      #     key: ${{ secrets.SCP_KEY }}
-      #     source: dist/electr-os_${{ env.ELECTROS_VERSION }}.AppImage
-      #     target:
-
   release:
-    needs: [mac_arm_build, mac_x86_build, win_build, linux_x86_build, linux_arm_build]
+    needs: [mac_arm_build, mac_x86_build, win_x86_build, linux_x86_build, linux_arm_build, win_arm_build]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -342,10 +347,16 @@ jobs:
           submodules: recursive
           ref: develop
 
-      - name: Gather Win Artifacts
+      - name: Gather Win x86 Artifacts
         uses: actions/download-artifact@v2
         with:
-          name: Elemento_Cloud_App.exe
+          name: Elemento_Cloud_App_x86.exe
+          path: ./artifacts
+
+      - name: Gather Win arm Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: Elemento_Cloud_App_arm.exe
           path: ./artifacts
 
       - name: Gather Mac_x86 Artifacts
@@ -360,22 +371,28 @@ jobs:
           name: Elemento_Cloud_App.dmg
           path: ./artifacts
 
-      - name: Gather Linux Artifacts
+      - name: Gather Linux x86 Artifacts
         uses: actions/download-artifact@v2
         with:
-          name: Elemento_Cloud_App.AppImage
+          name: Elemento_Cloud_App_amd64.AppImage
           path: ./artifacts
 
-      - name: Gather Linux Artifacts
+      - name: Gather Linux x86 Artifacts
         uses: actions/download-artifact@v2
         with:
-          name: Elemento_Cloud_App.deb
+          name: Elemento_Cloud_App_amd64.deb
           path: ./artifacts
 
-      - name: Gather Linux Artifacts
+      - name: Gather Linux arm Artifacts
         uses: actions/download-artifact@v2
         with:
           name: Elemento_Cloud_App_arm.AppImage
+          path: ./artifacts
+
+      - name: Gather Linux arm Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: Elemento_Cloud_App_arm.deb
           path: ./artifacts
 
       - name: Electros Version
@@ -401,14 +418,14 @@ jobs:
           draft: false
           prerelease: false
 
-      - name: Upload Win to Release
+      - name: Upload Win x86 to Release
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifacts/Elemento_Cloud_App.exe
-          asset_name: Elemento_Cloud_App.exe
+          asset_path: ./artifacts/Elemento_Cloud_App_x86.exe
+          asset_name: Elemento_Cloud_App_x86.exe
           asset_content_type: application/octet-stream
 
       - name: Upload Mac_x86 to Release
@@ -431,27 +448,27 @@ jobs:
           asset_name: Elemento_Cloud_App.dmg
           asset_content_type: application/octet-stream
 
-      - name: Upload Linux to Release
+      - name: Upload Linux x86 to Release
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifacts/Elemento_Cloud_App.AppImage
-          asset_name: Elemento_Cloud_App.AppImage
+          asset_path: ./artifacts/Elemento_Cloud_App_amd64.AppImage
+          asset_name: Elemento_Cloud_App_amd64.AppImage
           asset_content_type: application/octet-stream
       
-      - name: Upload Linux to Release
+      - name: Upload Linux x86 to Release
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifacts/Elemento_Cloud_App.deb
-          asset_name: Elemento_Cloud_App.deb
+          asset_path: ./artifacts/Elemento_Cloud_App_amd64.deb
+          asset_name: Elemento_Cloud_App_amd64.deb
           asset_content_type: application/octet-stream
 
-      - name: Upload Linux to Release
+      - name: Upload Linux arm to Release
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -460,3 +477,31 @@ jobs:
           asset_path: ./artifacts/Elemento_Cloud_App_arm.AppImage
           asset_name: Elemento_Cloud_App_arm.AppImage
           asset_content_type: application/octet-stream
+
+      - name: Upload Linux arm to Release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./artifacts/Elemento_Cloud_App_arm.deb
+          asset_name: Elemento_Cloud_App_arm.deb
+          asset_content_type: application/octet-stream
+
+      # - name: Push to Prod
+      #   uses: appleboy/scp-action@master
+      #   with:
+      #     host: ${{ secrets.REPO_IP }}
+      #     username: github
+      #     key: ${{ secrets.SSH_KEY }}
+      #     source: ./artifacts
+      #     target: /home/github/
+
+      # - name: Move to correct position
+      #   uses: appleboy/ssh-action@
+      #   with:
+      #     host: ${{ secrets.REPO_IP }}
+      #     username: github
+      #     key: ${{ secrets.SSH_KEY }}
+      #     script: |
+      #       echo ${{secrets.REPO_SUDO_PW }} | sudo -S mv /home/github/* /mnt/repository/electron/
