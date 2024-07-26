@@ -33,12 +33,21 @@ jobs:
         with:
           cmd: install
 
-      - name: Decode and Install macOS certificates
+      - name: Decode and install macOS certificate
         run: |
-          echo "${{ secrets.MAC_CERTIFICATE }}" | base64 --decode > cert.p12
+          echo "${{ secrets.MAC_CERTIFICATE }}" | base64 --decode > macos_cert.p12
           security create-keychain -p "" build.keychain
-          security import cert.p12 -k build.keychain -P ${{ secrets.MAC_CERTIFICATE_PASSWORD }} -T /usr/bin/codesign
+          security default-keychain -s build.keychain
+          security unlock-keychain -p "" build.keychain
+          security import macos_cert.p12 -k build.keychain -P "${{ secrets.MAC_CERTIFICATE_PASSWORD }}" -T /usr/bin/codesign
+          security list-keychains -s build.keychain
           security set-key-partition-list -S apple-tool:,apple: -s -k "" build.keychain
+          security find-identity -v -p codesigning
+  
+      - name: Verify Keychain Contents
+        run: |
+          security list-keychains
+          security show-keychain-info build.keychain
           security find-identity -v -p codesigning
 
       - name: Build ElectrOS
@@ -86,12 +95,21 @@ jobs:
         with:
           cmd: install
 
-      - name: Decode and Install macOS certificates
+      - name: Decode and install macOS certificate
         run: |
-          echo "${{ secrets.MAC_CERTIFICATE }}" | base64 --decode > cert.p12
+          echo "${{ secrets.MAC_CERTIFICATE }}" | base64 --decode > macos_cert.p12
           security create-keychain -p "" build.keychain
-          security import cert.p12 -k build.keychain -P ${{ secrets.MAC_CERTIFICATE_PASSWORD }} -T /usr/bin/codesign
+          security default-keychain -s build.keychain
+          security unlock-keychain -p "" build.keychain
+          security import macos_cert.p12 -k build.keychain -P "${{ secrets.MAC_CERTIFICATE_PASSWORD }}" -T /usr/bin/codesign
+          security list-keychains -s build.keychain
           security set-key-partition-list -S apple-tool:,apple: -s -k "" build.keychain
+          security find-identity -v -p codesigning
+    
+      - name: Verify Keychain Contents
+        run: |
+          security list-keychains
+          security show-keychain-info build.keychain
           security find-identity -v -p codesigning
 
       - name: Build ElectrOS
@@ -115,7 +133,7 @@ jobs:
 
   linux_arm_build:
     runs-on:
-      macos-latest
+      ubuntu-arm
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -138,14 +156,6 @@ jobs:
         uses: borales/actions-yarn@v4
         with:
           cmd: install
-
-      - name: Decode and Install macOS certificates
-        run: |
-          echo "${{ secrets.MAC_CERTIFICATE }}" | base64 --decode > cert.p12
-          security create-keychain -p "" build.keychain
-          security import cert.p12 -k build.keychain -P ${{ secrets.MAC_CERTIFICATE_PASSWORD }} -T /usr/bin/codesign
-          security set-key-partition-list -S apple-tool:,apple: -s -k "" build.keychain
-          security find-identity -v -p codesigning
 
       - name: Build ElectrOS
         uses: borales/actions-yarn@v4
@@ -230,7 +240,7 @@ jobs:
 
   win_arm_build:
     runs-on:
-      macos-latest
+      ubuntu-arm
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -253,14 +263,6 @@ jobs:
         uses: borales/actions-yarn@v4
         with:
           cmd: install
-
-      - name: Decode and Install macOS certificates
-        run: |
-          echo "${{ secrets.MAC_CERTIFICATE }}" | base64 --decode > cert.p12
-          security create-keychain -p "" build.keychain
-          security import cert.p12 -k build.keychain -P ${{ secrets.MAC_CERTIFICATE_PASSWORD }} -T /usr/bin/codesign
-          security set-key-partition-list -S apple-tool:,apple: -s -k "" build.keychain
-          security find-identity -v -p codesigning
 
       - name: Build ElectrOS
         uses: borales/actions-yarn@v4
