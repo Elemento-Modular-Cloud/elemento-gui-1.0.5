@@ -166,7 +166,7 @@ jobs:
         uses: borales/actions-yarn@v4
         with:
           cmd: | 
-            electron:dist-linux
+            electron:dist-linux-arm
         env:
           GH_TOKEN: ${{ secrets.REPO_KEY }}
 
@@ -322,7 +322,7 @@ jobs:
       - name: Create Executable
         uses: borales/actions-yarn@v4
         with:
-          cmd: electron:dist-linux
+          cmd: electron:dist-linux-x64
         env:
           GH_TOKEN: ${{ secrets.REPO_KEY }}
 
