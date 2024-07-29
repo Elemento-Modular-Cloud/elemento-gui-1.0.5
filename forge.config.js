@@ -15,8 +15,8 @@ module.exports = {
     },
     osxNotarize: {
       tool: 'notarytool',
-      appleId: 'framesystem@icloud.com',
-      appleIdPassword: 'mumw-joxm-gdde-lhdq', // Apple App-specific password
+      appleId: 'fferrando@elemento.cloud',
+      appleIdPassword: 'iswt-hmsx-xinw-ppef', // Apple App-specific password
       teamId: '9WTDB7G2C7'
     },
     ignore: [
