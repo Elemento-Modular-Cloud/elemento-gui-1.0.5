@@ -233,7 +233,7 @@ jobs:
       - name: Create Executable
         uses: borales/actions-yarn@v4
         with:
-          cmd: electron:dist-windows
+          cmd: electron:dist-windows-x64
         env:
           GH_TOKEN: ${{ secrets.REPO_KEY }}
 
@@ -245,7 +245,7 @@ jobs:
 
   win_arm_build:
     runs-on:
-      ubuntu-arm
+      ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -259,6 +259,11 @@ jobs:
           NODEVERSION=$(cat .nvmrc | cut -d 'v' -f 2)
           echo "NODEVERSION=$(echo $NODEVERSION)" >> $GITHUB_ENV
 
+      - name: Electros Version
+        run: |
+          ELECTROS_VERSION=$( cat package.json | grep '"version":' | cut -d '"' -f 4 )
+          echo "ELECTROS_VERSION=$(echo $ELECTROS_VERSION)" >> $GITHUB_ENV
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
@@ -269,6 +274,13 @@ jobs:
         with:
           cmd: install
 
+      - name: Install needed packages
+        run: |
+          sudo dpkg --add-architecture i386
+          sudo apt-get update
+          sudo apt-get install -y wine wine32
+          sudo apt-get install -y libudev-dev libusb-1.0-0-dev
+
       - name: Build ElectrOS
         uses: borales/actions-yarn@v4
         with:
@@ -278,7 +290,7 @@ jobs:
         uses: borales/actions-yarn@v4
         with:
           cmd: | 
-            electron:dist-windows
+            electron:dist-windows-arm
         env:
           GH_TOKEN: ${{ secrets.REPO_KEY }}
 
