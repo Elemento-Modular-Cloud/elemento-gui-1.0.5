@@ -95,10 +95,6 @@ jobs:
         with:
           cmd: install
 
-      - name: Update ulimit
-        run: |
-          ulimit -u 4096
-
       - name: Decode and install macOS certificate
         run: |
           echo "${{ secrets.MAC_CERTIFICATE }}" | base64 --decode > macos_cert.p12
