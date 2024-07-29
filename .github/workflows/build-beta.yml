@@ -79,7 +79,7 @@ jobs:
 
   mac_arm_build:
     runs-on:
-      mac-m1
+      mac-13
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -193,7 +193,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: Elemento_Cloud_App_arm.deb
-          path: dist/ElectrOS-${{ env.ELECTROS_VERSION }}-arm64.deb
+          path: dist/electr-os_${{ env.ELECTROS_VERSION }}_arm64.deb
 
   win_x86_build:
     runs-on:
