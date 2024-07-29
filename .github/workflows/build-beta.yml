@@ -147,6 +147,11 @@ jobs:
           NODEVERSION=$(cat .nvmrc | cut -d 'v' -f 2)
           echo "NODEVERSION=$(echo $NODEVERSION)" >> $GITHUB_ENV
 
+      - name: Electros Version
+        run: |
+          ELECTROS_VERSION=$( cat package.json | grep '"version":' | cut -d '"' -f 4 )
+          echo "ELECTROS_VERSION=$(echo $ELECTROS_VERSION)" >> $GITHUB_ENV
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
