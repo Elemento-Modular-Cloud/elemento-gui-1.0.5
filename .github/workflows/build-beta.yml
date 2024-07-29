@@ -95,6 +95,10 @@ jobs:
         with:
           cmd: install
 
+      - name: Update ulimit
+        run: |
+          ulimit -u 4096
+
       - name: Decode and install macOS certificate
         run: |
           echo "${{ secrets.MAC_CERTIFICATE }}" | base64 --decode > macos_cert.p12
@@ -179,13 +183,13 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: Elemento_Cloud_App_arm.AppImage
-          path: dist/electr-os_${{ env.ELECTROS_VERSION }}-arm64.AppImage
+          path: dist/ElectrOS-${{ env.ELECTROS_VERSION }}-arm64.AppImage
 
       - name: Push ARM-Mac artifact
         uses: actions/upload-artifact@v2
         with:
           name: Elemento_Cloud_App_arm.deb
-          path: dist/electr-os_${{ env.ELECTROS_VERSION }}-arm64.deb
+          path: dist/ElectrOS-${{ env.ELECTROS_VERSION }}-arm64.deb
 
   win_x86_build:
     runs-on:
