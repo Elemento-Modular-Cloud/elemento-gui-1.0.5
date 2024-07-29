@@ -193,7 +193,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: Elemento_Cloud_App_arm.deb
-          path: dist/ElectrOS-${{ env.ELECTROS_VERSION }}-arm64.deb
+          path: dist/electr-os_${{ env.ELECTROS_VERSION }}_arm64.deb
 
   win_x86_build:
     runs-on:
