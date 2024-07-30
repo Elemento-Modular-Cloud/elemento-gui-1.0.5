@@ -55,11 +55,17 @@ jobs:
         with:
           cmd: build
 
-      - name: Create Executable
+      - name: Create Executable x86
         uses: borales/actions-yarn@v4
         with:
-          cmd: | 
-            electron-forge:make-macos-intel && electron-forge:intel-installer-dmg
+          cmd: electron-forge:make-macos-intel
+        env:
+          GH_TOKEN: ${{ secrets.REPO_KEY }}
+
+      - name: Create DMG
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: electron-forge:intel-installer-dmg
         env:
           GH_TOKEN: ${{ secrets.REPO_KEY }}
 
