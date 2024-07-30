@@ -33,6 +33,11 @@ jobs:
         with:
           cmd: install
 
+      - name: Install lib for macOS
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: install appdmg
+
       - name: Decode and install macOS certificate
         run: |
           echo "${{ secrets.MAC_CERTIFICATE }}" | base64 --decode > macos_cert.p12
@@ -55,7 +60,7 @@ jobs:
         with:
           cmd: build
 
-      - name: Create Executable x86
+      - name: Create Executable
         uses: borales/actions-yarn@v4
         with:
           cmd: electron-forge:make-macos-intel
@@ -117,6 +122,11 @@ jobs:
         with:
           cmd: install
 
+      - name: Install lib for macOS
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: install appdmg
+
       - name: Decode and install macOS certificate
         run: |
           echo "${{ secrets.MAC_CERTIFICATE }}" | base64 --decode > macos_cert.p12
@@ -142,10 +152,17 @@ jobs:
       - name: Create Executable
         uses: borales/actions-yarn@v4
         with:
-          cmd: | 
-            electron-forge:make-macos-arm && electron-forge:arm-installer-dmg
+          cmd: electron-forge:make-macos-arm
         env:
           GH_TOKEN: ${{ secrets.REPO_KEY }}
+
+      - name: Create DMG
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: electron-forge:arm-installer-dmg
+        env:
+          GH_TOKEN: ${{ secrets.REPO_KEY }}
+
 
       - name: Push ARM-Mac artifact
         uses: actions/upload-artifact@v2
