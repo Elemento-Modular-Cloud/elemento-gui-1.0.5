@@ -23,6 +23,16 @@ jobs:
           NODEVERSION=$(cat .nvmrc | cut -d 'v' -f 2)
           echo "NODEVERSION=$(echo $NODEVERSION)" >> $GITHUB_ENV
 
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'  # Use the latest 3.x version available
+
+      - name: Install setuptools
+        run: |
+          python -m ensurepip --upgrade
+          python -m pip install --upgrade setuptools
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
@@ -36,7 +46,7 @@ jobs:
       - name: Install lib for macOS
         uses: borales/actions-yarn@v4
         with:
-          cmd: add macos-alias appdmg
+          cmd: add appdmg
 
       - name: Decode and install macOS certificate
         run: |
@@ -117,6 +127,16 @@ jobs:
         with:
           node-version: ${{ env.NODEVERSION }}
 
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'  # Use the latest 3.x version available
+  
+      - name: Install setuptools
+        run: |
+          python -m ensurepip --upgrade
+          python -m pip install --upgrade setuptools
+
       - name: Install Dependencies
         uses: borales/actions-yarn@v4
         with:
@@ -125,7 +145,7 @@ jobs:
       - name: Install lib for macOS
         uses: borales/actions-yarn@v4
         with:
-          cmd: add macos-alias appdmg
+          cmd: add appdmg
 
       - name: Decode and install macOS certificate
         run: |
