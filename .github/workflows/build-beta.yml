@@ -46,7 +46,7 @@ jobs:
       - name: Install lib for macOS
         uses: borales/actions-yarn@v4
         with:
-          cmd: add appdmg
+          cmd: add appdmg node-abi
 
       - name: Decode and install macOS certificate
         run: |
@@ -145,7 +145,7 @@ jobs:
       - name: Install lib for macOS
         uses: borales/actions-yarn@v4
         with:
-          cmd: add appdmg
+          cmd: add appdmg node-abi
 
       - name: Decode and install macOS certificate
         run: |
