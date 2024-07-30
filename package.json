@@ -49,6 +49,7 @@
     "snazzy": "^9.0.0",
     "standard": "^17.0.0"
   },
+  "overrides": { "electron-rebuild": { "node-abi": "^3.65.0" } },
   "scripts": {
     "start": "react-scripts start",
     "lint": "standard --fix",
