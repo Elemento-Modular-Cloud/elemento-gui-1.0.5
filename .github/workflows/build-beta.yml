@@ -67,17 +67,17 @@ jobs:
         run: |
           ls -lah
 
-      - name: see prev folder
-        run:
-          ls -lah ../
-      
       - name: see out folder
         run:
           ls -lah out/
 
       - name: see out make folder
         run:
-          ls -lah out/make/zip
+          ls -lah out/make/zip/darwin
+
+      - name: see electros folder
+        run:
+          ls -lah out/ElectrOS-darwin-x64
 
       - name: Push x86-Mac artifact
         uses: actions/upload-artifact@v2
