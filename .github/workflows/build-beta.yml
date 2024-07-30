@@ -73,7 +73,7 @@ jobs:
 
       - name: see out make folder
         run:
-          ls -lah out/make/
+          ls -lah out/make/zip
 
       - name: Push x86-Mac artifact
         uses: actions/upload-artifact@v2
