@@ -79,7 +79,7 @@ jobs:
 
   mac_arm_build:
     runs-on:
-      mac-13
+      macos-13
     steps:
       - name: Checkout
         uses: actions/checkout@v2
