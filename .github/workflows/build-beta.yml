@@ -66,6 +66,10 @@ jobs:
       - name: see filesystem
         run: |
           ls -lah
+
+      - name: see prev folder
+        run:
+          ls -lah ../
       
       - name: see out folder
         run:
