@@ -55,25 +55,35 @@ jobs:
         with:
           cmd: build
 
-      - name: Create Executable
+      - name: Create Executable x86
         uses: borales/actions-yarn@v4
         with:
-          cmd: | 
-            electron-forge:make-macos-intel && electron-forge:intel-installer-dmg
+          cmd: electron-forge:make-macos-intel
+        env:
+          GH_TOKEN: ${{ secrets.REPO_KEY }}
+
+      - name: Create DMG
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: electron-forge:intel-installer-dmg
         env:
           GH_TOKEN: ${{ secrets.REPO_KEY }}
 
       - name: see filesystem
         run: |
           ls -lah
-      
+
       - name: see out folder
         run:
           ls -lah out/
 
       - name: see out make folder
         run:
-          ls -lah out/make/
+          ls -lah out/make/zip/darwin/x64
+
+      - name: see electros folder
+        run:
+          ls -lah out/ElectrOS-darwin-x64
 
       - name: Push x86-Mac artifact
         uses: actions/upload-artifact@v2
