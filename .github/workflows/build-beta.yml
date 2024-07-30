@@ -28,6 +28,9 @@ jobs:
         with:
           node-version: ${{ env.NODEVERSION }}
 
+      - name: Install Xcode Command Line Tools
+        run: xcode-select --install
+
       - name: Install Dependencies
         uses: borales/actions-yarn@v4
         with:
@@ -36,7 +39,7 @@ jobs:
       - name: Install lib for macOS
         uses: borales/actions-yarn@v4
         with:
-          cmd: install appdmg
+          cmd: add appdmg
 
       - name: Decode and install macOS certificate
         run: |
@@ -116,6 +119,9 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODEVERSION }}
+
+      - name: Install Xcode Command Line Tools
+        run: xcode-select --install
 
       - name: Install Dependencies
         uses: borales/actions-yarn@v4
