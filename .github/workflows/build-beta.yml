@@ -73,7 +73,7 @@ jobs:
 
       - name: see out make folder
         run:
-          ls -lah out/make/zip/darwin
+          ls -lah out/make/zip/darwin/x64
 
       - name: see electros folder
         run:
