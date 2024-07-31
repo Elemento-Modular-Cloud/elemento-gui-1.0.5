@@ -24,6 +24,11 @@ jobs:
           NODEVERSION=$(cat .nvmrc | cut -d 'v' -f 2)
           echo "NODEVERSION=$(echo $NODEVERSION)" >> $GITHUB_ENV
 
+      - name: Electros Version
+        run: |
+          ELECTROS_VERSION=$( cat package.json | grep '"version":' | cut -d '"' -f 4 )
+          echo "ELECTROS_VERSION=$(echo $ELECTROS_VERSION)" >> $GITHUB_ENV
+
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
@@ -87,22 +92,22 @@ jobs:
 
       - name: Sign DMG
         run: |
-          codesign --verbose --force --sign "Developer ID Application: Elemento SRL (9WTDB7G2C7)" out/make/x64/ElectrOS-x64.dmg
-          spctl -a -t open --context context:primary-signature -v out/make/x64/ElectrOS-x64.dmg
+          codesign --verbose --force --sign "Developer ID Application: Elemento SRL (9WTDB7G2C7)" out/make/dmg/darwin/x64/ElectrOS-darwin-x64-${{ env.ELECTROS_VERSION }}.dmg
+          spctl -a -t open --context context:primary-signature -v out/make/dmg/darwin/x64/ElectrOS-darwin-x64-${{ env.ELECTROS_VERSION }}.dmg
 
       - name: Verify DMG
         run: |
-          spctl -a -t open --context context:primary-signature -v out/make/x64/ElectrOS-x64.dmg
+          spctl -a -t open --context context:primary-signature -v out/make/dmg/darwin/x64/ElectrOS-darwin-x64-${{ env.ELECTROS_VERSION }}.dmg
 
       - name: Verify stapling
         run: |
-          xcrun stapler validate out/make/x64/ElectrOS-x64.dmg
+          xcrun stapler validate out/make/dmg/darwin/x64/ElectrOS-darwin-x64-${{ env.ELECTROS_VERSION }}.dmg
 
       - name: Push x86-Mac artifact
         uses: actions/upload-artifact@v2
         with:
           name: Elemento_Cloud_App_intel.dmg
-          path: out/make/x64/ElectrOS-x64.dmg
+          path: out/make/dmg/darwin/x64/ElectrOS-darwin-x64-${{ env.ELECTROS_VERSION }}.dmg
 
   mac_arm_build:
     runs-on:
@@ -119,6 +124,11 @@ jobs:
         run: |
           NODEVERSION=$(cat .nvmrc | cut -d 'v' -f 2)
           echo "NODEVERSION=$(echo $NODEVERSION)" >> $GITHUB_ENV
+
+      - name: Electros Version
+        run: |
+          ELECTROS_VERSION=$( cat package.json | grep '"version":' | cut -d '"' -f 4 )
+          echo "ELECTROS_VERSION=$(echo $ELECTROS_VERSION)" >> $GITHUB_ENV
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -183,22 +193,22 @@ jobs:
 
       - name: Sign DMG
         run: |
-          codesign --verbose --force --sign "Developer ID Application: Elemento SRL (9WTDB7G2C7)" out/make/arm64/ElectrOS-arm64.dmg
-          spctl -a -t open --context context:primary-signature -v out/make/arm64/ElectrOS-arm64.dmg
+          codesign --verbose --force --sign "Developer ID Application: Elemento SRL (9WTDB7G2C7)" out/make/dmg/darwin/arm64/ElectrOS-darwin-arm64-${{ env.ELECTROS_VERSION }}.dmg
+          spctl -a -t open --context context:primary-signature -v out/make/dmg/darwin/arm64/ElectrOS-darwin-arm64-${{ env.ELECTROS_VERSION }}.dmg
 
       - name: Verify DMG
         run: |
-          spctl -a -t open --context context:primary-signature -v out/make/arm64/ElectrOS-arm64.dmg
+          spctl -a -t open --context context:primary-signature -v out/make/dmg/darwin/arm64/ElectrOS-darwin-arm64-${{ env.ELECTROS_VERSION }}.dmg
   
       - name: Verify stapling
         run: |
-          xcrun stapler validate out/make/arm64/ElectrOS-arm64.dmg
+          xcrun stapler validate out/make/dmg/darwin/arm64/ElectrOS-darwin-arm64-${{ env.ELECTROS_VERSION }}.dmg
 
       - name: Push ARM-Mac artifact
         uses: actions/upload-artifact@v2
         with:
           name: Elemento_Cloud_App_arm.dmg
-          path: out/make/arm64/ElectrOS-arm64.dmg
+          path: out/make/dmg/darwin/arm64/ElectrOS-darwin-arm64-${{ env.ELECTROS_VERSION }}.dmg
 
   linux_arm_build:
     runs-on:
