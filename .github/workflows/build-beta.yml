@@ -206,7 +206,7 @@ jobs:
 
       - name: Verify DMG
         run: |
-          spctl -a -t open --context context:primary-signature -v out/make/ElectrOS-${{ env.ELECTROS_VERSION }}-arm64.dmg
+          spctl --asses --verbose  out/make/ElectrOS-${{ env.ELECTROS_VERSION }}-arm64.dmg
   
       - name: Verify stapling
         run: |
