@@ -194,10 +194,9 @@ jobs:
       - name: need to see folder
         run: ls -lah out/make/
 
-      #- name: Sign DMG
-      #  run: |
-      #    codesign --verbose --force --sign "Developer ID Application: Elemento SRL (9WTDB7G2C7)" out/make/dmg/darwin/arm64/ElectrOS-darwin-arm64-${{ env.ELECTROS_VERSION }}.dmg
-      #    spctl -a -t open --context context:primary-signature -v out/make/dmg/darwin/arm64/ElectrOS-darwin-arm64-${{ env.ELECTROS_VERSION }}.dmg
+      - name: Sign DMG
+        run: |
+          codesign --verbose --force --sign "Developer ID Application: Elemento SRL (9WTDB7G2C7)" out/make/ElectrOS-${{ env.ELECTROS_VERSION }}-arm64.dmg
 
       - name: Verify DMG
         run: |
