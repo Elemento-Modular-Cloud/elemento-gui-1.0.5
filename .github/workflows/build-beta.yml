@@ -201,17 +201,17 @@ jobs:
 
       - name: Verify DMG
         run: |
-          spctl -a -t open --context context:primary-signature -v out/make/dmg/darwin/arm64/ElectrOS-darwin-arm64-${{ env.ELECTROS_VERSION }}.dmg
+          spctl -a -t open --context context:primary-signature -v out/make/ElectrOS-${{ env.ELECTROS_VERSION }}-arm64.dmg
   
       - name: Verify stapling
         run: |
-          xcrun stapler validate out/make/dmg/darwin/arm64/ElectrOS-darwin-arm64-${{ env.ELECTROS_VERSION }}.dmg
+          xcrun stapler validate out/make/ElectrOS-${{ env.ELECTROS_VERSION }}-arm64.dmg
 
       - name: Push ARM-Mac artifact
         uses: actions/upload-artifact@v2
         with:
           name: Elemento_Cloud_App_arm.dmg
-          path: out/make/dmg/darwin/arm64/ElectrOS-darwin-arm64-${{ env.ELECTROS_VERSION }}.dmg
+          path: out/make/ElectrOS-${{ env.ELECTROS_VERSION }}-arm64.dmg
 
   linux_arm_build:
     runs-on:
