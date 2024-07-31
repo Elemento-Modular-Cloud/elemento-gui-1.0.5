@@ -86,7 +86,7 @@ jobs:
 
       - name: Sign DMG
         run: |
-          codesign --force --sign "Developer ID Application: Elemento SRL (9WTDB7G2C7)" out/ElectrOS-x64.dmg
+          codesign --verbose --force --sign "Developer ID Application: Elemento SRL (9WTDB7G2C7)" out/ElectrOS-x64.dmg
           spctl -a -t open --context context:primary-signature -v out/ElectrOS-x64.dmg
 
       - name: Verify DMG
@@ -181,13 +181,18 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.REPO_KEY }}
 
+      - name: Sign DMG
+        run: |
+          codesign --verbose --force --sign "Developer ID Application: Elemento SRL (9WTDB7G2C7)" out/ElectrOS-arm64.dmg
+          spctl -a -t open --context context:primary-signature -v out/ElectrOS-arm64.dmg
+
       - name: Verify DMG
         run: |
-          spctl -a -t open --context context:primary-signature -v out/ElectrOS-x64.dmg
-
+          spctl -a -t open --context context:primary-signature -v out/ElectrOS-arm64.dmg
+  
       - name: Verify stapling
         run: |
-          xcrun stapler validate out/ElectrOS-x64.dmg
+          xcrun stapler validate out/ElectrOS-arm64.dmg
 
       - name: Push ARM-Mac artifact
         uses: actions/upload-artifact@v2
