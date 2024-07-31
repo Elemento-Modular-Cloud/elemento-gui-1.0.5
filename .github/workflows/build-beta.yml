@@ -190,33 +190,26 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.REPO_KEY }}
 
-      #- name: Create DMG
-      #  uses: borales/actions-yarn@v4
-      #  with:
-      #    cmd: electron-forge:arm-installer-dmg
-      #  env:
-      #    GH_TOKEN: ${{ secrets.REPO_KEY }}
+      - name: Create DMG
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: electron-forge:arm-installer-dmg
+        env:
+          GH_TOKEN: ${{ secrets.REPO_KEY }}
 
       - name: need to see folder
         run: ls -lah out/make/
 
       - name: Sign DMG
         run: |
-          codesign --verbose --force --sign "Developer ID Application: Elemento SRL (9WTDB7G2C7)" out/make/ElectrOS-${{ env.ELECTROS_VERSION }}-arm64.dmg
-
-      - name: Verify DMG
-        run: |
-          spctl --asses --verbose  out/make/ElectrOS-${{ env.ELECTROS_VERSION }}-arm64.dmg
-  
-      - name: Verify stapling
-        run: |
-          xcrun stapler validate out/make/ElectrOS-${{ env.ELECTROS_VERSION }}-arm64.dmg
+          codesign --verbose --force --sign "Developer ID Application: Elemento SRL (9WTDB7G2C7)" out/ElectrOS-arm64.dmg
+          spctl --asses --verbose out/ElectrOS-arm64.dmg
 
       - name: Push ARM-Mac artifact
         uses: actions/upload-artifact@v2
         with:
           name: Elemento_Cloud_App_arm.dmg
-          path: out/make/ElectrOS-${{ env.ELECTROS_VERSION }}-arm64.dmg
+          path: out/ElectrOS-arm64.dmg
 
   linux_arm_build:
     runs-on:
