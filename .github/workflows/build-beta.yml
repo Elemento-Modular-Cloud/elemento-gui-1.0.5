@@ -172,11 +172,11 @@ jobs:
           p12-file-base64: ${{ secrets.MAC_CERTIFICATE }}
           p12-password: ${{ secrets.MAC_CERTIFICATE_PASSWORD }}
 
-      - name: Verify Keychain Contents
-        run: |
-          security list-keychains
-          security show-keychain-info build.keychain
-          security find-identity -v -p codesigning
+      #- name: Verify Keychain Contents
+      #  run: |
+      #    security list-keychains
+      #    security show-keychain-info build.keychain
+      #    security find-identity -v -p codesigning
 
       - name: Build ElectrOS
         uses: borales/actions-yarn@v4
