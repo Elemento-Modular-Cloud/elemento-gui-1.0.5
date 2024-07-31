@@ -10,6 +10,7 @@ jobs:
   mac_x86_build:
     runs-on:
       macos-13
+    needs: [mac_arm_build]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -46,7 +47,7 @@ jobs:
       - name: Install lib for macOS
         uses: borales/actions-yarn@v4
         with:
-          cmd: add appdmg node-abi
+          cmd: add appdmg node-abi @electron-forge/maker-dmg
 
       - name: Decode and install macOS certificate
         run: |
@@ -77,36 +78,35 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.REPO_KEY }}
 
-      - name: Create DMG
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: electron-forge:intel-installer-dmg
-        env:
-          GH_TOKEN: ${{ secrets.REPO_KEY }}
+      #- name: Create DMG
+      #  uses: borales/actions-yarn@v4
+      #  with:
+      #    cmd: electron-forge:intel-installer-dmg
+      #  env:
+      #    GH_TOKEN: ${{ secrets.REPO_KEY }}
 
       - name: Sign DMG
         run: |
-          codesign --verbose --force --sign "Developer ID Application: Elemento SRL (9WTDB7G2C7)" out/ElectrOS-x64.dmg
-          spctl -a -t open --context context:primary-signature -v out/ElectrOS-x64.dmg
+          codesign --verbose --force --sign "Developer ID Application: Elemento SRL (9WTDB7G2C7)" out/make/x64/ElectrOS-x64.dmg
+          spctl -a -t open --context context:primary-signature -v out/make/x64/ElectrOS-x64.dmg
 
       - name: Verify DMG
         run: |
-          spctl -a -t open --context context:primary-signature -v out/ElectrOS-x64.dmg
+          spctl -a -t open --context context:primary-signature -v out/make/x64/ElectrOS-x64.dmg
 
       - name: Verify stapling
         run: |
-          xcrun stapler validate out/ElectrOS-x64.dmg
+          xcrun stapler validate out/make/x64/ElectrOS-x64.dmg
 
       - name: Push x86-Mac artifact
         uses: actions/upload-artifact@v2
         with:
           name: Elemento_Cloud_App_intel.dmg
-          path: out/ElectrOS-x64.dmg
+          path: out/make/x64/ElectrOS-x64.dmg
 
   mac_arm_build:
     runs-on:
       macos-13
-    needs: mac_x86_build
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -143,7 +143,7 @@ jobs:
       - name: Install lib for macOS
         uses: borales/actions-yarn@v4
         with:
-          cmd: add appdmg node-abi
+          cmd: add appdmg node-abi @electron-forge/maker-dmg
 
       - name: Decode and install macOS certificate
         run: |
@@ -174,31 +174,31 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.REPO_KEY }}
 
-      - name: Create DMG
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: electron-forge:arm-installer-dmg
-        env:
-          GH_TOKEN: ${{ secrets.REPO_KEY }}
+      #- name: Create DMG
+      #  uses: borales/actions-yarn@v4
+      #  with:
+      #    cmd: electron-forge:arm-installer-dmg
+      #  env:
+      #    GH_TOKEN: ${{ secrets.REPO_KEY }}
 
       - name: Sign DMG
         run: |
-          codesign --verbose --force --sign "Developer ID Application: Elemento SRL (9WTDB7G2C7)" out/ElectrOS-arm64.dmg
-          spctl -a -t open --context context:primary-signature -v out/ElectrOS-arm64.dmg
+          codesign --verbose --force --sign "Developer ID Application: Elemento SRL (9WTDB7G2C7)" out/make/arm64/ElectrOS-arm64.dmg
+          spctl -a -t open --context context:primary-signature -v out/make/arm64/ElectrOS-arm64.dmg
 
       - name: Verify DMG
         run: |
-          spctl -a -t open --context context:primary-signature -v out/ElectrOS-arm64.dmg
+          spctl -a -t open --context context:primary-signature -v out/make/arm64/ElectrOS-arm64.dmg
   
       - name: Verify stapling
         run: |
-          xcrun stapler validate out/ElectrOS-arm64.dmg
+          xcrun stapler validate out/make/arm64/ElectrOS-arm64.dmg
 
       - name: Push ARM-Mac artifact
         uses: actions/upload-artifact@v2
         with:
           name: Elemento_Cloud_App_arm.dmg
-          path: out/ElectrOS-arm64.dmg
+          path: out/make/arm64/ElectrOS-arm64.dmg
 
   linux_arm_build:
     runs-on:
@@ -441,11 +441,17 @@ jobs:
           name: Elemento_Cloud_App_x86.exe
           path: ./artifacts
 
+      - name: rename win x86 artifact
+        run: mv ./artifacts/ElectrOS\ Setup\ ${{ env.ELECTROS_VERSION }}.exe ./artifacts/ElectrOS_Setup_x86.exe
+
       - name: Gather Win arm Artifacts
         uses: actions/download-artifact@v2
         with:
           name: Elemento_Cloud_App_arm.exe
           path: ./artifacts
+
+      - name: rename win arm artifact
+        run: mv ./artifacts/ElectrOS\ Setup\ ${{ env.ELECTROS_VERSION }}.exe ./artifacts/ElectrOS_Setup_arm.exe
 
       - name: Gather Mac_x86 Artifacts
         uses: actions/download-artifact@v2
@@ -456,7 +462,7 @@ jobs:
       - name: Gather Mac_ARM Artifacts
         uses: actions/download-artifact@v2
         with:
-          name: Elemento_Cloud_App.dmg
+          name: Elemento_Cloud_App_arm.dmg
           path: ./artifacts
 
       - name: Gather Linux x86 Artifacts
@@ -504,7 +510,7 @@ jobs:
           body: |
             Executables of ElectrOS
           draft: false
-          prerelease: false
+          prerelease: true
 
       - name: Upload Win x86 to Release
         uses: actions/upload-release-asset@v1
@@ -512,8 +518,18 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifacts/Elemento_Cloud_App_x86.exe
+          asset_path: ./artifacts/ElectrOS_Setup_x86.exe
           asset_name: Elemento_Cloud_App_x86.exe
+          asset_content_type: application/octet-stream
+
+      - name: Upload Win arm to Release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./artifacts/ElectrOS_Setup_arm.exe
+          asset_name: Elemento_Cloud_App_arm.exe
           asset_content_type: application/octet-stream
 
       - name: Upload Mac_x86 to Release
@@ -522,7 +538,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifacts/Elemento_Cloud_App_intel.dmg
+          asset_path: ./artifacts/ElectrOS-x64.dmg
           asset_name: Elemento_Cloud_App_intel.dmg
           asset_content_type: application/octet-stream
 
@@ -532,8 +548,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifacts/Elemento_Cloud_App.dmg
-          asset_name: Elemento_Cloud_App.dmg
+          asset_path: ./artifacts/ElectrOS-arm64.dmg
+          asset_name: Elemento_Cloud_App_arm.dmg
           asset_content_type: application/octet-stream
 
       - name: Upload Linux x86 to Release
@@ -542,7 +558,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifacts/Elemento_Cloud_App_amd64.AppImage
+          asset_path: ./artifacts/ElectrOS-${{ env.ELECTROS_VERSION }}.AppImage
           asset_name: Elemento_Cloud_App_amd64.AppImage
           asset_content_type: application/octet-stream
       
@@ -552,7 +568,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifacts/Elemento_Cloud_App_amd64.deb
+          asset_path: ./artifacts/electr-os_${{ env.ELECTROS_VERSION }}_amd64.deb
           asset_name: Elemento_Cloud_App_amd64.deb
           asset_content_type: application/octet-stream
 
@@ -562,7 +578,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifacts/Elemento_Cloud_App_arm.AppImage
+          asset_path: ./artifacts/ElectrOS-${{ env.ELECTROS_VERSION }}-arm64.AppImage
           asset_name: Elemento_Cloud_App_arm.AppImage
           asset_content_type: application/octet-stream
 
@@ -572,7 +588,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifacts/Elemento_Cloud_App_arm.deb
+          asset_path: ./artifacts/electr-os_${{ env.ELECTROS_VERSION }}_arm64.deb
           asset_name: Elemento_Cloud_App_arm.deb
           asset_content_type: application/octet-stream
 
