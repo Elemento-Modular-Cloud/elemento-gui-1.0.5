@@ -155,17 +155,23 @@ jobs:
         with:
           cmd: add appdmg node-abi @electron-forge/maker-dmg
 
-      - name: Decode and install macOS certificate
-        run: |
-          echo "${{ secrets.MAC_CERTIFICATE }}" | base64 --decode > macos_cert.p12
-          security create-keychain -p "" build.keychain
-          security default-keychain -s build.keychain
-          security unlock-keychain -p "" build.keychain
-          security import macos_cert.p12 -k build.keychain -P "${{ secrets.MAC_CERTIFICATE_PASSWORD }}" -T /usr/bin/codesign
-          security list-keychains -s build.keychain
-          security set-key-partition-list -S apple-tool:,apple: -s -k "" build.keychain
-          security find-identity -v -p codesigning
-    
+      #- name: Decode and install macOS certificate
+      #  run: |
+      #    echo "${{ secrets.MAC_CERTIFICATE }}" | base64 --decode > macos_cert.p12
+      #    security create-keychain -p "" build.keychain
+      #    security default-keychain -s build.keychain
+      #    security unlock-keychain -p "" build.keychain
+      #    security import macos_cert.p12 -k build.keychain -P "${{ secrets.MAC_CERTIFICATE_PASSWORD }}" -T /usr/bin/codesign
+      #    security list-keychains -s build.keychain
+      #    security set-key-partition-list -S apple-tool:,apple: -s -k "" build.keychain
+      #    security find-identity -v -p codesigning
+
+      - name: Import Certificates
+        uses: apple-actions/import-codesign-certs@v3
+        with: 
+          p12-file-base64: ${{ secrets.MAC_CERTIFICATE }}
+          p12-password: ${{ secrets.MAC_CERTIFICATE_PASSWORD }}
+
       - name: Verify Keychain Contents
         run: |
           security list-keychains
