@@ -194,18 +194,18 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.REPO_KEY }}
 
-      - name: Create DMG
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: electron-forge:arm-installer-dmg
-        env:
-          GH_TOKEN: ${{ secrets.REPO_KEY }}
+      #- name: Create DMG
+      #  uses: borales/actions-yarn@v4
+      #  with:
+      #    cmd: electron-forge:arm-installer-dmg
+      #  env:
+      #    GH_TOKEN: ${{ secrets.REPO_KEY }}
 
       - name: Push ARM-Mac artifact
         uses: actions/upload-artifact@v2
         with:
           name: Elemento_Cloud_App_arm.dmg
-          path: out/ElectrOS-arm64.dmg
+          path: out/make/ElectrOS-${{ env.ELECTROS_VERSION }}-arm64.dmg
 
   linux_arm_build:
     runs-on:
