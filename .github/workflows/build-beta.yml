@@ -145,6 +145,16 @@ jobs:
           python -m ensurepip --upgrade
           python -m pip install --upgrade setuptools
 
+      - name: Import Certificates
+        uses: apple-actions/import-codesign-certs@v3
+        with: 
+          p12-file-base64: ${{ secrets.MAC_CERTIFICATE }}
+          p12-password: ${{ secrets.MAC_CERTIFICATE_PASSWORD }}
+
+      - name: verify certificates
+        run: |
+          security find-identity -v -p codesigning
+
       - name: Install Dependencies
         uses: borales/actions-yarn@v4
         with:
@@ -165,12 +175,6 @@ jobs:
       #    security list-keychains -s build.keychain
       #    security set-key-partition-list -S apple-tool:,apple: -s -k "" build.keychain
       #    security find-identity -v -p codesigning
-
-      - name: Import Certificates
-        uses: apple-actions/import-codesign-certs@v3
-        with: 
-          p12-file-base64: ${{ secrets.MAC_CERTIFICATE }}
-          p12-password: ${{ secrets.MAC_CERTIFICATE_PASSWORD }}
 
       #- name: Verify Keychain Contents
       #  run: |
@@ -196,14 +200,6 @@ jobs:
           cmd: electron-forge:arm-installer-dmg
         env:
           GH_TOKEN: ${{ secrets.REPO_KEY }}
-
-      - name: need to see folder
-        run: ls -lah out/make/
-
-      - name: Sign DMG
-        run: |
-          codesign --verbose --force --sign "Developer ID Application: Elemento SRL (9WTDB7G2C7)" out/ElectrOS-arm64.dmg
-          spctl --asses --verbose out/ElectrOS-arm64.dmg
 
       - name: Push ARM-Mac artifact
         uses: actions/upload-artifact@v2
