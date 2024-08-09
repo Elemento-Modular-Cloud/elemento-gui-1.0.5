@@ -1,6 +1,7 @@
 name: Clean up artifacts
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: '0 0 * * 0' # Esegue ogni domenica a mezzanotte
 
