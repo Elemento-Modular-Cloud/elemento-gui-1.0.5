@@ -221,5 +221,5 @@ export function getCPUInstructionExt () {
   ]
 }
 
-export const models = require('../Data/models.json')
-export const vendors = require('../Data/vendors.json')
+export const models = require('../Data/elemento-pciid-mapper/models.json')
+export const vendors = require('../Data/elemento-pciid-mapper/vendors.json')

@@ -1,3 +1,6 @@
 [submodule "src/Data/iso-templates"]
 	path = src/Data/iso-templates
 	url = git@github.com:Elemento-Modular-Cloud/iso-templates.git
+[submodule "src/Data/elemento-pciid-mapper"]
+	path = src/Data/elemento-pciid-mapper
+	url = git@github.com:Elemento-Modular-Cloud/elemento-pciid-mapper.git
