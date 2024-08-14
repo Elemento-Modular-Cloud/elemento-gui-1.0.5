@@ -149,39 +149,40 @@ jobs:
         run: |
           security find-identity -v -p codesigning
 
-      - name: Install Dependencies
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: install
+      #- name: Install Dependencies
+      #  uses: borales/actions-yarn@v4
+      #  with:
+      #    cmd: install
 
-      - name: Install lib for macOS
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: add appdmg node-abi
+      #- name: Install lib for macOS
+      #  uses: borales/actions-yarn@v4
+      #  with:
+      #    cmd: add appdmg node-abi
 
-      - name: Set env variables
-        run: |
-          export APPLE_ID=fferrando@elemento.cloud
-          export APPLE_APP_SPECIFIC_PASSWORD=iswt-hmsx-xinw-ppef
-          export USE_HARD_LINKS=false
+      #- name: Set env variables
+      #  run: |
+      #    export APPLE_ID=fferrando@elemento.cloud && export APPLE_APP_SPECIFIC_PASSWORD=iswt-hmsx-xinw-ppef && export USE_HARD_LINKS=false
 
-      - name: Build ElectrOS
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: build
+      #- name: Build ElectrOS
+      #  uses: borales/actions-yarn@v4
+      #  with:
+      #    cmd: build
 
-      - name: Create Executable
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: electron:dist-mac-arm
-        env:
-          GH_TOKEN: ${{ secrets.REPO_KEY }}
+      #- name: Create Executable
+      #  uses: borales/actions-yarn@v4
+      #  with:
+      #    cmd: electron:dist-mac-arm
+      #  env:
+      #    GH_TOKEN: ${{ secrets.REPO_KEY }}
+
+      - name: Run build
+        run: ./builder.sh
 
       - name: Push ARM-Mac artifact
         uses: actions/upload-artifact@v2
         with:
           name: Elemento_Cloud_App_arm.dmg
-          path: distr/ElectrOS-${{ env.ELECTROS_VERSION }}-arm64.dmg
+          path: dist/ElectrOS-${{ env.ELECTROS_VERSION }}-arm64.dmg
 
   linux_arm_build:
     runs-on:
