@@ -176,7 +176,7 @@ jobs:
       #    GH_TOKEN: ${{ secrets.REPO_KEY }}
 
       - name: Run build
-        run: ./builder.sh
+        run: ./mac-builder.sh
 
       - name: Push ARM-Mac artifact
         uses: actions/upload-artifact@v2
