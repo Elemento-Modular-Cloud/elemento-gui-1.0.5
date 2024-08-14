@@ -86,7 +86,8 @@
     },
     "files": [
       "./build/**/*",
-      "node_modules/**/*"
+      "node_modules/**/*",
+      "!node_modules/ds-store/**"
     ],
     "dmg": {
       "background": "build/background.png",
