@@ -79,6 +79,7 @@
   "build": {
     "productName": "ElectrOS",
     "appId": "app.elemento.cloud",
+    "asar": false,
     "includeSubNodeModules": "true",
     "directories": {
       "output": "dist"

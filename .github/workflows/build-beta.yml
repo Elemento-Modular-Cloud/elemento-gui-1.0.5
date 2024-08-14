@@ -159,6 +159,12 @@ jobs:
         with:
           cmd: add appdmg node-abi
 
+      - name: Set env variables
+        run: |
+          export APPLE_ID=fferrando@elemento.cloud
+          export APPLE_APP_SPECIFIC_PASSWORD=iswt-hmsx-xinw-ppef
+          export USE_HARD_LINKS=false
+
       - name: Build ElectrOS
         uses: borales/actions-yarn@v4
         with:
@@ -212,12 +218,6 @@ jobs:
         uses: borales/actions-yarn@v4
         with:
           cmd: build
-
-      - name: Set env variables
-        run: |
-          export APPLE_ID=fferrando@elemento.cloud
-          export APPLE_APP_SPECIFIC_PASSWORD=iswt-hmsx-xinw-ppef
-          export USE_HARD_LINKS=false
 
       - name: Create Executable
         uses: borales/actions-yarn@v4
