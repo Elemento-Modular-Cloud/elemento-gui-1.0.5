@@ -175,6 +175,9 @@ jobs:
       #  env:
       #    GH_TOKEN: ${{ secrets.REPO_KEY }}
 
+      - name: export gh token
+        run: export GH_TOKEN=${{ secrets.REPO_KEY }}
+
       - name: Run build
         run: ./mac-builder.sh
 
