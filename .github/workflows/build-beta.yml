@@ -181,7 +181,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: Elemento_Cloud_App_arm.dmg
-          path: dist/ElectrOS-${{ env.ELECTROS_VERSION }}-arm64.dmg
+          path: distr/ElectrOS-${{ env.ELECTROS_VERSION }}-arm64.dmg
 
   linux_arm_build:
     runs-on:

@@ -82,7 +82,7 @@
     "asar": true,
     "includeSubNodeModules": "true",
     "directories": {
-      "output": "dist"
+      "output": "distr"
     },
     "files": [
       "./build/**/*",
