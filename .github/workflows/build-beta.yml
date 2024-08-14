@@ -337,6 +337,11 @@ jobs:
           submodules: recursive
           ref: develop
 
+      - name: Electros Version
+        run: |
+          ELECTROS_VERSION=$( cat package.json | grep '"version":' | cut -d '"' -f 4 )
+          echo "ELECTROS_VERSION=$(echo $ELECTROS_VERSION)" >> $GITHUB_ENV
+
       - name: Gather Win x86 Artifacts
         uses: actions/download-artifact@v2
         with:
