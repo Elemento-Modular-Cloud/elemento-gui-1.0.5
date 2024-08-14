@@ -97,10 +97,13 @@
       "target": [
         "dmg"
       ],
-      "identity": null,
+      "identity": "Elemento SRL (9WTDB7G2C7)",
       "type": "distribution",
       "hardenedRuntime": true,
       "gatekeeperAssess": false,
+      "notarize": {
+        "teamId": "9WTDB7G2C7"
+      },
       "entitlements": "entitlements.mac.plist",
       "entitlementsInherit": "entitlements.mac.plist"
     },

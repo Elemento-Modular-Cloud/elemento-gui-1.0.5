@@ -157,24 +157,7 @@ jobs:
       - name: Install lib for macOS
         uses: borales/actions-yarn@v4
         with:
-          cmd: add appdmg node-abi @electron-forge/maker-dmg
-
-      #- name: Decode and install macOS certificate
-      #  run: |
-      #    echo "${{ secrets.MAC_CERTIFICATE }}" | base64 --decode > macos_cert.p12
-      #    security create-keychain -p "" build.keychain
-      #    security default-keychain -s build.keychain
-      #    security unlock-keychain -p "" build.keychain
-      #    security import macos_cert.p12 -k build.keychain -P "${{ secrets.MAC_CERTIFICATE_PASSWORD }}" -T /usr/bin/codesign
-      #    security list-keychains -s build.keychain
-      #    security set-key-partition-list -S apple-tool:,apple: -s -k "" build.keychain
-      #    security find-identity -v -p codesigning
-
-      #- name: Verify Keychain Contents
-      #  run: |
-      #    security list-keychains
-      #    security show-keychain-info build.keychain
-      #    security find-identity -v -p codesigning
+          cmd: add appdmg node-abi
 
       - name: Build ElectrOS
         uses: borales/actions-yarn@v4
@@ -184,22 +167,15 @@ jobs:
       - name: Create Executable
         uses: borales/actions-yarn@v4
         with:
-          cmd: electron-forge:make-macos-arm
+          cmd: electron:dist-mac-arm
         env:
           GH_TOKEN: ${{ secrets.REPO_KEY }}
-
-      #- name: Create DMG
-      #  uses: borales/actions-yarn@v4
-      #  with:
-      #    cmd: electron-forge:arm-installer-dmg
-      #  env:
-      #    GH_TOKEN: ${{ secrets.REPO_KEY }}
 
       - name: Push ARM-Mac artifact
         uses: actions/upload-artifact@v2
         with:
           name: Elemento_Cloud_App_arm.dmg
-          path: out/make/ElectrOS-${{ env.ELECTROS_VERSION }}-arm64.dmg
+          path: dist/ElectrOS-${{ env.ELECTROS_VERSION }}-arm64.dmg
 
   linux_arm_build:
     runs-on:
@@ -236,6 +212,12 @@ jobs:
         uses: borales/actions-yarn@v4
         with:
           cmd: build
+
+      - name: Set env variables
+        run: |
+          export APPLE_ID=fferrando@elemento.cloud
+          export APPLE_APP_SPECIFIC_PASSWORD=iswt-hmsx-xinw-ppef
+          export USE_HARD_LINKS=false
 
       - name: Create Executable
         uses: borales/actions-yarn@v4
