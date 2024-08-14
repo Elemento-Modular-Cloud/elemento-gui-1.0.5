@@ -51,7 +51,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: Elemento_Cloud_App_intel.dmg
-          path: dist/ElectrOS-${{ env.ELECTROS_VERSION }}-x64.dmg
+          path: dist/ElectrOS-${{ env.ELECTROS_VERSION }}.dmg
 
   mac_arm_build:
     runs-on:
@@ -440,7 +440,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifacts/ElectrOS-x64.dmg
+          asset_path: ./artifacts/ElectrOS-${{ env.ELECTROS_VERSION }}.dmg
           asset_name: Elemento_Cloud_App_intel.dmg
           asset_content_type: application/octet-stream
 
@@ -450,7 +450,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifacts/ElectrOS-arm64.dmg
+          asset_path: ./artifacts/ElectrOS-${{ env.ELECTROS_VERSION }}-arm64.dmg
           asset_name: Elemento_Cloud_App_arm.dmg
           asset_content_type: application/octet-stream
 
