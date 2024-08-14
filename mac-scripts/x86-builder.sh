@@ -1,4 +1,3 @@
-yarn clean:build
 yarn install
 yarn install --check-files
 export APPLE_ID=fferrando@elemento.cloud
