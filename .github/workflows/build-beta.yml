@@ -9,7 +9,7 @@ on:
 jobs:
   mac_x86_build:
     runs-on:
-      macos-13
+      mac-arm
     needs: [mac_arm_build]
     steps:
       - name: Checkout
@@ -44,70 +44,14 @@ jobs:
         with:
           node-version: ${{ env.NODEVERSION }}
 
-      - name: Install Dependencies
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: install
-
-      - name: Install lib for macOS
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: add appdmg node-abi @electron-forge/maker-dmg
-
-      - name: Decode and install macOS certificate
-        run: |
-          echo "${{ secrets.MAC_CERTIFICATE }}" | base64 --decode > macos_cert.p12
-          security create-keychain -p "" build.keychain
-          security default-keychain -s build.keychain
-          security unlock-keychain -p "" build.keychain
-          security import macos_cert.p12 -k build.keychain -P "${{ secrets.MAC_CERTIFICATE_PASSWORD }}" -T /usr/bin/codesign
-          security list-keychains -s build.keychain
-          security set-key-partition-list -S apple-tool:,apple: -s -k "" build.keychain
-          security find-identity -v -p codesigning
-  
-      - name: Verify Keychain Contents
-        run: |
-          security list-keychains
-          security show-keychain-info build.keychain
-          security find-identity -v -p codesigning
-
-      - name: Build ElectrOS
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: build
-
-      - name: Create Executable
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: electron-forge:make-macos-intel
-        env:
-          GH_TOKEN: ${{ secrets.REPO_KEY }}
-
-      #- name: Create DMG
-      #  uses: borales/actions-yarn@v4
-      #  with:
-      #    cmd: electron-forge:intel-installer-dmg
-      #  env:
-      #    GH_TOKEN: ${{ secrets.REPO_KEY }}
-
-      - name: Sign DMG
-        run: |
-          codesign --verbose --force --sign "Developer ID Application: Elemento SRL (9WTDB7G2C7)" out/make/dmg/darwin/x64/ElectrOS-darwin-x64-${{ env.ELECTROS_VERSION }}.dmg
-          spctl -a -t open --context context:primary-signature -v out/make/dmg/darwin/x64/ElectrOS-darwin-x64-${{ env.ELECTROS_VERSION }}.dmg
-
-      - name: Verify DMG
-        run: |
-          spctl -a -t open --context context:primary-signature -v out/make/dmg/darwin/x64/ElectrOS-darwin-x64-${{ env.ELECTROS_VERSION }}.dmg
-
-      - name: Verify stapling
-        run: |
-          xcrun stapler validate out/make/dmg/darwin/x64/ElectrOS-darwin-x64-${{ env.ELECTROS_VERSION }}.dmg
+      - name: run mac build
+        run: ./mac-scripts/x86-builder.sh
 
       - name: Push x86-Mac artifact
         uses: actions/upload-artifact@v2
         with:
           name: Elemento_Cloud_App_intel.dmg
-          path: out/make/dmg/darwin/x64/ElectrOS-darwin-x64-${{ env.ELECTROS_VERSION }}.dmg
+          path: dist/ElectrOS-${{ env.ELECTROS_VERSION }}-x64.dmg
 
   mac_arm_build:
     runs-on:
@@ -149,37 +93,8 @@ jobs:
         run: |
           security find-identity -v -p codesigning
 
-      #- name: Install Dependencies
-      #  uses: borales/actions-yarn@v4
-      #  with:
-      #    cmd: install
-
-      #- name: Install lib for macOS
-      #  uses: borales/actions-yarn@v4
-      #  with:
-      #    cmd: add appdmg node-abi
-
-      #- name: Set env variables
-      #  run: |
-      #    export APPLE_ID=fferrando@elemento.cloud && export APPLE_APP_SPECIFIC_PASSWORD=iswt-hmsx-xinw-ppef && export USE_HARD_LINKS=false
-
-      #- name: Build ElectrOS
-      #  uses: borales/actions-yarn@v4
-      #  with:
-      #    cmd: build
-
-      #- name: Create Executable
-      #  uses: borales/actions-yarn@v4
-      #  with:
-      #    cmd: electron:dist-mac-arm
-      #  env:
-      #    GH_TOKEN: ${{ secrets.REPO_KEY }}
-
-      - name: export gh token
-        run: export GH_TOKEN=${{ secrets.REPO_KEY }}
-
       - name: Run build
-        run: ./mac-builder.sh
+        run: ./mac-scripts/arm-builder.sh
 
       - name: Push ARM-Mac artifact
         uses: actions/upload-artifact@v2
