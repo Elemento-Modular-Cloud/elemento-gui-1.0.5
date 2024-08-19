@@ -1,14 +1,15 @@
 name: ElectrOS Build and Distribute RELEASE
 
 on:
-  pull_request_review:
-    types: [submitted]
+  push:
+    branches:
+      - 'main'
 
 jobs:
   mac_x86_build:
-    if: ${{ github.event.review.state == 'approved' && github.event.pull_request.base.ref == 'main' }}
     runs-on:
-      macos-13
+      mac-arm
+    needs: [mac_arm_build]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -22,56 +23,38 @@ jobs:
           NODEVERSION=$(cat .nvmrc | cut -d 'v' -f 2)
           echo "NODEVERSION=$(echo $NODEVERSION)" >> $GITHUB_ENV
 
+      - name: Electros Version
+        run: |
+          ELECTROS_VERSION=$( cat package.json | grep '"version":' | cut -d '"' -f 4 )
+          echo "ELECTROS_VERSION=$(echo $ELECTROS_VERSION)" >> $GITHUB_ENV
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'  # Use the latest 3.x version available
+
+      - name: Install setuptools
+        run: |
+          python -m ensurepip --upgrade
+          python -m pip install --upgrade setuptools
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODEVERSION }}
 
-      - name: Install Dependencies
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: install
-
-      - name: Decode and Install macOS certificates
-        run: |
-          echo "${{ secrets.MAC_CERTIFICATE }}" | base64 --decode > cert.p12
-          security create-keychain -p "" build.keychain
-          security import cert.p12 -k build.keychain -P ${{ secrets.MAC_CERTIFICATE_PASSWORD }} -T /usr/bin/codesign
-          security set-key-partition-list -S apple-tool:,apple: -s -k "" build.keychain
-          security find-identity -v -p codesigning
-
-      - name: Build ElectrOS
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: build
-
-      - name: Create Executable
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: | 
-            electron-forge:make-macos-intel && electron-forge:intel-installer-dmg
-        env:
-          GH_TOKEN: ${{ secrets.REPO_KEY }}
+      - name: run mac build
+        run: ./mac-scripts/x86-builder.sh
 
       - name: Push x86-Mac artifact
         uses: actions/upload-artifact@v2
         with:
           name: Elemento_Cloud_App_intel.dmg
-          path: electrOS-x64.dmg
-
-      # - name: Push Executable
-      #   uses: appleboy/scp-action@master
-      #   with:
-      #     host: ${{ secrets.SCP_HOST }}
-      #     username: ${{ secrets.SCP_USER }}
-      #     key: ${{ secrets.SCP_KEY }}
-      #     source: dist/electron/ElectrOS-darwin-x64
-      #     target:
+          path: dist/ElectrOS-${{ env.ELECTROS_VERSION }}.dmg
 
   mac_arm_build:
-    if: ${{ github.event.review.state == 'approved' && github.event.pull_request.base.ref == 'main' }}
     runs-on:
-      macos-latest
+      mac-arm
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -85,56 +68,42 @@ jobs:
           NODEVERSION=$(cat .nvmrc | cut -d 'v' -f 2)
           echo "NODEVERSION=$(echo $NODEVERSION)" >> $GITHUB_ENV
 
+      - name: Electros Version
+        run: |
+          ELECTROS_VERSION=$( cat package.json | grep '"version":' | cut -d '"' -f 4 )
+          echo "ELECTROS_VERSION=$(echo $ELECTROS_VERSION)" >> $GITHUB_ENV
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODEVERSION }}
 
-      - name: Install Dependencies
-        uses: borales/actions-yarn@v4
+      - name: Setup Python
+        uses: actions/setup-python@v2
         with:
-          cmd: install
-
-      - name: Decode and Install macOS certificates
+          python-version: '3.x'  # Use the latest 3.x version available
+  
+      - name: Install setuptools
         run: |
-          echo "${{ secrets.MAC_CERTIFICATE }}" | base64 --decode > cert.p12
-          security create-keychain -p "" build.keychain
-          security import cert.p12 -k build.keychain -P ${{ secrets.MAC_CERTIFICATE_PASSWORD }} -T /usr/bin/codesign
-          security set-key-partition-list -S apple-tool:,apple: -s -k "" build.keychain
+          python -m ensurepip --upgrade
+          python -m pip install --upgrade setuptools
+
+      - name: verify certificates
+        run: |
           security find-identity -v -p codesigning
 
-      - name: Build ElectrOS
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: build
-
-      - name: Create Executable
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: | 
-            electron-forge:make-macos-arm && electron-forge:arm-installer-dmg
-        env:
-          GH_TOKEN: ${{ secrets.REPO_KEY }}
+      - name: Run build
+        run: ./mac-scripts/arm-builder.sh
 
       - name: Push ARM-Mac artifact
         uses: actions/upload-artifact@v2
         with:
           name: Elemento_Cloud_App_arm.dmg
-          path: electrOS-arm64.dmg
-
-      # - name: Push Executable
-      #   uses: appleboy/scp-action@master
-      #   with:
-      #     host: ${{ secrets.SCP_HOST }}
-      #     username: ${{ secrets.SCP_USER }}
-      #     key: ${{ secrets.SCP_KEY }}
-      #     source: dist/electron/ElectrOS-darwin-x64
-      #     target:
+          path: dist/ElectrOS-${{ env.ELECTROS_VERSION }}-arm64.dmg
 
   linux_arm_build:
-    if: ${{ github.event.review.state == 'approved' && github.event.pull_request.base.ref == 'main' }}
     runs-on:
-      macos-latest
+      ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -148,6 +117,11 @@ jobs:
           NODEVERSION=$(cat .nvmrc | cut -d 'v' -f 2)
           echo "NODEVERSION=$(echo $NODEVERSION)" >> $GITHUB_ENV
 
+      - name: Electros Version
+        run: |
+          ELECTROS_VERSION=$( cat package.json | grep '"version":' | cut -d '"' -f 4 )
+          echo "ELECTROS_VERSION=$(echo $ELECTROS_VERSION)" >> $GITHUB_ENV
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
@@ -158,14 +132,6 @@ jobs:
         with:
           cmd: install
 
-      - name: Decode and Install macOS certificates
-        run: |
-          echo "${{ secrets.MAC_CERTIFICATE }}" | base64 --decode > cert.p12
-          security create-keychain -p "" build.keychain
-          security import cert.p12 -k build.keychain -P ${{ secrets.MAC_CERTIFICATE_PASSWORD }} -T /usr/bin/codesign
-          security set-key-partition-list -S apple-tool:,apple: -s -k "" build.keychain
-          security find-identity -v -p codesigning
-
       - name: Build ElectrOS
         uses: borales/actions-yarn@v4
         with:
@@ -175,7 +141,7 @@ jobs:
         uses: borales/actions-yarn@v4
         with:
           cmd: | 
-            electron:dist-linux
+            electron:dist-linux-arm
         env:
           GH_TOKEN: ${{ secrets.REPO_KEY }}
 
@@ -183,19 +149,15 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: Elemento_Cloud_App_arm.AppImage
-          path: dist/electr-os_${{ env.ELECTROS_VERSION }}-arm64.AppImage
+          path: dist/ElectrOS-${{ env.ELECTROS_VERSION }}-arm64.AppImage
 
-      # - name: Push Executable
-      #   uses: appleboy/scp-action@master
-      #   with:
-      #     host: ${{ secrets.SCP_HOST }}
-      #     username: ${{ secrets.SCP_USER }}
-      #     key: ${{ secrets.SCP_KEY }}
-      #     source: dist/electron/ElectrOS-darwin-x6
-      #     target:
+      - name: Push ARM-Mac artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: Elemento_Cloud_App_arm.deb
+          path: dist/electr-os_${{ env.ELECTROS_VERSION }}_arm64.deb
 
-  win_build:
-    if: ${{ github.event.review.state == 'approved' && github.event.pull_request.base.ref == 'main' }}
+  win_x86_build:
     runs-on:
       ubuntu-latest
     steps:
@@ -241,27 +203,74 @@ jobs:
       - name: Create Executable
         uses: borales/actions-yarn@v4
         with:
-          cmd: electron:dist-windows
+          cmd: electron:dist-windows-x64
         env:
           GH_TOKEN: ${{ secrets.REPO_KEY }}
 
       - name: Push Win artifact
         uses: actions/upload-artifact@v2
         with:
-          name: Elemento_Cloud_App.exe
+          name: Elemento_Cloud_App_x86.exe
           path: dist/ElectrOS\ Setup\ ${{ env.ELECTROS_VERSION }}.exe
 
-      # - name: Push Executable to prod
-      #   uses: appleboy/scp-action@master
-      #   with:
-      #     host: ${{ secrets.SCP_HOST }}
-      #     username: ${{ secrets.SCP_USER }}
-      #     key: ${{ secrets.SCP_KEY }}
-      #     source: dist/ElectrOS\ Setup\ ${{ env.ELECTROS_VERSION }}.exe
-      #     target:
+  win_arm_build:
+    runs-on:
+      ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.REPO_KEY }}
+          submodules: recursive
+          ref: main
+
+      - name: Get Node Version
+        run: |
+          NODEVERSION=$(cat .nvmrc | cut -d 'v' -f 2)
+          echo "NODEVERSION=$(echo $NODEVERSION)" >> $GITHUB_ENV
+
+      - name: Electros Version
+        run: |
+          ELECTROS_VERSION=$( cat package.json | grep '"version":' | cut -d '"' -f 4 )
+          echo "ELECTROS_VERSION=$(echo $ELECTROS_VERSION)" >> $GITHUB_ENV
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODEVERSION }}
+
+      - name: Install Dependencies
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: install
+
+      - name: Install needed packages
+        run: |
+          sudo dpkg --add-architecture i386
+          sudo apt-get update
+          sudo apt-get install -y wine wine32
+          sudo apt-get install -y libudev-dev libusb-1.0-0-dev
+
+      - name: Build ElectrOS
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: build
+
+      - name: Create Executable
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: | 
+            electron:dist-windows-arm
+        env:
+          GH_TOKEN: ${{ secrets.REPO_KEY }}
+
+      - name: Push ARM-Mac artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: Elemento_Cloud_App_arm.exe
+          path: dist/ElectrOS\ Setup\ ${{ env.ELECTROS_VERSION }}.exe
 
   linux_x86_build:
-    if: ${{ github.event.review.state == 'approved' && github.event.pull_request.base.ref == 'main' }}
     runs-on:
       ubuntu-latest
     steps:
@@ -300,42 +309,24 @@ jobs:
       - name: Create Executable
         uses: borales/actions-yarn@v4
         with:
-          cmd: electron:dist-linux
+          cmd: electron:dist-linux-x64
         env:
           GH_TOKEN: ${{ secrets.REPO_KEY }}
 
       - name: Push Linux appImage artifact
         uses: actions/upload-artifact@v2
         with:
-          name: Elemento_Cloud_App.AppImage
+          name: Elemento_Cloud_App_amd64.AppImage
           path: dist/ElectrOS-${{ env.ELECTROS_VERSION }}.AppImage
 
       - name: Push Linux deb artifact
         uses: actions/upload-artifact@v2
         with:
-          name: Elemento_Cloud_App.deb
+          name: Elemento_Cloud_App_amd64.deb
           path: dist/electr-os_${{ env.ELECTROS_VERSION }}_amd64.deb
 
-      # - name: Push Executable deb to prod
-      #   uses: appleboy/scp-action@master
-      #   with:
-      #     host: ${{ secrets.SCP_HOST }}
-      #     username: ${{ secrets.SCP_USER }}
-      #     key: ${{ secrets.SCP_KEY }}
-      #     source: dist/electr-os_${{ env.ELECTROS_VERSION }}_amd64.deb
-      #     target:
-
-      # - name: Push Executable appImage to prod
-      #   uses: appleboy/scp-action@master
-      #   with:
-      #     host: ${{ secrets.SCP_HOST }}
-      #     username: ${{ secrets.SCP_USER }}
-      #     key: ${{ secrets.SCP_KEY }}
-      #     source: dist/electr-os_${{ env.ELECTROS_VERSION }}.AppImage
-      #     target:
-
   release:
-    needs: [mac_arm_build, mac_x86_build, win_build, linux_x86_build, linux_arm_build]
+    needs: [mac_arm_build, mac_x86_build, win_x86_build, linux_x86_build, linux_arm_build, win_arm_build]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -345,11 +336,28 @@ jobs:
           submodules: recursive
           ref: main
 
-      - name: Gather Win Artifacts
+      - name: Electros Version
+        run: |
+          ELECTROS_VERSION=$( cat package.json | grep '"version":' | cut -d '"' -f 4 )
+          echo "ELECTROS_VERSION=$(echo $ELECTROS_VERSION)" >> $GITHUB_ENV
+
+      - name: Gather Win x86 Artifacts
         uses: actions/download-artifact@v2
         with:
-          name: Elemento_Cloud_App.exe
+          name: Elemento_Cloud_App_x86.exe
           path: ./artifacts
+
+      - name: rename win x86 artifact
+        run: mv ./artifacts/ElectrOS\ Setup\ ${{ env.ELECTROS_VERSION }}.exe ./artifacts/ElectrOS_Setup_x86.exe
+
+      - name: Gather Win arm Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: Elemento_Cloud_App_arm.exe
+          path: ./artifacts
+
+      - name: rename win arm artifact
+        run: mv ./artifacts/ElectrOS\ Setup\ ${{ env.ELECTROS_VERSION }}.exe ./artifacts/ElectrOS_Setup_arm.exe
 
       - name: Gather Mac_x86 Artifacts
         uses: actions/download-artifact@v2
@@ -360,25 +368,31 @@ jobs:
       - name: Gather Mac_ARM Artifacts
         uses: actions/download-artifact@v2
         with:
-          name: Elemento_Cloud_App.dmg
+          name: Elemento_Cloud_App_arm.dmg
           path: ./artifacts
 
-      - name: Gather Linux Artifacts
+      - name: Gather Linux x86 Artifacts
         uses: actions/download-artifact@v2
         with:
-          name: Elemento_Cloud_App.AppImage
+          name: Elemento_Cloud_App_amd64.AppImage
           path: ./artifacts
 
-      - name: Gather Linux Artifacts
+      - name: Gather Linux x86 Artifacts
         uses: actions/download-artifact@v2
         with:
-          name: Elemento_Cloud_App.deb
+          name: Elemento_Cloud_App_amd64.deb
           path: ./artifacts
 
-      - name: Gather Linux Artifacts
+      - name: Gather Linux arm Artifacts
         uses: actions/download-artifact@v2
         with:
           name: Elemento_Cloud_App_arm.AppImage
+          path: ./artifacts
+
+      - name: Gather Linux arm Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: Elemento_Cloud_App_arm.deb
           path: ./artifacts
 
       - name: Electros Version
@@ -396,21 +410,32 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          #tag_name: ${{ steps.date.outputs.date }} # --> using date for alpha build
           tag_name: v${{ env.ELECTROS_VERSION }} # --> using version for stable build
-          release_name: Elemento Web App @ v${{ env.ELECTROS_VERSION }}
+          release_name: ElectrOS app by Elemento @ v${{ env.ELECTROS_VERSION }}
           body: |
             Executables of ElectrOS
           draft: false
           prerelease: false
 
-      - name: Upload Win to Release
+      - name: Upload Win x86 to Release
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifacts/Elemento_Cloud_App.exe
-          asset_name: Elemento_Cloud_App.exe
+          asset_path: ./artifacts/ElectrOS_Setup_x86.exe
+          asset_name: ElectrOS_app_v${{ env.ELECTROS_VERSION }}_x86.exe
+          asset_content_type: application/octet-stream
+
+      - name: Upload Win arm to Release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./artifacts/ElectrOS_Setup_arm.exe
+          asset_name: ElectrOS_app_v${{ env.ELECTROS_VERSION }}_arm.exe
           asset_content_type: application/octet-stream
 
       - name: Upload Mac_x86 to Release
@@ -419,8 +444,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifacts/Elemento_Cloud_App_intel.dmg
-          asset_name: Elemento_Cloud_App_intel.dmg
+          asset_path: ./artifacts/ElectrOS-${{ env.ELECTROS_VERSION }}.dmg
+          asset_name: ElectrOS_app_v${{ env.ELECTROS_VERSION }}_x86.dmg
           asset_content_type: application/octet-stream
 
       - name: Upload Mac_ARM to Release
@@ -429,36 +454,46 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifacts/Elemento_Cloud_App.dmg
-          asset_name: Elemento_Cloud_App.dmg
+          asset_path: ./artifacts/ElectrOS-${{ env.ELECTROS_VERSION }}-arm64.dmg
+          asset_name: EElectrOS_app_v${{ env.ELECTROS_VERSION }}_arm.dmg
           asset_content_type: application/octet-stream
 
-      - name: Upload Linux to Release
+      - name: Upload Linux x86 to Release
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifacts/Elemento_Cloud_App.AppImage
-          asset_name: Elemento_Cloud_App.AppImage
+          asset_path: ./artifacts/ElectrOS-${{ env.ELECTROS_VERSION }}.AppImage
+          asset_name: ElectrOS_app_v${{ env.ELECTROS_VERSION }}_x86.AppImage
           asset_content_type: application/octet-stream
       
-      - name: Upload Linux to Release
+      - name: Upload Linux x86 to Release
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifacts/Elemento_Cloud_App.deb
-          asset_name: Elemento_Cloud_App.deb
+          asset_path: ./artifacts/electr-os_${{ env.ELECTROS_VERSION }}_amd64.deb
+          asset_name: ElectrOS_app_v${{ env.ELECTROS_VERSION }}_x86.deb
           asset_content_type: application/octet-stream
 
-      - name: Upload Linux to Release
+      - name: Upload Linux arm to Release
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifacts/Elemento_Cloud_App_arm.AppImage
-          asset_name: Elemento_Cloud_App_arm.AppImage
+          asset_path: ./artifacts/ElectrOS-${{ env.ELECTROS_VERSION }}-arm64.AppImage
+          asset_name: ElectrOS_app_v${{ env.ELECTROS_VERSION }}_arm.AppImage
+          asset_content_type: application/octet-stream
+
+      - name: Upload Linux arm to Release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./artifacts/electr-os_${{ env.ELECTROS_VERSION }}_arm64.deb
+          asset_name: ElectrOS_app_v${{ env.ELECTROS_VERSION }}_arm.deb
           asset_content_type: application/octet-stream

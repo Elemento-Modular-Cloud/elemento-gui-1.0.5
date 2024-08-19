@@ -1,10 +1,8 @@
-name: ElectrOS Build and Distribute BETA
+name: ElectrOS Build and Distribute NIGHTLY
 
 on:
-  workflow_dispatch:
-  push:
-    branches:
-      - 'develop'
+  schedule:
+    - cron: '0 0 * * *'
 
 jobs:
   mac_x86_build:
@@ -413,7 +411,7 @@ jobs:
         with:
           tag_name: ${{ steps.date.outputs.date }} # --> using date for alpha build
           #tag_name: v${{ env.ELECTROS_VERSION }} # --> using version for stable build
-          release_name: Elemento Web App @ v${{ env.ELECTROS_VERSION }}
+          release_name: ElectrOS app by Elemento @ v${{ env.ELECTROS_VERSION }}-nightly
           body: |
             Executables of ElectrOS
           draft: false
@@ -426,7 +424,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./artifacts/ElectrOS_Setup_x86.exe
-          asset_name: Elemento_Cloud_App_x86.exe
+          asset_name: ElectrOS_app_v${{ env.ELECTROS_VERSION }}_x86.exe
           asset_content_type: application/octet-stream
 
       - name: Upload Win arm to Release
@@ -436,7 +434,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./artifacts/ElectrOS_Setup_arm.exe
-          asset_name: Elemento_Cloud_App_arm.exe
+          asset_name: ElectrOS_app_v${{ env.ELECTROS_VERSION }}_arm.exe
           asset_content_type: application/octet-stream
 
       - name: Upload Mac_x86 to Release
@@ -446,7 +444,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./artifacts/ElectrOS-${{ env.ELECTROS_VERSION }}.dmg
-          asset_name: Elemento_Cloud_App_intel.dmg
+          asset_name: ElectrOS_app_v${{ env.ELECTROS_VERSION }}_x86.dmg
           asset_content_type: application/octet-stream
 
       - name: Upload Mac_ARM to Release
@@ -456,7 +454,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./artifacts/ElectrOS-${{ env.ELECTROS_VERSION }}-arm64.dmg
-          asset_name: Elemento_Cloud_App_arm.dmg
+          asset_name: EElectrOS_app_v${{ env.ELECTROS_VERSION }}_arm.dmg
           asset_content_type: application/octet-stream
 
       - name: Upload Linux x86 to Release
@@ -466,7 +464,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./artifacts/ElectrOS-${{ env.ELECTROS_VERSION }}.AppImage
-          asset_name: Elemento_Cloud_App_amd64.AppImage
+          asset_name: ElectrOS_app_v${{ env.ELECTROS_VERSION }}_x86.AppImage
           asset_content_type: application/octet-stream
       
       - name: Upload Linux x86 to Release
@@ -476,7 +474,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./artifacts/electr-os_${{ env.ELECTROS_VERSION }}_amd64.deb
-          asset_name: Elemento_Cloud_App_amd64.deb
+          asset_name: ElectrOS_app_v${{ env.ELECTROS_VERSION }}_x86.deb
           asset_content_type: application/octet-stream
 
       - name: Upload Linux arm to Release
@@ -486,7 +484,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./artifacts/ElectrOS-${{ env.ELECTROS_VERSION }}-arm64.AppImage
-          asset_name: Elemento_Cloud_App_arm.AppImage
+          asset_name: ElectrOS_app_v${{ env.ELECTROS_VERSION }}_arm.AppImage
           asset_content_type: application/octet-stream
 
       - name: Upload Linux arm to Release
@@ -496,23 +494,5 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./artifacts/electr-os_${{ env.ELECTROS_VERSION }}_arm64.deb
-          asset_name: Elemento_Cloud_App_arm.deb
+          asset_name: ElectrOS_app_v${{ env.ELECTROS_VERSION }}_arm.deb
           asset_content_type: application/octet-stream
-
-      # - name: Push to Prod
-      #   uses: appleboy/scp-action@master
-      #   with:
-      #     host: ${{ secrets.REPO_IP }}
-      #     username: github
-      #     key: ${{ secrets.SSH_KEY }}
-      #     source: ./artifacts
-      #     target: /home/github/
-
-      # - name: Move to correct position
-      #   uses: appleboy/ssh-action@
-      #   with:
-      #     host: ${{ secrets.REPO_IP }}
-      #     username: github
-      #     key: ${{ secrets.SSH_KEY }}
-      #     script: |
-      #       echo ${{secrets.REPO_SUDO_PW }} | sudo -S mv /home/github/* /mnt/repository/electron/
