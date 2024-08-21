@@ -167,8 +167,12 @@ class Settings extends Component {
                         <button
                           type='button'
                           onClick={() => {
-                            const updatedList = ipv4List.filter((_, i) => i !== index)
-                            this.setState({ ipv4List: updatedList })
+                            if (ipv4List.length === 1) {
+                              this.setState({ ipv4List: [''] })
+                            } else {
+                              const updatedList = ipv4List.filter((_, i) => i !== index)
+                              this.setState({ ipv4List: updatedList })
+                            }
                           }}
                           className='delete-button'
                         >
