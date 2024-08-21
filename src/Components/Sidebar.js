@@ -6,6 +6,7 @@ import { ReactComponent as User } from '../Assets/utils/user.svg'
 import { ReactComponent as Pc } from '../Assets/main/pc.svg'
 import { ReactComponent as License } from '../Assets/main/license.svg'
 import { ReactComponent as Storage } from '../Assets/main/storage.svg'
+// import { ReactComponent as Network } from '../Assets/main/network.svg'
 import { ReactComponent as Settings } from '../Assets/main/settings.svg'
 
 const Sidebar = ({ selected }) => {
