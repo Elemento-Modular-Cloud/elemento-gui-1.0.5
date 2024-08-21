@@ -38,17 +38,57 @@ yarn build
 
 ## Branches and Versioning manager: git-flow 
 
+This guide is intended to be used by every developer who wants to hanlde software develoment on elemento-gui web app in a smart and fashionable way.
+First of all you have to install git-flow depending on your machine, so please follow this guide for installation references.
 > https://danielkummer.github.io/git-flow-cheatsheet/
 
+### Development
+
+In order to enable git-flow inside the project, you must to run this simple command below and follow the steps.
 ```
 git flow init
+```
 
+When you want to develop a new feature or simply work on some minor improvements all together, you can simply create a new feature branch like this:
+```
 git flow feature start MYFEATURE
-git flow feature publish MYFEATURE
-git flow feature finish MYFEATURE
+```
+and when you'll be done with your software, you can simply `finish` the branch merging it into `develop` branch
 
+```
+git flow feature finish MYFEATURE
+```
+
+Maybe, if you're working with someone else on the same `feature branch`, please publish your changes sometimes with this command
+```
+git flow feature publish MYFEATURE
+```
+then if you're working on a modified feature branch, update your branch running this command
+```
+git flow feature pull origin MYFEATURE
+```
+
+### Versioning
+
+To start a release, use the git flow release command. It creates a release branch created from the 'develop' branch.
+```
 git flow release start RELEASE
+```
+
+It's wise to publish the release branch after creating it to allow release commits by other developers. Do it similar to feature publishing with the command:
+```
 git flow release publish RELEASE
+```
+
+Finishing a release is one of the big steps in git branching. It performs several actions: 
+- Merges the release branch back into 'master' or 'main'
+- Tags the release with its `name`
+- Back-merges the release into 'develop'
+- Removes the release branch
+```
 git flow release finish RELEASE
+```
+Don't forget to push your tags with 
+```
 git push origin --tags
 ```
