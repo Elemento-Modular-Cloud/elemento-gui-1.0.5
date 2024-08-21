@@ -86,8 +86,8 @@ app.on('ready', () => {
         mainWindow.webContents.send('download-progress', { message: 'chunk', data: { chunk: 100, docker: true } })
       }
     } else if (platform === 'linux') {
-      shell.openExternal('https://github.com/Elemento-Modular-Cloud/electros')
-      mainWindow.webContents.send('download-progress', { message: 'chunk', data: { chunk: 100, docker: true } })
+      url = 'https://repo.elemento.cloud/app/Elemento_daemons'
+      filepath = path.join(os.homedir(), 'Downloads', 'Elemento_daemons')
     } else {
       return 'Error: operating system not supported'
     }
