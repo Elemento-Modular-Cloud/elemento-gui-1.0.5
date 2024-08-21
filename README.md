@@ -23,7 +23,7 @@ To get started with ElectrOS, follow these simple steps:
 [useful link](https://hackmd.io/@fferrando/rkpHytli0)
 
 ## CI/CD
-![Develop Branch](https://github.com/filippo-ferrando/elemento-gui/actions/workflows/build-beta.yml/badge.svg?branch=develop)
+![Develop Branch](https://github.com/Elemento-Modular-Cloud/elemento-gui/actions/workflows/nightly.yml/badge.svg?branch=develop)
 
 ## Building from Source
 
