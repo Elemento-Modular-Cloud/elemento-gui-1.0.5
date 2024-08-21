@@ -1,6 +1,20 @@
 name: ElectrOS Build and Distribute NIGHTLY
 
 on:
+  workflow_dispatch:
+    inputs:
+        logLevel:
+          description: 'Log level'
+          required: true
+          default: 'info'
+          type: choice
+          options:
+          - info
+          - warning
+          - debug
+  push:
+    branches:
+      - 'develop'
   schedule:
     - cron: '0 0 * * *'
 
