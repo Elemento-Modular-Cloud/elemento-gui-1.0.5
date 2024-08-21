@@ -70,6 +70,9 @@ git flow feature pull origin MYFEATURE
 
 ### Versioning
 
+### TL;DR
+> Run `sh ./tools/publish <version-number>` to execute the git-flow publish strategy all-in-one.
+
 To start a release, use the git flow release command. It creates a release branch created from the 'develop' branch.
 ```
 git flow release start RELEASE
