@@ -35,3 +35,20 @@ cd electros
 yarn install
 yarn build
 ```
+
+## Branches and Versioning manager: git-flow 
+
+> https://danielkummer.github.io/git-flow-cheatsheet/
+
+```
+git flow init
+
+git flow feature start MYFEATURE
+git flow feature publish MYFEATURE
+git flow feature finish MYFEATURE
+
+git flow release start RELEASE
+git flow release publish RELEASE
+git flow release finish RELEASE
+git push origin --tags
+```
