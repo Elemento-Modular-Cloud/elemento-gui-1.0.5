@@ -41,20 +41,14 @@ jobs:
           ELECTROS_VERSION=$( cat package.json | grep '"version":' | cut -d '"' -f 4 )
           echo "ELECTROS_VERSION=$(echo $ELECTROS_VERSION)" >> $GITHUB_ENV
 
-      - name: Setup Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'  # Use the latest 3.x version available
-
       - name: Install setuptools
         run: |
           python -m ensurepip --upgrade
           python -m pip install --upgrade setuptools
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ env.NODEVERSION }}
+      - name: verify certificates
+        run: |
+          security find-identity -v -p codesigning
 
       - name: run mac build
         run: ./mac-scripts/x86-builder.sh
