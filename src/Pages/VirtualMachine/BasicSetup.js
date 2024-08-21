@@ -236,14 +236,14 @@ class BasicSetup extends Component {
                 <span className='bascaption'>OS Selection*</span>
                 <div
                   className='basradioitem'
-                  onClick={() => this.setState({ osFamily: 'linux' })}
+                  onClick={() => this.setState({ osFamily: 'linux', flavour: 'ubuntu' })}
                   style={{ backgroundColor: osFamily === 'linux' ? '#f28e00' : 'white' }}
                 >
                   <Linux fill={osFamily === 'linux' ? 'white' : 'black'} />
                 </div>
                 <div
                   className='basradioitem'
-                  onClick={() => this.setState({ osFamily: 'windows' })}
+                  onClick={() => this.setState({ osFamily: 'windows', flavour: 'windows10' })}
                   style={{ backgroundColor: osFamily === 'windows' ? '#f28e00' : 'white' }}
                 >
                   <Windows fill={osFamily === 'windows' ? 'white' : 'black'} />
