@@ -44,8 +44,8 @@ class Storage extends Component {
     const res = await Api.get('/accessible')
 
     if (res.ok && res.data && res.data.length > 0) {
-      const personalStorages = res.data ? res.data.filter(storage => storage.own) : []
-      const publicStorages = res.data ? res.data.filter(storage => !storage.own) : []
+      const personalStorages = res.data ? res.data.filter(storage => storage.own).sort((a, b) => a.volumeID.localCompare(b.volumeID)) : []
+      const publicStorages = res.data ? res.data.filter(storage => !storage.own).sort((a, b) => a.volumeID.localCompare(b.volumeID)) : []
 
       this.setState({ personalStorages, publicStorages })
     }
@@ -67,8 +67,8 @@ class Storage extends Component {
       swal('Error', 'Please, provide a valid storage name', 'error', { buttons: false, timer: 3000 })
       return
     }
-    if (!size || size === '' || (amount === 'TB' && size > 2) || (amount === 'GB' && (size < 50 || size >= 1000))) {
-      swal('Error', 'Please, provide a valid storage size (min 50GB, max 2TB)', 'error', { buttons: false, timer: 3000 })
+    if (!size || size === '' || (amount === 'TB' && size > 2) || (amount === 'GB' && (size < 1 || size >= 1000))) {
+      swal('Error', 'Please, provide a valid storage size (min 1GB, max 2TB)', 'error', { buttons: false, timer: 3000 })
       return
     }
     if (!amount || amount === '') {
@@ -185,7 +185,7 @@ class Storage extends Component {
 
           <div className='stoselector'>
             <span
-              style={{ marginLeft: 20, color: selector === 'public' ? '#f28e00' : '#898C8A', textDecorationLine: selector === 'public' ? 'underline' : 'none' }}
+              style={{ marginRight: 20, color: selector === 'public' ? '#f28e00' : '#898C8A', textDecorationLine: selector === 'public' ? 'underline' : 'none' }}
               onClick={() => this.setState({ selector: 'public' })}
             >
               Common Volumes
@@ -225,7 +225,10 @@ class Storage extends Component {
                         ? personalStorages.map((storage, i) => {
                           return (
                             <tr key={i} style={{ backgroundColor: toBeDeleted === storage.volumeID ? '#898C8A99' : '' }}>
-                              <td style={{ fontWeight: 'bold' }}>{storage.name}</td>
+                              <td>
+                                <span style={{ fontWeight: 'bold' }}>{storage.name}</span>
+                                <span style={{ fontWeight: 200, fontSize: 14 }}>({storage.volumeID.substring(0, 6)}...)</span>
+                              </td>
                               <td style={{ width: 80 }}>{storage.bootable ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
                               <td style={{ width: 80 }}>{storage.private ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
                               <td style={{ width: 80 }}>{storage.readonly ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
@@ -277,7 +280,10 @@ class Storage extends Component {
                         ? publicStorages.map((storage, i) => {
                           return (
                             <tr key={i} style={{ backgroundColor: toBeDeleted === storage.volumeID ? '#898C8A99' : '' }}>
-                              <td style={{ fontWeight: 'bold' }}>{storage.name}</td>
+                              <td>
+                                <span style={{ fontWeight: 'bold' }}>{storage.name}</span>
+                                <span style={{ fontWeight: 200, fontSize: 14 }}>({storage.volumeID.substring(0, 6)}...)</span>
+                              </td>
                               <td style={{ width: 80 }}>{storage.bootable ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
                               <td style={{ width: 80 }}>{storage.private ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
                               <td style={{ width: 80 }}>{storage.readonly ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
