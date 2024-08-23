@@ -422,8 +422,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.date.outputs.date }} # --> using date for alpha build
-          #tag_name: v${{ env.ELECTROS_VERSION }} # --> using version for stable build
+          tag_name: ${{ github.ref }} # --> using date for alpha build
           release_name: ElectrOS app by Elemento @ v${{ env.ELECTROS_VERSION }}-nightly
           body: |
             Executables of ElectrOS
