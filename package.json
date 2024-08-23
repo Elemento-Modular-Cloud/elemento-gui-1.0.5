@@ -49,6 +49,9 @@
     "snazzy": "^9.0.0",
     "standard": "^17.0.0"
   },
+  "resolutions": {
+    "node-abi": "^3.65.0"
+  },
   "scripts": {
     "start": "react-scripts start",
     "lint": "standard --fix",
@@ -59,13 +62,15 @@
     "electron:start": "electron .",
     "electron:pack": "electron-builder --dir",
     "electron:post": "electron-builder install-app-deps",
-    "electron:dist-mac-arm": "electron-builder --mac --arm64",
-    "electron:dist-mac-x64": "electron-builder --mac --x64",
-    "electron:dist-windows": "electron-builder --win",
-    "electron:dist-linux": "electron-builder --linux",
+    "electron:dist-mac-arm": "electron-builder --mac --arm64 --publish never",
+    "electron:dist-mac-x64": "electron-builder --mac --x64 --publish never",
+    "electron:dist-windows-x64": "electron-builder --win --x64 --publish never",
+    "electron:dist-windows-arm": "electron-builder --win --arm64 --publish never",
+    "electron:dist-linux-x64": "electron-builder --linux --x64 --publish never",
+    "electron:dist-linux-arm": "electron-builder --linux --arm64 --publish never",
     "electron:notarize": "DEBUG=* node notarize.js",
     "package": "electron-forge package",
-    "electron-forge:make-macos-arm": "electron-forge make",
+    "electron-forge:make-macos-arm": "DEBUG=* electron-forge make --arch=arm64 --platform=darwin",
     "electron-forge:arm-installer-dmg": "cd out && npx electron-installer-dmg --icon=../public/icon.png --background=../public/background.png --title=ElectrOS ./electrOS-darwin-arm64/ElectrOS.app 'ElectrOS-arm64'",
     "electron-forge:make-macos-intel": "electron-forge make --arch=x64 --platform=darwin",
     "electron-forge:intel-installer-dmg": "cd out && npx electron-installer-dmg --icon=../public/icon.png --background=../public/background.png --title=ElectrOS ./electrOS-darwin-x64/ElectrOS.app 'ElectrOS-x64'",
@@ -74,13 +79,15 @@
   "build": {
     "productName": "ElectrOS",
     "appId": "app.elemento.cloud",
+    "asar": true,
     "includeSubNodeModules": "true",
     "directories": {
       "output": "dist"
     },
     "files": [
       "./build/**/*",
-      "node_modules/**/*"
+      "node_modules/**/*",
+      "!node_modules/ds-store/**"
     ],
     "dmg": {
       "background": "build/background.png",
@@ -92,10 +99,13 @@
       "target": [
         "dmg"
       ],
-      "identity": null,
+      "identity": "Elemento SRL (9WTDB7G2C7)",
       "type": "distribution",
       "hardenedRuntime": true,
       "gatekeeperAssess": false,
+      "notarize": {
+        "teamId": "9WTDB7G2C7"
+      },
       "entitlements": "entitlements.mac.plist",
       "entitlementsInherit": "entitlements.mac.plist"
     },
