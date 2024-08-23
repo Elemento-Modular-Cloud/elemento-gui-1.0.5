@@ -4,8 +4,6 @@ on:
   push:
     tags:
       - '*beta'
-    branches:
-      - 'develop'
 
 jobs:
   mac_x86_build:
