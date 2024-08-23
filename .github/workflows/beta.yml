@@ -7,7 +7,6 @@ on:
 
 jobs:
   mac_x86_build:
-    if: startsWith(github.ref, 'refs/tags/') && endsWith(github.ref_name, 'beta') && github.ref == 'refs/heads/develop'
     runs-on:
       mac-arm
     needs: [mac_arm_build]
@@ -52,7 +51,6 @@ jobs:
           path: dist/ElectrOS-${{ env.ELECTROS_VERSION }}.dmg
 
   mac_arm_build:
-    if: startsWith(github.ref, 'refs/tags/') && endsWith(github.ref_name, 'beta') && github.ref == 'refs/heads/develop'
     runs-on:
       mac-arm
     steps:
@@ -96,7 +94,6 @@ jobs:
           path: dist/ElectrOS-${{ env.ELECTROS_VERSION }}-arm64.dmg
 
   linux_arm_build:
-    if: startsWith(github.ref, 'refs/tags/') && endsWith(github.ref_name, 'beta') && github.ref == 'refs/heads/develop'
     runs-on:
       ubuntu-latest
     steps:
@@ -157,7 +154,6 @@ jobs:
           path: dist/electr-os_${{ env.ELECTROS_VERSION }}_arm64.deb
 
   win_x86_build:
-    if: startsWith(github.ref, 'refs/tags/') && endsWith(github.ref_name, 'beta') && github.ref == 'refs/heads/develop'
     runs-on:
       ubuntu-latest
     steps:
@@ -218,7 +214,6 @@ jobs:
           path: dist/ElectrOS\ Setup\ ${{ env.ELECTROS_VERSION }}.exe
 
   win_arm_build:
-    if: startsWith(github.ref, 'refs/tags/') && endsWith(github.ref_name, 'beta') && github.ref == 'refs/heads/develop'
     runs-on:
       ubuntu-latest
     steps:
@@ -280,7 +275,6 @@ jobs:
           path: dist/ElectrOS\ Setup\ ${{ env.ELECTROS_VERSION }}.exe
 
   linux_x86_build:
-    if: startsWith(github.ref, 'refs/tags/') && endsWith(github.ref_name, 'beta') && github.ref == 'refs/heads/develop'
     runs-on:
       ubuntu-latest
     steps:
