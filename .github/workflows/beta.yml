@@ -2,10 +2,10 @@ name: ElectrOS Build and Distribute BETA
 
 on:
   push:
-    branches:
-      - 'develop'
     tags:
       - '*beta'
+    branches:
+      - 'develop'
 
 jobs:
   mac_x86_build:
