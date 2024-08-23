@@ -5,7 +5,7 @@ on:
     branches:
       - 'develop'
     tags:
-      - '*beta*'
+      - '*beta'
 
 jobs:
   mac_x86_build:
