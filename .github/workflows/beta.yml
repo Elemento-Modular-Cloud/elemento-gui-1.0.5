@@ -1,8 +1,11 @@
-name: ElectrOS Build and Distribute NIGHTLY
+name: ElectrOS Build and Distribute BETA
 
 on:
-  schedule:
-    - cron: '0 18 * * *'
+  push:
+    branches:
+      - 'develop'
+    tags:
+      - '*beta*'
 
 jobs:
   mac_x86_build:
@@ -10,12 +13,16 @@ jobs:
       mac-arm
     needs: [mac_arm_build]
     steps:
+      - name: Get tag ref
+        id: tag
+        run: echo "tagname=${GITHUB_REF/refs\/tags\//}" >> "$GITHUB_OUTPUT"
+
       - name: Checkout
         uses: actions/checkout@v2
         with:
           token: ${{ secrets.REPO_KEY }}
           submodules: recursive
-          ref: develop
+          ref: ${{ steps.tag.outputs.tagname }}
 
       - name: Get Node Version
         run: |
@@ -49,12 +56,16 @@ jobs:
     runs-on:
       mac-arm
     steps:
+      - name: Get tag ref
+        id: tag
+        run: echo "tagname=${GITHUB_REF/refs\/tags\//}" >> "$GITHUB_OUTPUT"
+
       - name: Checkout
         uses: actions/checkout@v2
         with:
           token: ${{ secrets.REPO_KEY }}
           submodules: recursive
-          ref: develop
+          ref: ${{ steps.tag.outputs.tagname }}
 
       - name: Get Node Version
         run: |
@@ -88,12 +99,16 @@ jobs:
     runs-on:
       ubuntu-latest
     steps:
+      - name: Get tag ref
+        id: tag
+        run: echo "tagname=${GITHUB_REF/refs\/tags\//}" >> "$GITHUB_OUTPUT"
+
       - name: Checkout
         uses: actions/checkout@v2
         with:
           token: ${{ secrets.REPO_KEY }}
           submodules: recursive
-          ref: develop
+          ref: ${{ steps.tag.outputs.tagname }}
 
       - name: Get Node Version
         run: |
@@ -144,12 +159,16 @@ jobs:
     runs-on:
       ubuntu-latest
     steps:
+      - name: Get tag ref
+        id: tag
+        run: echo "tagname=${GITHUB_REF/refs\/tags\//}" >> "$GITHUB_OUTPUT"
+
       - name: Checkout
         uses: actions/checkout@v2
         with:
           token: ${{ secrets.REPO_KEY }}
           submodules: recursive
-          ref: develop
+          ref: ${{ steps.tag.outputs.tagname }}
 
       - name: Get Node Version
         run: |
@@ -200,12 +219,16 @@ jobs:
     runs-on:
       ubuntu-latest
     steps:
+      - name: Get tag ref
+        id: tag
+        run: echo "tagname=${GITHUB_REF/refs\/tags\//}" >> "$GITHUB_OUTPUT"
+
       - name: Checkout
         uses: actions/checkout@v2
         with:
           token: ${{ secrets.REPO_KEY }}
           submodules: recursive
-          ref: develop
+          ref: ${{ steps.tag.outputs.tagname }}
 
       - name: Get Node Version
         run: |
@@ -257,12 +280,16 @@ jobs:
     runs-on:
       ubuntu-latest
     steps:
+      - name: Get tag ref
+        id: tag
+        run: echo "tagname=${GITHUB_REF/refs\/tags\//}" >> "$GITHUB_OUTPUT"
+
       - name: Checkout
         uses: actions/checkout@v2
         with:
           token: ${{ secrets.REPO_KEY }}
           submodules: recursive
-          ref: develop
+          ref: ${{ steps.tag.outputs.tagname }}
 
       - name: Get Node Version
         run: |
@@ -312,12 +339,16 @@ jobs:
     needs: [mac_arm_build, mac_x86_build, win_x86_build, linux_x86_build, linux_arm_build, win_arm_build]
     runs-on: ubuntu-latest
     steps:
+      - name: Get tag ref
+        id: tag
+        run: echo "tagname=${GITHUB_REF/refs\/tags\//}" >> "$GITHUB_OUTPUT"
+
       - name: Checkout
         uses: actions/checkout@v2
         with:
           token: ${{ secrets.REPO_KEY }}
           submodules: recursive
-          ref: develop
+          ref: ${{ steps.tag.outputs.tagname }}
 
       - name: Electros Version
         run: |
@@ -385,7 +416,7 @@ jobs:
 
       - name: Get current date
         id: date
-        run: echo "date=$(date +'%Y-%m-%d')" >> "$GITHUB_OUTPUT"
+        run: echo "date=$(date +'%Y-%m-%d-%H-%M-%S')" >> "$GITHUB_OUTPUT"
 
       - name: Create Release
         id: create_release
@@ -393,12 +424,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: nightly-${{ steps.date.outputs.date }} # --> using date for alpha build
+          tag_name: ${{ steps.date.outputs.date }} # --> using date for alpha build
+          #tag_name: v${{ env.ELECTROS_VERSION }} # --> using version for stable build
           release_name: ElectrOS app by Elemento @ v${{ env.ELECTROS_VERSION }}-nightly
           body: |
             Executables of ElectrOS
-          draft: true
-          prerelease: false
+          draft: false
+          prerelease: true
 
       - name: Upload Win x86 to Release
         uses: actions/upload-release-asset@v1

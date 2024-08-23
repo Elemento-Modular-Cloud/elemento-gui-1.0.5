@@ -1,10 +1,6 @@
 name: Clean up artifacts
 
 on:
-  workflow_dispatch:
-  push:
-    branches:
-      - 'develop'
   schedule:
     - cron: '0 0 * * *' # Esegue ogni domenica a mezzanotte
 
