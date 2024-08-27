@@ -387,6 +387,10 @@ jobs:
         id: date
         run: echo "date=$(date +'%Y-%m-%d')" >> "$GITHUB_OUTPUT"
 
+      - name: Load changelog file
+        id: changelog
+        run: echo "CHANGELOG=$(cat changelog.md)" >> "$GITHUB_OUTPUT"
+
       - name: Create Release
         id: create_release
         uses: actions/create-release@latest
@@ -396,7 +400,7 @@ jobs:
           tag_name: nightly-${{ steps.date.outputs.date }} # --> using date for alpha build
           release_name: ElectrOS app by Elemento @ v${{ env.ELECTROS_VERSION }}-nightly
           body: |
-            Executables of ElectrOS
+            {{ steps.changelog.outputs.CHANGELOG }}
           draft: true
           prerelease: false
 
