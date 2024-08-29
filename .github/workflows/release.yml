@@ -402,7 +402,7 @@ jobs:
 
       - name: Load changelog file
         id: changelog
-        run: echo "CHANGELOG=$(cat changelog.md)" >> "$GITHUB_OUTPUT"
+        run: echo "CHANGELOG=$(cat changelog.md | tail -n +2 | awk '/^# / {exit} {print}')" >> "$GITHUB_OUTPUT"
 
       - name: Create Release
         id: create_release
