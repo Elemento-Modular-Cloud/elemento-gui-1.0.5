@@ -400,7 +400,7 @@ jobs:
           tag_name: nightly-${{ steps.date.outputs.date }} # --> using date for alpha build
           release_name: ElectrOS app by Elemento @ v${{ env.ELECTROS_VERSION }}-nightly
           body: |
-            {{ steps.changelog.outputs.CHANGELOG }}
+            ${{ steps.changelog.outputs.CHANGELOG }}
           draft: true
           prerelease: false
 

@@ -413,7 +413,7 @@ jobs:
           tag_name: v${{ env.ELECTROS_VERSION }} # --> using version for stable build
           release_name: ElectrOS app by Elemento @ v${{ env.ELECTROS_VERSION }}
           body: |
-            {{ steps.changelog.outputs.CHANGELOG }}
+            ${{ steps.changelog.outputs.CHANGELOG }}
           draft: false
           prerelease: false
 
