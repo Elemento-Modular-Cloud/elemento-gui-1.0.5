@@ -412,10 +412,10 @@ jobs:
           ELECTROS_VERSION=$( cat package.json | grep '"version":' | cut -d '"' -f 4 )
           echo "ELECTROS_VERSION=$(echo $ELECTROS_VERSION)" >> $GITHUB_ENV
 
-      - name: Load changelog file
+      - name: Create changelog file
         id: changelog
         run: |
-          echo "CHANGELOG=$(cat changelog.md | tail -n +2 | awk '/^# / {exit} {print}')" >> "$GITHUB_OUTPUT"
+          echo "$(cat changelog.md | tail -n +2 | awk '/^# / {exit} {print}')" > changelog_cleaned.md
 
       - name: Create Release
         id: create_release
@@ -425,8 +425,7 @@ jobs:
         with:
           tag_name: ${{ github.ref }}
           release_name: ElectrOS app by Elemento @ v${{ env.ELECTROS_VERSION }}-beta
-          body: |
-            ${{ steps.changelog.outputs.CHANGELOG }}
+          body_path: changelog_cleaned.md
           draft: false
           prerelease: true
 
