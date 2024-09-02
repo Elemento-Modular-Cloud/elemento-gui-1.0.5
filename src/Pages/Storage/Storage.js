@@ -327,7 +327,7 @@ class Storage extends Component {
                   <CustomSelect
                     options={['GB', 'TB']}
                     style={{ width: 120 }}
-                    placeholder='UoM'
+                    placeholder='Unit'
                     value={amount}
                     onChange={(event, amount) => {
                       this.setState({ amount })
