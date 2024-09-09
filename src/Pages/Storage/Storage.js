@@ -44,8 +44,8 @@ class Storage extends Component {
     const res = await Api.get('/accessible')
 
     if (res.ok && res.data && res.data.length > 0) {
-      const personalStorages = res.data ? res.data.filter(storage => storage.own).sort((a, b) => a.volumeID.localCompare(b.volumeID)) : []
-      const publicStorages = res.data ? res.data.filter(storage => !storage.own).sort((a, b) => a.volumeID.localCompare(b.volumeID)) : []
+      const personalStorages = res.data ? res.data.filter(storage => storage.own) : []
+      const publicStorages = res.data ? res.data.filter(storage => !storage.own) : []
 
       this.setState({ personalStorages, publicStorages })
     }
@@ -227,7 +227,6 @@ class Storage extends Component {
                             <tr key={i} style={{ backgroundColor: toBeDeleted === storage.volumeID ? '#898C8A99' : '' }}>
                               <td>
                                 <span style={{ fontWeight: 'bold' }}>{storage.name}</span>
-                                <span style={{ fontWeight: 200, fontSize: 14 }}>({storage.volumeID.substring(0, 6)}...)</span>
                               </td>
                               <td style={{ width: 80 }}>{storage.bootable ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
                               <td style={{ width: 80 }}>{storage.private ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
@@ -282,7 +281,6 @@ class Storage extends Component {
                             <tr key={i} style={{ backgroundColor: toBeDeleted === storage.volumeID ? '#898C8A99' : '' }}>
                               <td>
                                 <span style={{ fontWeight: 'bold' }}>{storage.name}</span>
-                                <span style={{ fontWeight: 200, fontSize: 14 }}>({storage.volumeID.substring(0, 6)}...)</span>
                               </td>
                               <td style={{ width: 80 }}>{storage.bootable ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
                               <td style={{ width: 80 }}>{storage.private ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
