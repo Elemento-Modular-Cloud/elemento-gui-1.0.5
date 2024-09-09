@@ -23,7 +23,6 @@ import vnc from '../../Assets/utils/vnc.png'
 import rdp from '../../Assets/utils/rdp.png'
 import close from '../../Assets/utils/close.png'
 import ansible from '../../Assets/ansible.png'
-import ansibleLogo from '../../Assets/ansible_logo.png'
 
 class VirtualMachineList extends Component {
   constructor (props) {
@@ -34,7 +33,7 @@ class VirtualMachineList extends Component {
       toBeDeleted: null,
       smartViewerModal: false,
       showDragAndDrop: false,
-      credentials: null,
+      credentials: false,
       viewerURL: null,
       username: '',
       password: '',
@@ -321,7 +320,7 @@ class VirtualMachineList extends Component {
                   e.stopPropagation()
                 }}
               >
-                <img src={ansibleLogo} alt='Upload' style={{ width: 200, marginTop: 20 }} />
+                <img src={ansible} alt='Upload' style={{ width: 200, marginTop: 20 }} />
                 <p>Upload your ansible configuration file:</p>
                 <div style={{ textAlign: 'center', marginTop: 20 }}>
                   <div style={{ marginTop: '10px' }}>
