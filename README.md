@@ -72,26 +72,3 @@ git flow feature pull origin MYFEATURE
 
 ### TL;DR
 > Run `sh ./tools/publish <version-number>` to execute the git-flow publish strategy all-in-one.
-
-To start a release, use the git flow release command. It creates a release branch created from the 'develop' branch.
-```
-git flow release start RELEASE
-```
-
-It's wise to publish the release branch after creating it to allow release commits by other developers. Do it similar to feature publishing with the command:
-```
-git flow release publish RELEASE
-```
-
-Finishing a release is one of the big steps in git branching. It performs several actions: 
-- Merges the release branch back into 'master' or 'main'
-- Tags the release with its `name`
-- Back-merges the release into 'develop'
-- Removes the release branch
-```
-git flow release finish RELEASE
-```
-Don't forget to push your tags with 
-```
-git push origin --tags
-```
