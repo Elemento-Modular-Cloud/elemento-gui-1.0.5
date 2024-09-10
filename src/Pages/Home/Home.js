@@ -35,6 +35,20 @@ class Home extends Component {
           window.location.reload()
         })
       }
+
+      try {
+        window.require('electron').ipcRenderer.send('get-settings')
+
+        window.require('electron').ipcRenderer.on('settings-data', async (event, arg) => {
+          if (arg) {
+            const { sshKey } = arg
+
+            await this.setGlobal({ sshKey: sshKey || null }, persistState)
+          }
+        })
+      } catch (error) {
+        console.log(error.message)
+      }
     } catch (error) {
       swal('Error', 'Could not connect to remote services', 'error', {
         buttons: false,
