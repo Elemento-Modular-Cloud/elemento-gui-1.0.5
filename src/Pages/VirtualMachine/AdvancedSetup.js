@@ -170,8 +170,10 @@ class AdvancedSetup extends Component {
     }
   }
 
-  async register (provider, ipv4) {
+  async register ({ provider, ipv4, username, password }) {
     try {
+      const { sshKey } = this.global
+
       const {
         name,
         cpu: {
@@ -248,9 +250,9 @@ class AdvancedSetup extends Component {
           volumes,
           ip_address: provider !== 'elemento' ? `${provider}.mesos.elemento.cloud` : ipv4,
           authentication: {
-            username: '',
-            password: '',
-            'ssh-key': ''
+            username,
+            password,
+            'ssh-key': sshKey
           }
         })
 
@@ -351,7 +353,7 @@ class AdvancedSetup extends Component {
             {page === STORAGE_PAGE && <Storage setVolumeIds={volumeIds => this.setState({ volumeIds })} />}
             {page === PCI_PAGE && <Pci setPci={pci => this.setState({ pci })} />}
             {/* {page === NETWORK_PAGE && <Network />} */}
-            {page === RESUME_PAGE && <Resume register={async ({ provider }) => await this.register(provider)} back={() => this.previous()} hideBottomBar={false} />}
+            {page === RESUME_PAGE && <Resume register={async (data) => await this.register(data)} back={() => this.previous()} hideBottomBar={false} />}
 
             <div className='advtools'>
               {page > 1 && page !== RESUME_PAGE && <button className='advprevious' onClick={() => this.previous()}>Previous</button>}

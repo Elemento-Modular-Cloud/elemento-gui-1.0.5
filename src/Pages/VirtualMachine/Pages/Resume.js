@@ -32,7 +32,11 @@ class Resume extends Component {
       allocate: null,
       provider: 'elemento',
       ipModal: false,
-      ipv4: ''
+      ipv4: '',
+      userPswModal: false,
+      username: '',
+      password: '',
+      confirmPassword: ''
     }
   }
 
@@ -100,7 +104,10 @@ class Resume extends Component {
 
   render () {
     const { hideButtons, hideProviders, hideBottomBar } = this.props
-    const { advancedSetup: x, compactName, loading, allocate, ipModal, ipv4 } = this.state
+    const {
+      advancedSetup: x, compactName, loading, allocate, ipModal,
+      ipv4, userPswModal, username, password, confirmPassword
+    } = this.state
 
     if (!x) { return (<p>Error</p>) }
 
@@ -311,11 +318,65 @@ class Resume extends Component {
             style={{ marginTop: 20 }}
             onClick={async () => {
               if (ipv4 === '' || validateIPv4(ipv4)) {
-                this.setState({ loading: true, ipModal: !ipModal })
-                await this.props.register({ provider: this.state.provider, ipv4: ipv4 === '' ? null : ipv4 })
-                this.setState({ loading: false })
+                this.setState({ ipModal: false, userPswModal: true })
               } else {
                 swal('Error', 'One or more IPv4 addresses are not in the correct format (eg. 192.168.1.1)', 'error', {
+                  buttons: false,
+                  timer: 2500
+                })
+              }
+            }}
+          >
+            Continue
+          </button>
+        </Modal>
+
+        <Modal
+          isOpen={userPswModal}
+          style={{ content: { ...customStyle.content, height: 320 } }}
+          className='netmodal'
+          ariaHideApp={false}
+          onRequestClose={() => this.setState({ userPswModal: !userPswModal })}
+        >
+          <AtomOS style={{ width: 80, height: 80, marginBottom: 20 }} />
+          <span style={{ fontSize: 16 }}>Please provide the username and password to be configured on the server.</span>
+          <input
+            type='text'
+            value={username}
+            style={{ width: 200, height: 30, marginTop: 20 }}
+            onChange={(e) => {
+              this.setState({ username: e.target.value })
+            }}
+            placeholder='Username'
+          />
+          <input
+            type='password'
+            value={password}
+            style={{ width: 200, height: 30, marginTop: 20 }}
+            onChange={(e) => {
+              this.setState({ password: e.target.value })
+            }}
+            placeholder='Password'
+          />
+          <input
+            type='password'
+            value={confirmPassword}
+            style={{ width: 200, height: 30, marginTop: 20 }}
+            onChange={(e) => {
+              this.setState({ confirmPassword: e.target.value })
+            }}
+            placeholder='Confirm'
+          />
+          <button
+            className='btnregister'
+            style={{ marginTop: 20 }}
+            onClick={async () => {
+              if (username !== '' && password !== '' && (password === confirmPassword)) {
+                this.setState({ loading: true, userPswModal: !userPswModal })
+                await this.props.register({ provider: this.state.provider, ipv4: ipv4 === '' ? null : ipv4, username, password })
+                this.setState({ loading: false })
+              } else {
+                swal('Error', 'Please check the specified username and ensure that the password and confirm password are entered correctly.', 'error', {
                   buttons: false,
                   timer: 2500
                 })
