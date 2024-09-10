@@ -63,26 +63,35 @@ class VirtualMachineList extends Component {
   }
 
   async deleteVirtualMachine (uniqueID) {
-    this.setState({ toBeDeleted: uniqueID, loading: true })
-    Api.createClient(Config.API_URL_MATCHER)
-    const res = await Api.post('/unregister', {
-      local_index: uniqueID
+    swal({
+      title: 'Do you want to destroy this virtual machine?',
+      text: 'Once deleted, the VM cannot be recovered!',
+      icon: 'warning',
+      buttons: true,
+      dangerMode: true
     })
+      .then(async (willDelete) => {
+        this.setState({ toBeDeleted: uniqueID, loading: true })
+        Api.createClient(Config.API_URL_MATCHER)
+        const res = await Api.post('/unregister', {
+          local_index: uniqueID
+        })
 
-    if (res.ok) {
-      swal('Success', 'Virtual machine deleted succesfully', 'success', {
-        buttons: false,
-        timer: 3000
+        if (res.ok) {
+          swal('Success', 'Virtual machine deleted succesfully', 'success', {
+            buttons: false,
+            timer: 3000
+          })
+          await this.getStatus()
+        } else {
+          swal('Error', 'Could not delete the selected virtual machine', 'error', {
+            buttons: false,
+            timer: 3000
+          }).then(() => {
+            this.setState({ toBeDeleted: null, loading: false })
+          })
+        }
       })
-      await this.getStatus()
-    } else {
-      swal('Error', 'Could not delete the selected virtual machine', 'error', {
-        buttons: false,
-        timer: 3000
-      }).then(() => {
-        this.setState({ toBeDeleted: null, loading: false })
-      })
-    }
   }
 
   getLocalTimezonDate (creationDate) {

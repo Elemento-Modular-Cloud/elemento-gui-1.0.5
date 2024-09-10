@@ -123,26 +123,37 @@ class Storage extends Component {
   }
 
   async destroyStorage (volumeID) {
-    this.setState({ toBeDeleted: volumeID, loading: true })
-    Api.createClient(Config.API_URL_STORAGE)
-    const ret = await Api.post('/destroy', {
-      volume_id: volumeID
+    swal({
+      title: 'Do you want to destroy this volume?',
+      text: 'Once deleted, the data cannot be recovered!',
+      icon: 'warning',
+      buttons: true,
+      dangerMode: true
     })
-    if (ret.ok) {
-      swal('Success!', 'The selected storage has been destroyed', 'success', {
-        buttons: false,
-        timer: 3000
-      }).then(async () => {
-        await this.getAccessibleStorages()
+      .then(async (willDelete) => {
+        if (willDelete) {
+          this.setState({ toBeDeleted: volumeID, loading: true })
+          Api.createClient(Config.API_URL_STORAGE)
+          const ret = await Api.post('/destroy', {
+            volume_id: volumeID
+          })
+          if (ret.ok) {
+            swal('Success!', 'The selected storage has been destroyed', 'success', {
+              buttons: false,
+              timer: 3000
+            }).then(async () => {
+              await this.getAccessibleStorages()
+            })
+          } else {
+            swal('Error', 'Could not destroy the selected storage', 'error', {
+              buttons: false,
+              timer: 3000
+            }).then(() => {
+              this.setState({ toBeDeleted: null, loading: false })
+            })
+          }
+        }
       })
-    } else {
-      swal('Error', 'Could not destroy the selected storage', 'error', {
-        buttons: false,
-        timer: 3000
-      }).then(() => {
-        this.setState({ toBeDeleted: null, loading: false })
-      })
-    }
   }
 
   render () {
