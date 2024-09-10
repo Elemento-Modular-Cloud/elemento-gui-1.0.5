@@ -246,7 +246,12 @@ class AdvancedSetup extends Component {
           },
           pci: _pci,
           volumes,
-          ip_address: provider !== 'elemento' ? `${provider}.mesos.elemento.cloud` : ipv4
+          ip_address: provider !== 'elemento' ? `${provider}.mesos.elemento.cloud` : ipv4,
+          authentication: {
+            username: '',
+            password: '',
+            'ssh-key': ''
+          }
         })
 
         if (ret.ok) {
