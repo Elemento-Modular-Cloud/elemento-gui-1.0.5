@@ -111,6 +111,7 @@
   justify-content: space-between;
 }
 .advdot {
+  position: relative;
   width: 20px;
   height: 20px;
   border-radius: 20px;
@@ -124,4 +125,22 @@
   width: 10px;
   height: 10px;
   border-radius: 12px;
+}
+/* .advdot {
+  position: relative;
+  margin: 10px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+} */
+.hover-info {
+  position: absolute;
+  bottom: 30px;
+  left: 0;
+  background-color: white;
+  padding: 5px;
+  border: 1px solid gray;
+  border-radius: 4px;
+  font-size: 12px;
+  z-index: 10;
 }
