@@ -1,12 +1,12 @@
 import React, { Component } from 'reactn'
-import { Api, persistState } from '../../Services'
-import { Cpu, Memory, Name, Os, Pci, Resume, Storage } from './Pages'
+import swal from 'sweetalert'
 import { Config } from '../../Global'
 import { getMemories } from '../../Global/Model'
-import './css/AdvancedSetup.css'
-import { Back, BillingModal, Sidebar, WithRouter } from '../../Components'
-import swal from 'sweetalert'
+import { Api, persistState } from '../../Services'
 import ResumeModal from '../../Components/ResumeModal'
+import { Cpu, Memory, Name, Os, Pci, Resume, Storage } from './Pages'
+import { Back, BillingModal, Sidebar, WithRouter } from '../../Components'
+import './css/AdvancedSetup.css'
 
 const NAME_PAGE = 1
 const CPU_PAGE = 2
@@ -45,7 +45,8 @@ class AdvancedSetup extends Component {
         volumeIds: []
       },
       mesos: null,
-      updated: false
+      updated: false,
+      hoveredDot: null
     }
   }
 
@@ -58,7 +59,7 @@ class AdvancedSetup extends Component {
     this.setState({ page: (page - 1) >= 1 ? (page - 1) : 1 })
   }
 
-  next () {
+  next (flyTo) {
     const {
       page,
       name,
@@ -108,7 +109,13 @@ class AdvancedSetup extends Component {
       // next = false
     }
 
-    next && this.setState({ page: (page + 1) <= 8 ? (page + 1) : 8 })
+    if (next) {
+      if (flyTo) {
+        this.setState({ page: flyTo })
+      } else {
+        this.setState({ page: (page + 1) <= 8 ? (page + 1) : 8 })
+      }
+    }
   }
 
   async updateBilling () {
@@ -163,8 +170,10 @@ class AdvancedSetup extends Component {
     }
   }
 
-  async register (provider, ipv4) {
+  async register ({ provider, ipv4, username, password }) {
     try {
+      const { sshKey } = this.global
+
       const {
         name,
         cpu: {
@@ -239,7 +248,12 @@ class AdvancedSetup extends Component {
           },
           pci: _pci,
           volumes,
-          ip_address: provider !== 'elemento' ? `${provider}.mesos.elemento.cloud` : ipv4
+          ip_address: provider !== 'elemento' ? `${provider}.mesos.elemento.cloud` : ipv4,
+          authentication: {
+            username,
+            password,
+            'ssh-key': sshKey
+          }
         })
 
         if (ret.ok) {
@@ -269,8 +283,26 @@ class AdvancedSetup extends Component {
     }
   }
 
+  handleMouseEnter = (dot) => {
+    this.setState({ hoveredDot: dot })
+  }
+
+  handleMouseLeave = () => {
+    this.setState({ hoveredDot: null })
+  }
+
   render () {
-    const { page, mesos, updated } = this.state
+    const { page, mesos, updated, hoveredDot } = this.state
+
+    const dotInfo = {
+      1: 'Virtual Machine Name',
+      2: 'CPU Setup',
+      3: 'Memory Setup',
+      4: 'OS Setup',
+      5: 'Storage Setup',
+      6: 'PCI Setup',
+      7: 'Resume'
+    }
 
     return (
       <div className='advpage'>
@@ -321,7 +353,7 @@ class AdvancedSetup extends Component {
             {page === STORAGE_PAGE && <Storage setVolumeIds={volumeIds => this.setState({ volumeIds })} />}
             {page === PCI_PAGE && <Pci setPci={pci => this.setState({ pci })} />}
             {/* {page === NETWORK_PAGE && <Network />} */}
-            {page === RESUME_PAGE && <Resume register={async ({ provider }) => await this.register(provider)} back={() => this.previous()} hideBottomBar={false} />}
+            {page === RESUME_PAGE && <Resume register={async (data) => await this.register(data)} back={() => this.previous()} hideBottomBar={false} />}
 
             <div className='advtools'>
               {page > 1 && page !== RESUME_PAGE && <button className='advprevious' onClick={() => this.previous()}>Previous</button>}
@@ -330,14 +362,23 @@ class AdvancedSetup extends Component {
                 page !== RESUME_PAGE &&
                   <div className='advdotsbox'>
                     <div className='advdots'>
-                      <div className='advdot' style={{ backgroundColor: page >= 1 ? '#f28e00' : 'lightgray' }}><div className='advdotinner' /></div>
-                      <div className='advdot' style={{ backgroundColor: page >= 2 ? '#f28e00' : 'lightgray' }}><div className='advdotinner' /></div>
-                      <div className='advdot' style={{ backgroundColor: page >= 3 ? '#f28e00' : 'lightgray' }}><div className='advdotinner' /></div>
-                      <div className='advdot' style={{ backgroundColor: page >= 4 ? '#f28e00' : 'lightgray' }}><div className='advdotinner' /></div>
-                      <div className='advdot' style={{ backgroundColor: page >= 5 ? '#f28e00' : 'lightgray' }}><div className='advdotinner' /></div>
-                      <div className='advdot' style={{ backgroundColor: page >= 6 ? '#f28e00' : 'lightgray' }}><div className='advdotinner' /></div>
-                      <div className='advdot' style={{ backgroundColor: page >= 7 ? '#f28e00' : 'lightgray' }}><div className='advdotinner' /></div>
-                      {/* <div className='advdot' style={{ backgroundColor: page >= 8 ? '#f28e00' : 'lightgray' }}><div className='advdotinner' /></div> */}
+                      {[1, 2, 3, 4, 5, 6, 7].map((_page, index) => (
+                        <div
+                          key={index}
+                          className='advdot'
+                          style={{ backgroundColor: page >= _page ? '#f28e00' : 'lightgray' }}
+                          onMouseEnter={() => this.handleMouseEnter(_page)}
+                          onMouseLeave={() => this.handleMouseLeave()}
+                          onClick={() => this.next(_page)}
+                        >
+                          <div className='advdotinner' />
+                          {hoveredDot === _page && (
+                            <div className='hover-info'>
+                              {dotInfo[_page]}
+                            </div>
+                          )}
+                        </div>
+                      ))}
                     </div>
                     <span>{page} of {RESUME_PAGE} completed</span>
                   </div>

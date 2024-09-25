@@ -23,7 +23,6 @@ import vnc from '../../Assets/utils/vnc.png'
 import rdp from '../../Assets/utils/rdp.png'
 import close from '../../Assets/utils/close.png'
 import ansible from '../../Assets/ansible.png'
-import ansibleLogo from '../../Assets/ansible_logo.png'
 
 class VirtualMachineList extends Component {
   constructor (props) {
@@ -34,7 +33,7 @@ class VirtualMachineList extends Component {
       toBeDeleted: null,
       smartViewerModal: false,
       showDragAndDrop: false,
-      credentials: null,
+      credentials: false,
       viewerURL: null,
       username: '',
       password: '',
@@ -64,26 +63,35 @@ class VirtualMachineList extends Component {
   }
 
   async deleteVirtualMachine (uniqueID) {
-    this.setState({ toBeDeleted: uniqueID, loading: true })
-    Api.createClient(Config.API_URL_MATCHER)
-    const res = await Api.post('/unregister', {
-      local_index: uniqueID
+    swal({
+      title: 'Do you want to destroy this virtual machine?',
+      text: 'Once deleted, the VM cannot be recovered!',
+      icon: 'warning',
+      buttons: true,
+      dangerMode: true
     })
+      .then(async (willDelete) => {
+        this.setState({ toBeDeleted: uniqueID, loading: true })
+        Api.createClient(Config.API_URL_MATCHER)
+        const res = await Api.post('/unregister', {
+          local_index: uniqueID
+        })
 
-    if (res.ok) {
-      swal('Success', 'Virtual machine deleted succesfully', 'success', {
-        buttons: false,
-        timer: 3000
+        if (res.ok) {
+          swal('Success', 'Virtual machine deleted succesfully', 'success', {
+            buttons: false,
+            timer: 3000
+          })
+          await this.getStatus()
+        } else {
+          swal('Error', 'Could not delete the selected virtual machine', 'error', {
+            buttons: false,
+            timer: 3000
+          }).then(() => {
+            this.setState({ toBeDeleted: null, loading: false })
+          })
+        }
       })
-      await this.getStatus()
-    } else {
-      swal('Error', 'Could not delete the selected virtual machine', 'error', {
-        buttons: false,
-        timer: 3000
-      }).then(() => {
-        this.setState({ toBeDeleted: null, loading: false })
-      })
-    }
   }
 
   getLocalTimezonDate (creationDate) {
@@ -321,7 +329,7 @@ class VirtualMachineList extends Component {
                   e.stopPropagation()
                 }}
               >
-                <img src={ansibleLogo} alt='Upload' style={{ width: 200, marginTop: 20 }} />
+                <img src={ansible} alt='Upload' style={{ width: 200, marginTop: 20 }} />
                 <p>Upload your ansible configuration file:</p>
                 <div style={{ textAlign: 'center', marginTop: 20 }}>
                   <div style={{ marginTop: '10px' }}>

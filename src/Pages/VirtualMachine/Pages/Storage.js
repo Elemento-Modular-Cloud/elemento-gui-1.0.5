@@ -1,7 +1,7 @@
 import React, { Component } from 'reactn'
 import { Api, persistState } from '../../../Services'
 import { Config, Utils } from '../../../Global'
-import { CustomSelect, Loader } from '../../../Components'
+import { Loader, StorageSelect } from '../../../Components'
 import { ReactComponent as CheckGreen } from '../../../Assets/utils/checkgreen.svg'
 import { ReactComponent as CheckRed } from '../../../Assets/utils/checkred.svg'
 import '../css/Pages.css'
@@ -96,11 +96,12 @@ class Storage extends Component {
         <p>ⓘ You can mount as many storage as you want, there is no limit!</p>
 
         <div className='advstoselect'>
-          <CustomSelect
-            options={storages ? storages.map(s => s.private ? `👤 ${s.name}` : `🌍 ${s.name}`) : []}
+          <StorageSelect
+            options={storages ? storages.map(s => { return { name: `${s.name} (${s.volumeID.substring(0, 8)})`, private: s.private } }) : []}
             onChange={(event, storageSelected) => {
-              if (storageSelected) {
-                this.setState({ storageSelected: storageSelected.substring(3, storageSelected.length) })
+              if (storageSelected && storageSelected.name) {
+                const name = storageSelected.name.split(' (')[0]
+                this.setState({ storageSelected: name })
               }
             }}
           />

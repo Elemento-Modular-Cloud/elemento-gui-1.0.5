@@ -27,7 +27,7 @@ class Os extends Component {
   async updateState (os, flavour) {
     const { advancedSetup } = this.global
 
-    this.setState({ os })
+    this.setState({ os, flavour })
     this.props.setOs({ os, flavour })
 
     await this.setGlobal({
@@ -47,14 +47,14 @@ class Os extends Component {
         <div className='osradio'>
           <div
             className='osradioitem'
-            onClick={async () => await this.updateState('linux', null)}
+            onClick={async () => await this.updateState('linux', 'ubuntu')}
             style={{ backgroundColor: os === 'linux' ? '#f28e00' : 'white' }}
           >
             <Linux fill={os === 'linux' ? 'white' : 'black'} />
           </div>
           <div
             className='osradioitem'
-            onClick={async () => await this.updateState('windows', null)}
+            onClick={async () => await this.updateState('windows', 'windows10')}
             style={{ backgroundColor: os === 'windows' ? '#f28e00' : 'white' }}
           >
             <Windows fill={os === 'windows' ? 'white' : 'black'} />

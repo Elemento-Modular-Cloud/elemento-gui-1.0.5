@@ -67,8 +67,8 @@ class Storage extends Component {
       swal('Error', 'Please, provide a valid storage name', 'error', { buttons: false, timer: 3000 })
       return
     }
-    if (!size || size === '' || (amount === 'TB' && size > 2) || (amount === 'GB' && (size < 50 || size >= 1000))) {
-      swal('Error', 'Please, provide a valid storage size (min 50GB, max 2TB)', 'error', { buttons: false, timer: 3000 })
+    if (!size || size === '' || (amount === 'TB' && size > 2) || (amount === 'GB' && (size < 1 || size >= 1000))) {
+      swal('Error', 'Please, provide a valid storage size (min 1GB, max 2TB)', 'error', { buttons: false, timer: 3000 })
       return
     }
     if (!amount || amount === '') {
@@ -123,26 +123,37 @@ class Storage extends Component {
   }
 
   async destroyStorage (volumeID) {
-    this.setState({ toBeDeleted: volumeID, loading: true })
-    Api.createClient(Config.API_URL_STORAGE)
-    const ret = await Api.post('/destroy', {
-      volume_id: volumeID
+    swal({
+      title: 'Do you want to destroy this volume?',
+      text: 'Once deleted, the data cannot be recovered!',
+      icon: 'warning',
+      buttons: true,
+      dangerMode: true
     })
-    if (ret.ok) {
-      swal('Success!', 'The selected storage has been destroyed', 'success', {
-        buttons: false,
-        timer: 3000
-      }).then(async () => {
-        await this.getAccessibleStorages()
+      .then(async (willDelete) => {
+        if (willDelete) {
+          this.setState({ toBeDeleted: volumeID, loading: true })
+          Api.createClient(Config.API_URL_STORAGE)
+          const ret = await Api.post('/destroy', {
+            volume_id: volumeID
+          })
+          if (ret.ok) {
+            swal('Success!', 'The selected storage has been destroyed', 'success', {
+              buttons: false,
+              timer: 3000
+            }).then(async () => {
+              await this.getAccessibleStorages()
+            })
+          } else {
+            swal('Error', 'Could not destroy the selected storage', 'error', {
+              buttons: false,
+              timer: 3000
+            }).then(() => {
+              this.setState({ toBeDeleted: null, loading: false })
+            })
+          }
+        }
       })
-    } else {
-      swal('Error', 'Could not destroy the selected storage', 'error', {
-        buttons: false,
-        timer: 3000
-      }).then(() => {
-        this.setState({ toBeDeleted: null, loading: false })
-      })
-    }
   }
 
   render () {
@@ -185,7 +196,7 @@ class Storage extends Component {
 
           <div className='stoselector'>
             <span
-              style={{ marginLeft: 20, color: selector === 'public' ? '#f28e00' : '#898C8A', textDecorationLine: selector === 'public' ? 'underline' : 'none' }}
+              style={{ marginRight: 20, color: selector === 'public' ? '#f28e00' : '#898C8A', textDecorationLine: selector === 'public' ? 'underline' : 'none' }}
               onClick={() => this.setState({ selector: 'public' })}
             >
               Common Volumes
@@ -225,7 +236,9 @@ class Storage extends Component {
                         ? personalStorages.map((storage, i) => {
                           return (
                             <tr key={i} style={{ backgroundColor: toBeDeleted === storage.volumeID ? '#898C8A99' : '' }}>
-                              <td style={{ fontWeight: 'bold' }}>{storage.name}</td>
+                              <td>
+                                <span style={{ fontWeight: 'bold' }}>{storage.name}</span>
+                              </td>
                               <td style={{ width: 80 }}>{storage.bootable ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
                               <td style={{ width: 80 }}>{storage.private ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
                               <td style={{ width: 80 }}>{storage.readonly ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
@@ -277,7 +290,9 @@ class Storage extends Component {
                         ? publicStorages.map((storage, i) => {
                           return (
                             <tr key={i} style={{ backgroundColor: toBeDeleted === storage.volumeID ? '#898C8A99' : '' }}>
-                              <td style={{ fontWeight: 'bold' }}>{storage.name}</td>
+                              <td>
+                                <span style={{ fontWeight: 'bold' }}>{storage.name}</span>
+                              </td>
                               <td style={{ width: 80 }}>{storage.bootable ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
                               <td style={{ width: 80 }}>{storage.private ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>
                               <td style={{ width: 80 }}>{storage.readonly ? <CheckGreen style={{ width: 30, height: 30 }} /> : <CheckRed style={{ width: 30, height: 30 }} />}</td>

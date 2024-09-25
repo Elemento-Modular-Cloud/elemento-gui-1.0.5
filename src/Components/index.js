@@ -11,6 +11,7 @@ import Daemons from './Daemons'
 import Loader from './Loader'
 import Navigate from './Navigate'
 import Sidebar from './Sidebar'
+import StorageSelect from './StorageSelect'
 import ToggleSwitch from './ToggleSwitch'
 import WithRouter from './WithRouter'
 
@@ -28,6 +29,7 @@ export {
   Loader,
   Navigate,
   Sidebar,
+  StorageSelect,
   ToggleSwitch,
   WithRouter
 }

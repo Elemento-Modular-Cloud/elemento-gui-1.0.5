@@ -60,25 +60,34 @@ class Licences extends Component {
   }
 
   async deleteLicense (licenseKey) {
-    this.setState({ loading: true, toBeDeleted: licenseKey })
-    Api.createClient(Config.API_URL_AUTHENT)
-    const res = await Api.delete('/license/delete', {
-      license_key: licenseKey
+    swal({
+      title: 'Do you want to delete this license?',
+      text: 'Once deleted, the license cannot be recovered!',
+      icon: 'warning',
+      buttons: true,
+      dangerMode: true
     })
+      .then(async (willDelete) => {
+        this.setState({ loading: true, toBeDeleted: licenseKey })
+        Api.createClient(Config.API_URL_AUTHENT)
+        const res = await Api.delete('/license/delete', {
+          license_key: licenseKey
+        })
 
-    if (res.ok) {
-      swal('Success!', 'License deleted successfully', 'success', {
-        buttons: false,
-        timer: 3000
+        if (res.ok) {
+          swal('Success!', 'License deleted successfully', 'success', {
+            buttons: false,
+            timer: 3000
+          })
+          await this.refreshData()
+        } else {
+          swal('Error', 'Could not delete the selected license', 'error', {
+            buttons: false,
+            timer: 3000
+          })
+        }
+        this.setState({ loading: false, toBeDeleted: null })
       })
-      await this.refreshData()
-    } else {
-      swal('Error', 'Could not delete the selected license', 'error', {
-        buttons: false,
-        timer: 3000
-      })
-    }
-    this.setState({ loading: false, toBeDeleted: null })
   }
 
   async saveLicenceLocally (file) {

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Api } from '../../Services'
 import { Config, Utils } from '../../Global'
 import './css/BasicSetup.css'
-import { Back, CustomSelect, Loader, Sidebar, WithRouter } from '../../Components'
+import { Back, CustomSelect, Loader, Sidebar, StorageSelect, WithRouter } from '../../Components'
 import { models, vendors } from '../../Global/Model'
 import { ReactComponent as Windows } from '../../Assets/os/windows.svg'
 import { ReactComponent as Linux } from '../../Assets/os/linux.svg'
@@ -236,14 +236,14 @@ class BasicSetup extends Component {
                 <span className='bascaption'>OS Selection*</span>
                 <div
                   className='basradioitem'
-                  onClick={() => this.setState({ osFamily: 'linux' })}
+                  onClick={() => this.setState({ osFamily: 'linux', flavour: 'ubuntu' })}
                   style={{ backgroundColor: osFamily === 'linux' ? '#f28e00' : 'white' }}
                 >
                   <Linux fill={osFamily === 'linux' ? 'white' : 'black'} />
                 </div>
                 <div
                   className='basradioitem'
-                  onClick={() => this.setState({ osFamily: 'windows' })}
+                  onClick={() => this.setState({ osFamily: 'windows', flavour: 'windows10' })}
                   style={{ backgroundColor: osFamily === 'windows' ? '#f28e00' : 'white' }}
                 >
                   <Windows fill={osFamily === 'windows' ? 'white' : 'black'} />
@@ -270,11 +270,12 @@ class BasicSetup extends Component {
               <div className='basstorage'>
                 <span className='bascaption'>Storage Selection</span>
                 <div style={{ display: 'flex', flexDirection: 'row' }}>
-                  <CustomSelect
-                    options={storages ? storages.map(s => s.private ? `👤 ${s.name}` : `🌍 ${s.name}`) : []}
+                  <StorageSelect
+                    options={storages ? storages.map(s => { return { name: `${s.name} (${s.volumeID.substring(0, 8)})`, private: s.private } }) : []}
                     onChange={(event, storageSelected) => {
-                      if (storageSelected) {
-                        this.setState({ storageSelected: storageSelected.substring(3, storageSelected.length) })
+                      if (storageSelected && storageSelected.name) {
+                        const name = storageSelected.name.split(' (')[0]
+                        this.setState({ storageSelected: name })
                       }
                     }}
                   />
