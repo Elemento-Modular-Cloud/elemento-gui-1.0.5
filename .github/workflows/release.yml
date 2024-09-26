@@ -47,7 +47,7 @@ jobs:
         run: ./mac-scripts/x86-builder.sh
 
       - name: Push x86-Mac artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: Elemento_Cloud_App_intel.dmg
           path: dist/ElectrOS-${{ env.ELECTROS_VERSION }}.dmg
@@ -96,7 +96,7 @@ jobs:
         run: ./mac-scripts/arm-builder.sh
 
       - name: Push ARM-Mac artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: Elemento_Cloud_App_arm.dmg
           path: dist/ElectrOS-${{ env.ELECTROS_VERSION }}-arm64.dmg
@@ -146,13 +146,13 @@ jobs:
           GH_TOKEN: ${{ secrets.REPO_KEY }}
 
       - name: Push ARM-Mac artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: Elemento_Cloud_App_arm.AppImage
           path: dist/ElectrOS-${{ env.ELECTROS_VERSION }}-arm64.AppImage
 
       - name: Push ARM-Mac artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: Elemento_Cloud_App_arm.deb
           path: dist/electr-os_${{ env.ELECTROS_VERSION }}_arm64.deb
@@ -208,7 +208,7 @@ jobs:
           GH_TOKEN: ${{ secrets.REPO_KEY }}
 
       - name: Push Win artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: Elemento_Cloud_App_x86.exe
           path: dist/ElectrOS\ Setup\ ${{ env.ELECTROS_VERSION }}.exe
@@ -265,7 +265,7 @@ jobs:
           GH_TOKEN: ${{ secrets.REPO_KEY }}
 
       - name: Push ARM-Mac artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: Elemento_Cloud_App_arm.exe
           path: dist/ElectrOS\ Setup\ ${{ env.ELECTROS_VERSION }}.exe
@@ -314,13 +314,13 @@ jobs:
           GH_TOKEN: ${{ secrets.REPO_KEY }}
 
       - name: Push Linux appImage artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: Elemento_Cloud_App_amd64.AppImage
           path: dist/ElectrOS-${{ env.ELECTROS_VERSION }}.AppImage
 
       - name: Push Linux deb artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: Elemento_Cloud_App_amd64.deb
           path: dist/electr-os_${{ env.ELECTROS_VERSION }}_amd64.deb
