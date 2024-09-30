@@ -11,7 +11,7 @@ jobs:
     needs: [mac_arm_build]
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           token: ${{ secrets.REPO_KEY }}
           submodules: recursive
@@ -40,7 +40,7 @@ jobs:
         run: ./mac-scripts/x86-builder.sh
 
       - name: Push x86-Mac artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: Elemento_Cloud_App_intel.dmg
           path: dist/ElectrOS-${{ env.ELECTROS_VERSION }}.dmg
@@ -79,7 +79,7 @@ jobs:
         run: ./mac-scripts/arm-builder.sh
 
       - name: Push ARM-Mac artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: Elemento_Cloud_App_arm.dmg
           path: dist/ElectrOS-${{ env.ELECTROS_VERSION }}-arm64.dmg
@@ -106,7 +106,7 @@ jobs:
           echo "ELECTROS_VERSION=$(echo $ELECTROS_VERSION)" >> $GITHUB_ENV
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODEVERSION }}
 
@@ -145,7 +145,7 @@ jobs:
       ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           token: ${{ secrets.REPO_KEY }}
           submodules: recursive
@@ -157,7 +157,7 @@ jobs:
           echo "NODEVERSION=$(echo $NODEVERSION)" >> $GITHUB_ENV
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODEVERSION }}
 
@@ -191,7 +191,7 @@ jobs:
           GH_TOKEN: ${{ secrets.REPO_KEY }}
 
       - name: Push Win artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: Elemento_Cloud_App_x86.exe
           path: dist/ElectrOS\ Setup\ ${{ env.ELECTROS_VERSION }}.exe
@@ -201,7 +201,7 @@ jobs:
       ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           token: ${{ secrets.REPO_KEY }}
           submodules: recursive
@@ -218,7 +218,7 @@ jobs:
           echo "ELECTROS_VERSION=$(echo $ELECTROS_VERSION)" >> $GITHUB_ENV
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODEVERSION }}
 
@@ -248,7 +248,7 @@ jobs:
           GH_TOKEN: ${{ secrets.REPO_KEY }}
 
       - name: Push ARM-Mac artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: Elemento_Cloud_App_arm.exe
           path: dist/ElectrOS\ Setup\ ${{ env.ELECTROS_VERSION }}.exe
@@ -258,7 +258,7 @@ jobs:
       ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           token: ${{ secrets.REPO_KEY }}
           submodules: recursive
@@ -297,13 +297,13 @@ jobs:
           GH_TOKEN: ${{ secrets.REPO_KEY }}
 
       - name: Push Linux appImage artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: Elemento_Cloud_App_amd64.AppImage
           path: dist/ElectrOS-${{ env.ELECTROS_VERSION }}.AppImage
 
       - name: Push Linux deb artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: Elemento_Cloud_App_amd64.deb
           path: dist/electr-os_${{ env.ELECTROS_VERSION }}_amd64.deb
@@ -313,7 +313,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           token: ${{ secrets.REPO_KEY }}
           submodules: recursive
@@ -325,7 +325,7 @@ jobs:
           echo "ELECTROS_VERSION=$(echo $ELECTROS_VERSION)" >> $GITHUB_ENV
 
       - name: Gather Win x86 Artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: Elemento_Cloud_App_x86.exe
           path: ./artifacts
@@ -334,7 +334,7 @@ jobs:
         run: mv ./artifacts/ElectrOS\ Setup\ ${{ env.ELECTROS_VERSION }}.exe ./artifacts/ElectrOS_Setup_x86.exe
 
       - name: Gather Win arm Artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: Elemento_Cloud_App_arm.exe
           path: ./artifacts
@@ -343,13 +343,13 @@ jobs:
         run: mv ./artifacts/ElectrOS\ Setup\ ${{ env.ELECTROS_VERSION }}.exe ./artifacts/ElectrOS_Setup_arm.exe
 
       - name: Gather Mac_x86 Artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: Elemento_Cloud_App_intel.dmg
           path: ./artifacts
 
       - name: Gather Mac_ARM Artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: Elemento_Cloud_App_arm.dmg
           path: ./artifacts
@@ -361,19 +361,19 @@ jobs:
           path: ./artifacts
 
       - name: Gather Linux x86 Artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: Elemento_Cloud_App_amd64.deb
           path: ./artifacts
 
       - name: Gather Linux arm Artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: Elemento_Cloud_App_arm.AppImage
           path: ./artifacts
 
       - name: Gather Linux arm Artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: Elemento_Cloud_App_arm.deb
           path: ./artifacts
@@ -404,7 +404,7 @@ jobs:
           prerelease: false
 
       - name: Upload Win x86 to Release
-        uses: actions/upload-release-asset@v1
+        uses: actions/upload-release-asset@v4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -414,7 +414,7 @@ jobs:
           asset_content_type: application/octet-stream
 
       - name: Upload Win arm to Release
-        uses: actions/upload-release-asset@v1
+        uses: actions/upload-release-asset@v4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -424,7 +424,7 @@ jobs:
           asset_content_type: application/octet-stream
 
       - name: Upload Mac_x86 to Release
-        uses: actions/upload-release-asset@v1
+        uses: actions/upload-release-asset@v4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -434,7 +434,7 @@ jobs:
           asset_content_type: application/octet-stream
 
       - name: Upload Mac_ARM to Release
-        uses: actions/upload-release-asset@v1
+        uses: actions/upload-release-asset@v4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -444,7 +444,7 @@ jobs:
           asset_content_type: application/octet-stream
 
       - name: Upload Linux x86 to Release
-        uses: actions/upload-release-asset@v1
+        uses: actions/upload-release-asset@v4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -454,7 +454,7 @@ jobs:
           asset_content_type: application/octet-stream
       
       - name: Upload Linux x86 to Release
-        uses: actions/upload-release-asset@v1
+        uses: actions/upload-release-asset@v4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -464,7 +464,7 @@ jobs:
           asset_content_type: application/octet-stream
 
       - name: Upload Linux arm to Release
-        uses: actions/upload-release-asset@v1
+        uses: actions/upload-release-asset@v4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -474,7 +474,7 @@ jobs:
           asset_content_type: application/octet-stream
 
       - name: Upload Linux arm to Release
-        uses: actions/upload-release-asset@v1
+        uses: actions/upload-release-asset@v4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
