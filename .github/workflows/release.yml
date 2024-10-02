@@ -453,7 +453,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./artifacts/ElectrOS-${{ env.ELECTROS_VERSION }}-arm64.dmg
-          asset_name: EElectrOS_app_v${{ env.ELECTROS_VERSION }}_arm.dmg
+          asset_name: ElectrOS_app_v${{ env.ELECTROS_VERSION }}_arm.dmg
           asset_content_type: application/octet-stream
 
       - name: Upload Linux x86 to Release
