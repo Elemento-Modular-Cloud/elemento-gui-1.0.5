@@ -404,7 +404,7 @@ jobs:
           prerelease: false
 
       - name: Upload Win x86 to Release
-        uses: actions/upload-release-asset@v4
+        uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -414,7 +414,7 @@ jobs:
           asset_content_type: application/octet-stream
 
       - name: Upload Win arm to Release
-        uses: actions/upload-release-asset@v4
+        uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -424,7 +424,7 @@ jobs:
           asset_content_type: application/octet-stream
 
       - name: Upload Mac_x86 to Release
-        uses: actions/upload-release-asset@v4
+        uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -434,7 +434,7 @@ jobs:
           asset_content_type: application/octet-stream
 
       - name: Upload Mac_ARM to Release
-        uses: actions/upload-release-asset@v4
+        uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -444,7 +444,7 @@ jobs:
           asset_content_type: application/octet-stream
 
       - name: Upload Linux x86 to Release
-        uses: actions/upload-release-asset@v4
+        uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -454,7 +454,7 @@ jobs:
           asset_content_type: application/octet-stream
       
       - name: Upload Linux x86 to Release
-        uses: actions/upload-release-asset@v4
+        uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -464,7 +464,7 @@ jobs:
           asset_content_type: application/octet-stream
 
       - name: Upload Linux arm to Release
-        uses: actions/upload-release-asset@v4
+        uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -474,7 +474,7 @@ jobs:
           asset_content_type: application/octet-stream
 
       - name: Upload Linux arm to Release
-        uses: actions/upload-release-asset@v4
+        uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
