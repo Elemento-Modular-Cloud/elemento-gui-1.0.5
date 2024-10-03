@@ -1,3 +1,8 @@
+# Version 1.0.5
+
+## Release notes
+- Fix building problems
+
 # Version 1.0.4
 
 ## Release notes
