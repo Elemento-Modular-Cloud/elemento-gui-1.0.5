@@ -51,6 +51,8 @@ class VirtualMachineList extends Component {
     Api.createClient(Config.API_URL_MATCHER)
     const res = await Api.get('/status', {})
 
+    console.log(res.data)
+
     if (res.ok) {
       this.setState({ vms: res.data })
     } else {

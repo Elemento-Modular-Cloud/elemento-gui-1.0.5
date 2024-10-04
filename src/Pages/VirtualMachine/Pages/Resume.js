@@ -303,7 +303,7 @@ class Resume extends Component {
           onRequestClose={() => this.setState({ ipModal: !ipModal })}
         >
           <AtomOS style={{ width: 80, height: 80, marginBottom: 20 }} />
-          <span style={{ fontSize: 16 }}>Please provide the IPv4 address<br /> for the On-Premises server, if available</span>
+          <span style={{ fontSize: 16 }}>Please provide the IPv4 address for the on-premises server, if available.<br /><br /> Otherwise, a default address will be selected by simply pressing Continue.</span>
           <input
             type='text'
             value={ipv4}
@@ -393,8 +393,8 @@ class Resume extends Component {
 
 const customStyle = {
   content: {
-    width: 230,
-    height: 250,
+    width: 280,
+    height: 350,
     padding: 20,
     top: '50%',
     left: '50%',
