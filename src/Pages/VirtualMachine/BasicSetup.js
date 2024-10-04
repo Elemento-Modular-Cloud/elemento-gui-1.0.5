@@ -3,7 +3,7 @@ import { Api } from '../../Services'
 import { Config, Utils } from '../../Global'
 import './css/BasicSetup.css'
 import { Back, CustomSelect, Loader, Sidebar, StorageSelect, WithRouter } from '../../Components'
-import { models, vendors } from '../../Global/Model'
+import { getVendorsAndModels } from '../../Global/Model'
 import { ReactComponent as Windows } from '../../Assets/os/windows.svg'
 import { ReactComponent as Linux } from '../../Assets/os/linux.svg'
 import { ReactComponent as CheckGreen } from '../../Assets/utils/checkgreen.svg'
@@ -31,13 +31,18 @@ class BasicSetup extends Component {
       ownership: false,
       volumeIds: [],
       storageSelected: '',
-      storagesSelected: []
+      storagesSelected: [],
+      vendors: [],
+      models: []
     }
   }
 
   async componentDidMount () {
     await this.getTemplates()
     await this.getAccessibleStorages()
+
+    const { vendors, models } = getVendorsAndModels()
+    this.setState({ vendors, models })
   }
 
   async getTemplates () {
@@ -196,7 +201,7 @@ class BasicSetup extends Component {
     const {
       loading, templates, template, storages, storageServer, bootable,
       writable, shareable, visibility, ownership, storage, osFamily,
-      storagesSelected, storageSelected, flavour
+      storagesSelected, storageSelected, flavour, vendors, models
     } = this.state
 
     return (
