@@ -1,5 +1,5 @@
 import React, { Component } from 'reactn'
-import { models, vendors } from '../../../Global/Model'
+import { getVendorsAndModels } from '../../../Global/Model'
 import { persistState } from '../../../Services'
 import { CustomSelect } from '../../../Components'
 import '../css/Pages.css'
@@ -14,7 +14,9 @@ class Pci extends Component {
     this.state = {
       vendorId: DEFAULT_NONE_ID,
       modelId: DEFAULT_NONE_ID,
-      pci: []
+      pci: [],
+      vendors: [],
+      models: []
     }
   }
 
@@ -22,7 +24,10 @@ class Pci extends Component {
     const { advancedSetup } = this.global
     const pci = advancedSetup.pci || []
 
-    this.setState({ pci })
+    console.log(getVendorsAndModels())
+    const { vendors, models } = getVendorsAndModels()
+
+    this.setState({ pci, vendors, models })
     await this.updateState(pci)
   }
 
@@ -37,7 +42,7 @@ class Pci extends Component {
     try {
       let added = {}
 
-      const { vendorId, pci } = this.state // modelId
+      const { vendors, models, vendorId, pci } = this.state // modelId
       const found = pci.filter(p => p.modelId === modelId)
       if (found.length > 0) {
         added = {
@@ -132,7 +137,7 @@ class Pci extends Component {
   }
 
   render () {
-    const { vendorId, pci } = this.state
+    const { vendors, models, vendorId, pci } = this.state
 
     return (
       <div className='advmain'>

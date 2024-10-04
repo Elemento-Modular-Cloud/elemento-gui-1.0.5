@@ -1,3 +1,5 @@
+import { Api, LocalStorage } from '../Services'
+
 export function getCores () {
   return [
     {
@@ -221,5 +223,36 @@ export function getCPUInstructionExt () {
   ]
 }
 
-export const models = require('../Data/elemento-pciid-mapper/models.json')
-export const vendors = require('../Data/elemento-pciid-mapper/vendors.json')
+const UTILS_KEY = 'ELEMENTO_UTILS'
+
+export async function loadVendors () {
+  let vendors = []
+
+  const res = await Api.get('https://github.com/Elemento-Modular-Cloud/elemento-pciid-mapper/blob/master/vendors.json')
+  if (res.ok) {
+    vendors = res.data
+  } else {
+    vendors = require('../Data/elemento-pciid-mapper/vendors.json')
+  }
+  const data = LocalStorage.get(UTILS_KEY)
+  LocalStorage.set(UTILS_KEY, { vendors, ...data })
+}
+
+export async function loadModels () {
+  let models = []
+
+  const res = await Api.get('https://github.com/Elemento-Modular-Cloud/elemento-pciid-mapper/blob/master/models.json')
+  if (res.ok) {
+    console.log('from online')
+    models = res.data
+  } else {
+    console.log('from local')
+    models = require('../Data/elemento-pciid-mapper/models.json')
+  }
+  const data = LocalStorage.get(UTILS_KEY)
+  LocalStorage.set(UTILS_KEY, { models, ...data })
+}
+
+export function getVendorsAndModels () {
+  return LocalStorage.get(UTILS_KEY)
+}

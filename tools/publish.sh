@@ -14,7 +14,7 @@ version=$1
 git flow release start $version
 
 # Update the version in package.json
-yarn version --new-version $version
+# yarn version --new-version $version
 
 # Finish the release process
 git flow release finish $version

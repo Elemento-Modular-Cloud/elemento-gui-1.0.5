@@ -18,6 +18,7 @@ import { ReactComponent as Help } from '../../Assets/utils/help.svg'
 import { ReactComponent as Settings } from '../../Assets/main/settings.svg'
 import './Home.css'
 import swal from 'sweetalert'
+import { loadModels, loadVendors } from '../../Global/Model'
 
 class Home extends Component {
   async componentDidMount () {
@@ -35,6 +36,9 @@ class Home extends Component {
           window.location.reload()
         })
       }
+
+      await loadVendors()
+      await loadModels()
 
       try {
         window.require('electron').ipcRenderer.send('get-settings')
